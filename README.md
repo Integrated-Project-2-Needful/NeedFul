@@ -1,5 +1,5 @@
-# Needful
-Needful is an application focused on creating a fun and social gifting experience.  It allows users to create detailed wishlists, connect with friends and family, and facilitate thoughtful gift-giving.
+# NeedFul
+NeedFul is an application focused on creating a fun and social gifting experience.  It allows users to create detailed wishlists, connect with friends and family, and facilitate thoughtful gift-giving.
 
 [@xXNeonKitsuneXx](https://github.com/xXNeonKitsuneXx)
 [@Snailoba](https://github.com/Snailoba)
