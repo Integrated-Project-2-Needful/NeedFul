@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:needful/Utils/color_use.dart';
 // import 'package:provider/provider.dart';
 import 'package:needful/Utils/text_use.dart';
 // import 'package:needful/provider/token_provider.dart';
@@ -66,7 +67,7 @@ class _ItemDetailsState extends State<ItemDetails> {
       'itemname': 'Test Item',
       'price': 20.0,
       'link_url': 'https://example.com',
-      'item_pic': 'https://img.freepik.com/free-photo/zen-balancing-pebbles-misty-lake_53876-138198.jpg',
+      'item_pic': 'https://cdn-prod.medicalnewstoday.com/content/images/articles/324/324771/close-up-of-a-cup-of-tea.jpg',
       'user_id': 2, // Example user ID of the wish creator
       'already_bought': false,
       'granted_by_user_id': null,
@@ -154,7 +155,9 @@ class _ItemDetailsState extends State<ItemDetails> {
           final alreadyBought = (wishdata?['already_bought']);
           final grantBy = (wishdata?['granted_by_user_id']);
           return Scaffold(
+            backgroundColor: colorUse.backgroundColor,
             appBar: CustomAppBarNavigation(
+              backgroundColor: colorUse.backgroundColor,
               title: itemName,
               backDestination: const Home(),
             ),

@@ -42,7 +42,7 @@ class _AddImageState extends State<AddImage> {
             }
           },
           child: Card(
-            color: const Color.fromARGB(208, 249, 235, 251),
+            color: const Color.fromARGB(255, 222, 247, 220),
             child: Padding(
               padding: const EdgeInsets.only(
                   top: 40, left: 40, right: 40, bottom: 30),

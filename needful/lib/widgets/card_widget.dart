@@ -134,10 +134,9 @@ class CardWidget extends StatelessWidget {
           child: Card(
             // margin: EdgeInsets.only(bottom: 25),
             color: grantBy != null && alreadyBought == true
-                ? const Color.fromARGB(
-                    173, 183, 255, 219) // Green (granted and bought)
+                ? colorUse.activeButton // Green (granted and bought)
                 : (grantBy != null || alreadyBought == true)
-                    ? const Color.fromARGB(153, 255, 225, 90)
+                    ? const Color(0xFFFCDDA2)
                     : const Color.fromARGB(198, 242, 215, 255),
             elevation: 7,
             child: Column(
@@ -153,28 +152,9 @@ class CardWidget extends StatelessWidget {
                       product,
                       style: TextStyles.cardTitleStyle().merge(TextStyle(
                           color: grantBy != null && alreadyBought == true
-                              ? const Color.fromARGB(200, 5, 117, 70)
-                              : colorUse.textFriend)),
+                              ? const Color.fromARGB(224, 255, 255, 255)
+                              : const Color.fromARGB(184, 0, 0, 0))),
                     ),
-                  ),
-                  subtitle: Text(
-                    grantBy != null
-                        ? 'Granted by $grantBy'
-                        : alreadyBought == true
-                            ? 'Already bought'
-                            : 'Not granted yet',
-                    style: (grantBy != null &&
-                            alreadyBought ==
-                                true) // Use nested ternary for subtitle style
-                        ? const TextStyle(
-                                color: Color.fromARGB(202, 76, 122, 102))
-                            .merge(TextStyles.cardSubtitleStyle())
-                        : (grantBy != null || alreadyBought == true)
-                            ? const TextStyle(
-                                    color: Color.fromARGB(224, 103, 78, 117))
-                                .merge(TextStyles.cardSubtitleStyle())
-                            : TextStyles
-                                .cardSubtitleStyle(), // Default style if neither condition is true
                   ),
                 ),
                 const SizedBox(height: 10.0),

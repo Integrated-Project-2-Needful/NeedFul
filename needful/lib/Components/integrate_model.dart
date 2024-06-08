@@ -1,5 +1,5 @@
-class Wishlist {
-  int wishlistId;
+class Itemlist {
+  int itemlistId;
   int userId;
   String itemname;
   int price;
@@ -10,8 +10,8 @@ class Wishlist {
   String? userNameOfWishlist;
   int? grantedByUserId;
 
-  Wishlist(
-      {required this.wishlistId,
+  Itemlist(
+      {required this.itemlistId,
       required this.userId,
       required this.itemname,
       required this.price,
@@ -22,9 +22,9 @@ class Wishlist {
       this.userNameOfWishlist,
       this.grantedByUserId});
 
-  factory Wishlist.fromJson(Map<String, dynamic> json) {
-    return Wishlist(
-        wishlistId: json['wishlist_id'],
+  factory Itemlist.fromJson(Map<String, dynamic> json) {
+    return Itemlist(
+        itemlistId: json['wishlist_id'],
         userId: json['user_id'],
         itemname: json['itemname'],
         price: json['price'],

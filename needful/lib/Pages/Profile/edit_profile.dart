@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:needful/Utils/color_use.dart';
 // Commented out for static data example
 // import 'package:dio/dio.dart';
 // import 'package:provider/provider.dart';
@@ -134,7 +135,9 @@ class _EditProfileState extends State<EditProfile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: colorUse.backgroundColor,
       appBar: const CustomAppBarPop(
+        backgroundColor: colorUse.primaryColor,
         title: 'Edit profile',
         centerTitle: true,
       ),

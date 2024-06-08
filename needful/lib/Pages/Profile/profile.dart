@@ -70,6 +70,7 @@ class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: colorUse.backgroundColor,
       appBar: const CustomAppBarPopNoTitle(),
       body: SingleChildScrollView(
         child: Column(

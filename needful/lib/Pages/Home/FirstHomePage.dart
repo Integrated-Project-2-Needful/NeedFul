@@ -2,6 +2,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:needful/Components/profile_bar.dart';
+import 'package:needful/Utils/color_use.dart';
 import 'package:needful/widgets/card_widget.dart';
 import 'package:provider/provider.dart';
 // import 'package:sweet_favors/Utils/text_use.dart';
@@ -27,7 +28,7 @@ class _FirstHomePageState extends State<FirstHomePage> {
   String? lastname;
   String? fullname;
   int? userid;
-  List<components.Wishlist> items = [];
+  List<components.Itemlist> items = [];
 
   @override
   void initState() {
@@ -52,7 +53,7 @@ class _FirstHomePageState extends State<FirstHomePage> {
     });
   }
 
-  Future<List<components.Wishlist>> fetchItems() async {
+  Future<List<components.Itemlist>> fetchItems() async {
     // Mock data
     final List<Map<String, dynamic>> mockData = [
       {
@@ -85,7 +86,7 @@ class _FirstHomePageState extends State<FirstHomePage> {
     // await Future.delayed(Duration(seconds: 2));
 
     // Parse the mock data
-    List<components.Wishlist> items = mockData.map((json) => components.Wishlist.fromJson(json)).toList();
+    List<components.Itemlist> items = mockData.map((json) => components.Itemlist.fromJson(json)).toList();
 
     setState(() {
       this.items = items;
@@ -196,19 +197,15 @@ class _FirstHomePageState extends State<FirstHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          // Main column
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(
-              height: 40.0,
-            ),
-            // Profile Row
-            SizedBox(
-              height: 55,
-              width: 400,
+      appBar: PreferredSize( // Use PreferredSize to customize AppBar height
+        preferredSize: const Size.fromHeight(100), // Set your desired height
+        child: AppBar(
+          backgroundColor: colorUse.primaryColor,
+          toolbarHeight: 40, // Height for content within AppBar
+          flexibleSpace: Align(
+            alignment: Alignment.bottomLeft, // Position ProfileBar at bottom-left
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 5,vertical: 22),
               child: ProfileBar(
                 images: img ?? '',
                 name: username ?? '',
@@ -216,11 +213,38 @@ class _FirstHomePageState extends State<FirstHomePage> {
                 fullname: fullname ?? '',
               ),
             ),
-
-            const SizedBox(height: 35.0), // Spacing between profile and card
+          ),
+        ),
+      ),
+      backgroundColor: colorUse.backgroundColor,
+      body: Column(
+          // Main column
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Container(
+            //   color: colorUse.primaryColor,
+            //   height: 40.0,
+            // ),
+            // Profile Row
+            // Container(
+            //   color: colorUse.primaryColor,
+            //   height: AppBar().preferredSize.height,
+            //   width: 400,
+            //   child: ProfileBar(
+            //     images: img ?? '',
+            //     name: username ?? '',
+            //     email: email ?? '',
+            //     fullname: fullname ?? '',
+            //   ),
+            // ),
+            
+            const SizedBox(height: 25.0), // Spacing between profile and card
 
             Expanded(
-              child: FutureBuilder<List<components.Wishlist>>(
+              child:Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: 
+               FutureBuilder<List<components.Itemlist>>(
                 future: fetchItems(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
@@ -245,7 +269,7 @@ class _FirstHomePageState extends State<FirstHomePage> {
                             product: wishlist.itemname,
                             grantBy: wishlist.userNameOfGranter,
                             grantedByUserId: wishlist.grantedByUserId,
-                            wishlistId: wishlist.wishlistId,
+                            wishlistId: wishlist.itemlistId,
                             username:
                                 username, // Access from the surrounding scope
                             userid: userid, // Access from the surrounding scope
@@ -259,9 +283,8 @@ class _FirstHomePageState extends State<FirstHomePage> {
                 },
               ),
             ),
-          ],
+      )],
         ),
-      ),
-    );
+      );
   }
 }

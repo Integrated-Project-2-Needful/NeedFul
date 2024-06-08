@@ -66,7 +66,7 @@ class _ProfileBarState extends State<ProfileBar> {
               style: const TextStyle(
                 fontSize: 15.0,
                 fontWeight: FontWeight.bold,
-                color: colorUse.textColorPrimary,
+                color: Color.fromARGB(255, 255, 255, 255),
                 shadows: [
                   Shadow(
                     blurRadius: 8.0,
@@ -80,7 +80,7 @@ class _ProfileBarState extends State<ProfileBar> {
               widget.fullname,
               style: const TextStyle(
                 fontSize: 13.0,
-                color: colorUse.textColorSecondary,
+                color: Color.fromARGB(255, 255, 255, 255),
                 shadows: [
                   Shadow(
                     blurRadius: 15.0,

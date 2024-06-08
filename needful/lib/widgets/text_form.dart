@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:needful/Utils/color_use.dart';
 
 class TextForm extends StatefulWidget {
   final String? label;
+  final int? maxLine;
   final TextEditingController? controller;
+  final bool? filled;
 
   const TextForm({
     super.key,
     this.label,
     this.controller,
+    this.maxLine,
+    this.filled,
   });
 
   @override
@@ -23,7 +28,10 @@ class _TextFormState extends State<TextForm> {
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 10.0),
           child: TextFormField(
+            maxLines: widget.maxLine,
             decoration: InputDecoration(
+              filled: widget.filled?? false,
+              fillColor: widget.filled== true? Colors.white : colorUse.backgroundColor,
               border: const OutlineInputBorder(),
               hintText: widget.label,
             ),

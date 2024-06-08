@@ -2,6 +2,8 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_floating_bottom_bar/flutter_floating_bottom_bar.dart';
 import 'package:needful/Pages/Home/FirstHomePage.dart';
+import 'package:needful/Pages/Item/NewItemAdd.dart';
+import 'package:needful/Pages/Marketplace/MarketPlace.dart';
 import 'package:needful/Utils/color_use.dart';
 // import 'package:sweet_favors/pages/Navbar/discover_page.dart';
 // import 'package:sweet_favors/pages/Navbar/first_home_page.dart';
@@ -70,8 +72,8 @@ class _bottomBar extends State<bottomBar> with SingleTickerProviderStateMixin {
           physics: const NeverScrollableScrollPhysics(),
           children: const [
             FirstHomePage(),
-            FirstHomePage(),
-            FirstHomePage(),
+            MarketPlacePage(),
+            NewItemAdd(),
             FirstHomePage(),
           ],
         ),

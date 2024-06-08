@@ -8,17 +8,20 @@ class CustomAppBarNavigation extends StatelessWidget
   final String title;
   final bool centerTitle; // Added parameter for title alignment
   final Widget? backDestination;
+  final Color? backgroundColor;
 
   const CustomAppBarNavigation({
     super.key,
     required this.title,
     this.centerTitle = false,
     this.backDestination,
+    this.backgroundColor
   });
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      backgroundColor: backgroundColor,
       centerTitle: centerTitle ? true : false,
       title: Heading(title),
       leading: IconButton(
@@ -36,13 +39,15 @@ class CustomAppBarNavigation extends StatelessWidget
 class CustomAppBarPop extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   final bool centerTitle; // Added parameter for title alignment
+  final Color? backgroundColor;
 
   const CustomAppBarPop(
-      {super.key, required this.title, this.centerTitle = false});
+      {super.key, required this.title, this.centerTitle = false, this.backgroundColor});
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      backgroundColor: backgroundColor,
       centerTitle: centerTitle ? true : false,
       title: Heading(title),
       leading: IconButton(
