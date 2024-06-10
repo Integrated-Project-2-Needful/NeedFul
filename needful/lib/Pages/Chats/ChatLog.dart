@@ -40,57 +40,57 @@ class _ChatLogState extends State<ChatLog> {
   Future<List<MessageLog>> fetchMessages() async {
   // Mock data (using your provided structure)
   final List<Map<String, dynamic>> mockData = [
+    // {
+    //   'userid': 1,
+    //   'messageUserId': 1,
+    //   'username': 'JohnDoe',
+    //   'latestMessage': 'I need the item now!',
+    //   'img': 'https://img.freepik.com/free-photo/zen-balancing-pebbles-misty-lake_53876-138198.jpg',
+    // },
     {
       'userid': 1,
       'messageUserId': 2,
-      'username': 'JohnDoe',
-      'latestMessage': 'I need the item now!',
-      'img': 'https://img.freepik.com/free-photo/zen-balancing-pebbles-misty-lake_53876-138198.jpg',
-    },
-    {
-      'userid': 3,
-      'messageUserId': 4,
       'username': 'Scuff',
-      'latestMessage': 'Hello, John!',
+      'latestMessage': 'Deal!',
       'img': 'https://i.ibb.co/3FDQHgV/362276652-1731342663961535-5299935558991469373-n.jpg', 
     },
     {
-      'userid': 5,
+      'userid': 1,
       'messageUserId': 6,
       'username': 'BunnyGirl',
       'latestMessage': 'Meeting tomorrow?',
       'img': 'https://i.ibb.co/qxYnyxS/55555754-p0-master1200.jpg',
     },
     {
-      'userid': 5,
+      'userid': 1,
       'messageUserId': 6,
       'username': 'BunnyGirl',
       'latestMessage': 'Meeting tomorrow?',
       'img': 'https://i.ibb.co/qxYnyxS/55555754-p0-master1200.jpg',
     },
     {
-      'userid': 5,
+      'userid': 1,
       'messageUserId': 6,
       'username': 'BunnyGirl',
       'latestMessage': 'Meeting tomorrow?',
       'img': 'https://i.ibb.co/qxYnyxS/55555754-p0-master1200.jpg',
     },
     {
-      'userid': 5,
+      'userid': 2,
       'messageUserId': 6,
       'username': 'BunnyGirl',
       'latestMessage': 'Meeting tomorrow?',
       'img': 'https://i.ibb.co/qxYnyxS/55555754-p0-master1200.jpg',
     },
     {
-      'userid': 5,
+      'userid': 3,
       'messageUserId': 6,
       'username': 'BunnyGirl',
       'latestMessage': 'Meeting tomorrow?',
       'img': 'https://i.ibb.co/qxYnyxS/55555754-p0-master1200.jpg',
     },
     {
-      'userid': 5,
+      'userid': 3,
       'messageUserId': 6,
       'username': 'BunnyGirl',
       'latestMessage': 'Meeting tomorrow?',
@@ -164,6 +164,7 @@ class _ChatLogState extends State<ChatLog> {
                           itemBuilder: (context, index) {
                             final messagesList = messages[index];
                             return messageCard(
+                              userId: messagesList.userid,
                               messageUserId: messagesList.messageUserId, 
                               username: messagesList.username, 
                               img: messagesList.img, 

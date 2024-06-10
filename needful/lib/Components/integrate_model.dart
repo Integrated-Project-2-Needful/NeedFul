@@ -122,3 +122,29 @@ class MessageLog {
     );
   }
 }
+
+class MessagePerUser {
+  final int messageid;
+  final int userid;
+  final String img;
+  final String username;
+  final String message;
+
+  MessagePerUser({
+    required this.messageid,
+    required this.userid,
+    required this.img,
+    required this.username,
+    required this.message,
+  });
+
+  factory MessagePerUser.fromJson(Map<String, dynamic> json) {
+    return MessagePerUser(
+      messageid: json['messageid'],
+      userid: json['userid'],
+      username: json['username'],
+      message: json['message'],
+      img: json['img'],
+    );
+  }
+}

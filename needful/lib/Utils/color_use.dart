@@ -17,4 +17,5 @@ class colorUse {
   static const textFriend = Color.fromARGB(185, 109, 42, 128);
   static const appBarColor = Color(0xFF1B4D3F);
   static const backgroundColor = Color(0xFFF0FFF0);
+  static const accent = Color(0xFFFCDDA2);
 }

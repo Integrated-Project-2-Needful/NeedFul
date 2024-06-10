@@ -6,6 +6,7 @@ class TextForm extends StatefulWidget {
   final int? maxLine;
   final TextEditingController? controller;
   final bool? filled;
+  final bool? decorationAsSendIcon;
 
   const TextForm({
     super.key,
@@ -13,6 +14,7 @@ class TextForm extends StatefulWidget {
     this.controller,
     this.maxLine,
     this.filled,
+    this.decorationAsSendIcon,
   });
 
   @override
@@ -30,6 +32,7 @@ class _TextFormState extends State<TextForm> {
           child: TextFormField(
             maxLines: widget.maxLine,
             decoration: InputDecoration(
+              suffixIcon: widget.decorationAsSendIcon != null ? Icon(Icons.send) : null,
               filled: widget.filled?? false,
               fillColor: widget.filled== true? Colors.white : colorUse.backgroundColor,
               border: const OutlineInputBorder(),

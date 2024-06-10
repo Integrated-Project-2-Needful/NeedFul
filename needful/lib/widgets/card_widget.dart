@@ -210,13 +210,14 @@ class ProfileCard extends StatelessWidget {
 }
 
 class messageCard extends StatelessWidget {
-  final int? messageUserId;
-  final String? username;
+  final int userId;
+  final int messageUserId;
+  final String username;
   final String? latestMessage;
-  final String? img;
+  final String img;
 
   const messageCard(
-      {super.key,required this.messageUserId ,required this.username, this.latestMessage, required this.img});
+      {super.key,required this.userId,required this.messageUserId ,required this.username, this.latestMessage, required this.img});
 
   @override
   Widget build(BuildContext context) {
@@ -226,7 +227,9 @@ class messageCard extends StatelessWidget {
         onTap: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => ChatRoom()),
+            MaterialPageRoute(builder: (context) => ChatRoom(
+              userId: userId, messageUserId: messageUserId, messageUsername: username,
+            )),
           );
         },
         child: Card(

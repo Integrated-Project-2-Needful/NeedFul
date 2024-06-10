@@ -46,6 +46,13 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
+  @override
+void dispose() {
+  emailController.dispose();
+  passwordController.dispose();
+  super.dispose();
+}
+
   Future<Response> _makeLoginRequest(Map<String, dynamic> data) async {
     return dio.post(
       'http://10.0.2.2:1432/Login', // Use HTTPS
