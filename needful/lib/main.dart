@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:needful/Pages/Auth/register.dart';
 import 'package:needful/pages/home.dart';
+import 'package:needful/pages/Auth/login.dart';
+import 'package:needful/pages/Auth/LoR.dart';
+
 // import 'package:provider/provider.dart';
 // import 'package:shared_preferences/shared_preferences.dart';
 
@@ -56,7 +60,7 @@ class _MainAppState extends State<MainApp> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: 'Inter'),
-      home: const Home()
+      home: const LoginOrRegister()
       //  !welcomeProvider.isWelcomeShown
       //     ? Welcome(onFinished: () {
       //         welcomeProvider.setWelcomeShown();
