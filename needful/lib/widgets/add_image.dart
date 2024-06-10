@@ -17,12 +17,12 @@ class _AddImageState extends State<AddImage> {
   File? _imageFile;
 
   Future<File?> getImage() async {
-    final ImagePicker _picker = ImagePicker();
-    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+    final ImagePicker picker = ImagePicker();
+    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
     if (image == null) {
       return null;
     } else {
-      return File(image!.path);
+      return File(image.path);
     }
   }
 

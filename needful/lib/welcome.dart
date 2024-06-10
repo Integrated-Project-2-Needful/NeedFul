@@ -6,7 +6,7 @@ import 'package:needful/Utils/color_use.dart';
 class Welcome extends StatelessWidget {
   final VoidCallback onFinished;
 
-  const Welcome({Key? key, required this.onFinished}) : super(key: key);
+  const Welcome({super.key, required this.onFinished});
 
   @override
   Widget build(BuildContext context) {

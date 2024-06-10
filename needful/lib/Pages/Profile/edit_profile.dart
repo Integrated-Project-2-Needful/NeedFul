@@ -161,7 +161,7 @@ class _EditProfileState extends State<EditProfile> {
                   ][index],
                   controller: controller,
                 );
-              }).toList(),
+              }),
               const SizedBox(height: 20),
               ButtonAtBottom(
                 onPressed: updateUserProfile,

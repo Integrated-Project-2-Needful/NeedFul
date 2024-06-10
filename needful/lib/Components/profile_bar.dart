@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:needful/Pages/Profile/profile.dart';
-import 'package:needful/Utils/color_use.dart';
 // import 'package:sweet_favors/pages/home.dart';
 
 class ProfileBar extends StatefulWidget {

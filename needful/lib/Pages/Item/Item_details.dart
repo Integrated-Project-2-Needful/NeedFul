@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:needful/Utils/color_use.dart';
 // import 'package:provider/provider.dart';
@@ -184,16 +183,14 @@ class _ItemDetailsState extends State<ItemDetails> {
                       },
                     ),
                     const SizedBox(height: 25),
-                    Container(
+                    SizedBox(
                       width: double.infinity,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           RegularTextBold(
                             wishdata?.containsKey('price') == true
-                                ? '\$' +
-                                        (wishdata?['price'] as num)!
-                                            .toString() ??
+                                ? '\$${(wishdata?['price'] as num)}' ??
                                     '\$0'
                                 : '',
                           ),

@@ -8,7 +8,7 @@ import 'package:needful/widgets/MarketPlaceReceive.dart';
 // import 'package:sweet_favors/widgets/following_content.dart';
 
 class MarketPlacePage extends StatefulWidget {
-  const MarketPlacePage({Key? key}) : super(key: key);
+  const MarketPlacePage({super.key});
 
   @override
   _FriendpageState createState() => _FriendpageState();

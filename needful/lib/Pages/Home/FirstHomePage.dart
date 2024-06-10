@@ -1,10 +1,8 @@
 // import 'package:dio/dio.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:needful/Components/profile_bar.dart';
 import 'package:needful/Utils/color_use.dart';
 import 'package:needful/widgets/card_widget.dart';
-import 'package:provider/provider.dart';
 // import 'package:sweet_favors/Utils/text_use.dart';
 // import 'package:sweet_favors/provider/token_provider.dart';
 // import 'package:sweet_favors/widgets/card_widget.dart';
@@ -205,7 +203,7 @@ class _FirstHomePageState extends State<FirstHomePage> {
           flexibleSpace: Align(
             alignment: Alignment.bottomLeft, // Position ProfileBar at bottom-left
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 5,vertical: 22),
+              padding: const EdgeInsets.only(left:5, right:5, top:30, bottom: 10),
               child: ProfileBar(
                 images: img ?? '',
                 name: username ?? '',
@@ -254,8 +252,8 @@ class _FirstHomePageState extends State<FirstHomePage> {
                   } else {
                     items = snapshot.data!;
                     if (items.isEmpty) {
-                      return Center(
-                          child: const Text(
+                      return const Center(
+                          child: Text(
                         'You don\'t have a wish yet.',
                         textAlign: TextAlign.center,
                         style: TextStyle(fontSize: 16),

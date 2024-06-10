@@ -56,7 +56,7 @@ class _MainAppState extends State<MainApp> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: 'Inter'),
-      home: Home()
+      home: const Home()
       //  !welcomeProvider.isWelcomeShown
       //     ? Welcome(onFinished: () {
       //         welcomeProvider.setWelcomeShown();

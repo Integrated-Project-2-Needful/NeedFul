@@ -1,9 +1,7 @@
 import 'dart:io';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:needful/Utils/color_use.dart';
 import 'package:needful/widgets/radioButton.dart';
-import 'package:provider/provider.dart';
 import 'package:needful/pages/home.dart';
 // import 'package:sweet_favors/provider/token_provider.dart';
 import 'package:needful/widgets/text_form.dart';
@@ -120,7 +118,7 @@ class _NewItemAddState extends State<NewItemAdd> {
                   controller: _DescriptionController,
                   maxLine: 5,
                 ),
-                Radiobutton(title: 'Purpose', labels: ['Looking to receive','Looking to donate'],
+                Radiobutton(title: 'Purpose', labels: const ['Looking to receive','Looking to donate'],
                 onChanged: (value) {
                   _selectedValueForRadioButton = value;
                 },),
@@ -128,12 +126,10 @@ class _NewItemAddState extends State<NewItemAdd> {
                   padding: const EdgeInsets.only(top: 20.0),
                   child: AddImage(
                     onImageSelected: (image) {
-                      if (image != null) {
-                        setState(() {
-                          _selectedImage = image;
-                        });
-                      }
-                    },
+                      setState(() {
+                        _selectedImage = image;
+                      });
+                                        },
                     textfill: 'Add image + ',
                   ),
                 ),

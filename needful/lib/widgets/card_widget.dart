@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:needful/Pages/Item/Item_details.dart';
 import 'package:needful/Utils/color_use.dart';
 import 'package:needful/Utils/text_use.dart';
-import 'package:needful/widgets/Button_for_pop_up.dart';
-import 'package:needful/widgets/pop_up.dart';
 // import 'package:provider/provider.dart';
 // import 'package:sweet_favors/pages/Wish/wish_details.dart';
 // import 'package:sweet_favors/provider/token_provider.dart';

@@ -1,9 +1,7 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:needful/Pages/Item/Item_details.dart';
 import 'package:needful/Utils/color_use.dart';
 import 'package:needful/components/integrate_model.dart' as components;
-import 'package:provider/provider.dart';
 // import 'package:sweet_favors/Utils/color_use.dart';
 // import 'package:sweet_favors/pages/Friends/friend_wishlist_followers.dart';
 // import 'package:sweet_favors/components/follower_model.dart';
@@ -161,7 +159,7 @@ class _MarketPlaceReceiveState extends State<MarketPlaceReceive> {
                                       colorUse.activeIconCircle.withOpacity(0.7),
                                       colorUse.activeButton.withOpacity(0.9),
                                     ],
-                                    stops: [0.0, 0.5, 1.0],
+                                    stops: const [0.0, 0.5, 1.0],
                                   ),
                                 ),
                               ),
