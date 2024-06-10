@@ -199,6 +199,9 @@ class _FirstHomePageState extends State<FirstHomePage> {
         preferredSize: const Size.fromHeight(100), // Set your desired height
         child: AppBar(
           backgroundColor: colorUse.primaryColor,
+          shadowColor: const Color.fromARGB(255, 171, 171, 171),
+          elevation: 5,
+          automaticallyImplyLeading: false,
           toolbarHeight: 40, // Height for content within AppBar
           flexibleSpace: Align(
             alignment: Alignment.bottomLeft, // Position ProfileBar at bottom-left

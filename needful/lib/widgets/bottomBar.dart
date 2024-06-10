@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_floating_bottom_bar/flutter_floating_bottom_bar.dart';
+import 'package:needful/Pages/Chats/ChatLog.dart';
 import 'package:needful/Pages/Home/FirstHomePage.dart';
 import 'package:needful/Pages/Item/NewItemAdd.dart';
 import 'package:needful/Pages/Marketplace/MarketPlace.dart';
@@ -74,7 +75,7 @@ class _bottomBar extends State<bottomBar> with SingleTickerProviderStateMixin {
             FirstHomePage(),
             MarketPlacePage(),
             NewItemAdd(),
-            FirstHomePage(),
+            ChatLog(),
           ],
         ),
         child: TabBar(

@@ -1,5 +1,6 @@
 // import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:needful/Pages/Chats/ChatRoom.dart';
 import 'package:needful/Pages/Item/Item_details.dart';
 import 'package:needful/Utils/color_use.dart';
 import 'package:needful/Utils/text_use.dart';
@@ -200,6 +201,72 @@ class ProfileCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 10.0),
               ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class messageCard extends StatelessWidget {
+  final int? messageUserId;
+  final String? username;
+  final String? latestMessage;
+  final String? img;
+
+  const messageCard(
+      {super.key,required this.messageUserId ,required this.username, this.latestMessage, required this.img});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 10),
+      child: InkWell(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => ChatRoom()),
+          );
+        },
+        child: Card(
+          color: colorUse.backgroundColor,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: <Widget>[
+                // Avatar (Using CachedNetworkImage for error handling)
+                CircleAvatar(
+                  radius: 28,
+                  backgroundImage: NetworkImage(
+                    img?? '',
+                  ),
+                ),
+                const SizedBox(width: 15),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      // Username
+                      Text(
+                        username?? '',
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      // Latest Message
+                      Text(
+                        latestMessage ?? '', 
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                        style: const TextStyle(fontSize: 14),
+                      ),
+                    ],
+                  ),
+                ),
+              ], // Removed the SizedBox and Text for the timestamp
             ),
           ),
         ),

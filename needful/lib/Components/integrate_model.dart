@@ -95,3 +95,30 @@ class WishItem {
     );
   }
 }
+
+
+class MessageLog {
+  final int userid;
+  final int messageUserId;
+  final String username;
+  final String latestMessage;
+  final String img;
+
+  MessageLog({
+    required this.userid,
+    required this.messageUserId,
+    required this.username,
+    required this.latestMessage,
+    required this.img,
+  });
+
+  factory MessageLog.fromJson(Map<String, dynamic> json) {
+    return MessageLog(
+      userid: json['userid'],
+      messageUserId: json['messageUserId'],
+      username: json['username'],
+      latestMessage: json['latestMessage'],
+      img: json['img'],
+    );
+  }
+}

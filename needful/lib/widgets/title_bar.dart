@@ -44,15 +44,25 @@ class CustomAppBarPop extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppBarPop(
       {super.key, required this.title, this.centerTitle = false, this.backgroundColor});
 
+
   @override
   Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: backgroundColor,
       centerTitle: centerTitle ? true : false,
-      title: Heading(title),
+      title: Text(
+          title,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Color.fromARGB(240, 255, 255, 255),
+          ),
+        ),
+      elevation: 5,
+      shadowColor: const Color.fromARGB(255, 171, 171, 171),
+      automaticallyImplyLeading: false,
       leading: IconButton(
         onPressed: () => Navigator.pop(context),
-        icon: const Icon(Icons.arrow_back, color: Colors.black),
+        icon: const Icon(Icons.arrow_back, color: Color.fromARGB(255, 255, 255, 255)),
       ),
     );
   }
@@ -75,7 +85,7 @@ class CustomAppBarPopNoTitle extends StatelessWidget
       centerTitle: centerTitle ? true : false,
       leading: IconButton(
         onPressed: () => Navigator.pop(context),
-        icon: const Icon(Icons.arrow_back, color: Colors.black),
+        icon: const Icon(Icons.arrow_back, color: Color.fromARGB(255, 255, 255, 255)),
       ),
     );
   }
