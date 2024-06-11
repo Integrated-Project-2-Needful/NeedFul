@@ -65,7 +65,7 @@ class _ItemDetailsState extends State<ItemDetails> {
     return {
       'itemname': 'Test Item',
       'price': 20.0,
-      'link_url': 'https://example.com',
+      'description': 'https://example.commmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm',
       'item_pic': 'https://cdn-prod.medicalnewstoday.com/content/images/articles/324/324771/close-up-of-a-cup-of-tea.jpg',
       'user_id': 2, // Example user ID of the wish creator
       'already_bought': false,
@@ -147,7 +147,7 @@ class _ItemDetailsState extends State<ItemDetails> {
         if (snapshot.hasData) {
           final wishdata = snapshot.data;
           final itemName = wishdata?['itemname'] ?? 'Unknown Item';
-          final linkurl = wishdata?['link_url'] ?? 'Unknown link';
+          final description = wishdata?['description'] ?? 'Unknown description';
           final pics = wishdata?['item_pic'] ?? 'Unknown pics';
           final userId = (wishdata?['user_id']) ?? 0;
           final username = widget.username;
@@ -188,13 +188,13 @@ class _ItemDetailsState extends State<ItemDetails> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          RegularTextBold(
-                            wishdata?.containsKey('price') == true
-                                ? '\$${(wishdata?['price'] as num)}' ??
-                                    '\$0'
-                                : '',
-                          ),
-                          const SizedBox(height: 10),
+                          // RegularTextBold(
+                          //   wishdata?.containsKey('price') == true
+                          //       ? '\$${(wishdata?['price'] as num)}' ??
+                          //           '\$0'
+                          //       : '',
+                          // ),
+                          // const SizedBox(height: 10),
                           const Divider(color: Colors.grey),
                           const SizedBox(height: 20),
                           const Padding(
@@ -209,12 +209,12 @@ class _ItemDetailsState extends State<ItemDetails> {
                           const SizedBox(height: 24),
                           const Padding(
                             padding: EdgeInsets.only(left: 12),
-                            child: RegularTextBold('Link URL'),
+                            child: RegularTextBold('Description'),
                           ),
                           Padding(
                             padding: const EdgeInsets.only(left: 12),
                             child: RegularText(
-                                linkurl), // Replace with actual data
+                                description), // Replace with actual data
                           ),
                         ],
                       ),
@@ -232,7 +232,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                                     ButtonForPopUp(
                                         onPressed: () async {
                                           Navigator.of(dialogContext).pop();
-                                          await _launchUrl(linkurl);
+                                          await _launchUrl(description);
                                         },
                                         text: 'Yes'),
                                     ButtonForPopUp(

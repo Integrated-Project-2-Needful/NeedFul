@@ -4,7 +4,7 @@ import 'package:needful/Utils/color_use.dart';
 class TextStyles {
   static TextStyle headingStyle() {
     return const TextStyle(
-      color: colorUse.textColorButton,
+      color: Color.fromARGB(255, 0, 0, 0),
       fontSize: 22.0,
       fontWeight: FontWeight.bold,
     );

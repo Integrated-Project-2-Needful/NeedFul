@@ -2,6 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:needful/Components/profile_bar.dart';
 import 'package:needful/Utils/color_use.dart';
+import 'package:needful/widgets/HomepageDonate.dart';
+import 'package:needful/widgets/HomepageReceive.dart';
 import 'package:needful/widgets/card_widget.dart';
 // import 'package:sweet_favors/Utils/text_use.dart';
 // import 'package:sweet_favors/provider/token_provider.dart';
@@ -18,7 +20,8 @@ class FirstHomePage extends StatefulWidget {
   State<FirstHomePage> createState() => _FirstHomePageState();
 }
 
-class _FirstHomePageState extends State<FirstHomePage> {
+class _FirstHomePageState extends State<FirstHomePage> with SingleTickerProviderStateMixin {
+  late TabController _tabController;
   String? username;
   String? email;
   String? img;
@@ -33,6 +36,7 @@ class _FirstHomePageState extends State<FirstHomePage> {
     super.initState();
     fetchUserData();
     fetchItems();
+    _tabController = TabController(length: 2, vsync: this);
   }
 
   Future<void> fetchUserData() async {
@@ -239,52 +243,42 @@ class _FirstHomePageState extends State<FirstHomePage> {
             //   ),
             // ),
             
-            const SizedBox(height: 25.0), // Spacing between profile and card
 
-            Expanded(
-              child:Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: 
-               FutureBuilder<List<components.Itemlist>>(
-                future: fetchItems(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
-                  } else if (snapshot.hasError) {
-                    return Center(child: Text('Error: ${snapshot.error}'));
-                  } else {
-                    items = snapshot.data!;
-                    if (items.isEmpty) {
-                      return const Center(
-                          child: Text(
-                        'You don\'t have a wish yet.',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 16),
-                      ));
-                    } else {
-                      return ListView.builder(
-                        itemCount: items.length,
-                        itemBuilder: (context, index) {
-                          final wishlist = items[index];
-                          return CardWidget(
-                            product: wishlist.itemname,
-                            grantBy: wishlist.userNameOfGranter,
-                            grantedByUserId: wishlist.grantedByUserId,
-                            wishlistId: wishlist.itemlistId,
-                            username:
-                                username, // Access from the surrounding scope
-                            userid: userid, // Access from the surrounding scope
-                            alreadyBought: wishlist.alreadyBought,
-                            // onUpdate: refreshWishlists,
-                          );
-                        },
-                      );
-                    }
-                  }
-                },
+            Container(
+            color: const Color(0xFF4CB391),
+            child: TabBar(
+              controller: _tabController,
+              tabs: const [
+                Tab(text: 'Receive'),
+                Tab(text: 'Donate'),
+              ],
+              labelStyle: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
               ),
+              indicator: BoxDecoration(
+                color: const Color.fromARGB(97, 27, 77, 63),
+                borderRadius: BorderRadius.circular(4),
+              ),
+              indicatorSize: TabBarIndicatorSize.tab,
+              indicatorWeight: 3,
+              indicatorPadding: EdgeInsets.zero,
+              indicatorColor: Colors.transparent,
+              labelColor: Colors.white,
+              unselectedLabelColor: const Color.fromARGB(169, 255, 255, 255),
             ),
-      )],
+            
+          ),
+          const SizedBox(height: 12.0), // Spacing between profile and card
+          Expanded(
+            child: TabBarView(
+              controller: _tabController,
+              children: const [
+                HomePageReceive(),
+                HomePageDonate(),
+              ],
+            ),
+          ),],
         ),
       );
   }
