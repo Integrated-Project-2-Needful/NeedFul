@@ -7,6 +7,10 @@ import (
 	"github.com/minio/minio-go/v7/pkg/credentials"
 	"log"
 	"strings"
+	"sugar_stream/internal/entities"
+	"sugar_stream/internal/handler"
+	"sugar_stream/internal/repository"
+	"sugar_stream/internal/service"
 	"time"
 
 	"github.com/gofiber/fiber/v2"
