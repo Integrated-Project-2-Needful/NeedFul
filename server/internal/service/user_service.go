@@ -7,11 +7,11 @@ import (
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 	"log"
+	"needful/internal/dtos"
+	"needful/internal/entities"
+	"needful/internal/repository"
+	"needful/internal/utils/v"
 	"strconv"
-	"sugar_stream/internal/dtos"
-	"sugar_stream/internal/entities"
-	"sugar_stream/internal/repository"
-	"sugar_stream/internal/utils/v"
 )
 
 type userService struct {
@@ -50,8 +50,28 @@ func (s userService) GetUsers() ([]entities.User, error) {
 	return userResponses, nil
 }
 
-func (s userService) GetUser(userid int) (*entities.User, error) {
+func (s userService) GetUserById(userid int) (*entities.User, error) {
 	user, err := s.userRepo.GetUserById(userid)
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
+
+	userResponse := entities.User{
+		UserID:    user.UserID,
+		Username:  user.Username,
+		Password:  user.Password,
+		Email:     user.Email,
+		Firstname: user.Firstname,
+		Lastname:  user.Lastname,
+		PhoneNum:  user.PhoneNum,
+		UserPic:   user.UserPic,
+	}
+	return &userResponse, nil
+}
+
+func (s userService) GetUserByToken(userid int) (*entities.User, error) {
+	user, err := s.userRepo.GetUserByToken(userid)
 	if err != nil {
 		log.Println(err)
 		return nil, err
@@ -72,8 +92,8 @@ func (s userService) GetUser(userid int) (*entities.User, error) {
 
 ////////////////////////////////////////////////////////////////////////////////////
 
-func (s userService) GetProfileOfCurrentUser(userid int) (*entities.User, error) {
-	user, err := s.userRepo.GetProfileOfCurrentUserId(userid)
+func (s userService) GetCurrentUser(userid int) (*entities.User, error) {
+	user, err := s.userRepo.GetCurrentUser(userid)
 	if err != nil {
 		log.Println(err)
 		return nil, err
@@ -92,27 +112,28 @@ func (s userService) GetProfileOfCurrentUser(userid int) (*entities.User, error)
 	return &userResponse, nil
 }
 
-func (s userService) GetSearchFriend(excludeUserID int, query string) ([]entities.User, error) {
-	users, err := s.userRepo.GetAllSearchFriend(excludeUserID, query)
+func (s userService) GetProfileOfCurrentUserById(userid int) (*entities.User, error) {
+	user, err := s.userRepo.GetProfileOfCurrentUserById(userid)
 	if err != nil {
 		log.Println(err)
 		return nil, err
 	}
 
-	userResponses := []entities.User{}
-	for _, user := range users {
-		userResponse := entities.User{
-			UserID:   user.UserID,
-			Username: user.Username,
-			UserPic:  user.UserPic,
-		}
-		userResponses = append(userResponses, userResponse)
+	userResponse := entities.User{
+		UserID:    user.UserID,
+		Username:  user.Username,
+		Password:  user.Password,
+		Email:     user.Email,
+		Firstname: user.Firstname,
+		Lastname:  user.Lastname,
+		PhoneNum:  user.PhoneNum,
+		UserPic:   user.UserPic,
 	}
-	return userResponses, nil
+	return &userResponse, nil
 }
 
-func (s userService) GetEditUserProfile(userid int) (*entities.User, error) {
-	user, err := s.userRepo.GetEditUserProfile(userid)
+func (s userService) GetEditUserProfileById(userid int) (*entities.User, error) {
+	user, err := s.userRepo.GetEditUserProfileById(userid)
 	if err != nil {
 		log.Println(err)
 		return nil, err
@@ -129,7 +150,7 @@ func (s userService) GetEditUserProfile(userid int) (*entities.User, error) {
 	return &userResponse, nil
 }
 
-func (s userService) UpdateEditUserProfile(userid int, req dtos.EditUserProfileRequest) (*entities.User, error) {
+func (s userService) PatchEditUserProfileById(userid int, req dtos.EditUserProfileByIdRequest) (*entities.User, error) {
 	user := &entities.User{
 		UserID:    v.UintPtr(userid),
 		Username:  req.Username,
@@ -139,7 +160,7 @@ func (s userService) UpdateEditUserProfile(userid int, req dtos.EditUserProfileR
 		PhoneNum:  req.PhoneNum,
 	}
 
-	err := s.userRepo.UpdateEditUserProfile(user)
+	err := s.userRepo.PatchEditUserProfileById(user)
 	if err != nil {
 		log.Println(err)
 		return nil, err

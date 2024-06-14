@@ -11,7 +11,7 @@ type UserDataResponse struct {
 	UserPic   *string `json:"user_pic" validate:"required"`
 }
 
-type UserIDInfoResponse struct {
+type UserByIdDataResponse struct {
 	UserID    *uint   `json:"user_id" validate:"required"`
 	Username  *string `json:"username" validate:"required"`
 	Password  *string `json:"password" validate:"required"`
@@ -22,17 +22,31 @@ type UserIDInfoResponse struct {
 	UserPic   *string `json:"user_pic" validate:"required"`
 }
 
-type UserCurrentResponse struct {
+type UserByTokenDataResponse struct {
 	UserID    *uint   `json:"user_id" validate:"required"`
 	Username  *string `json:"username" validate:"required"`
+	Password  *string `json:"password" validate:"required"`
+	Email     *string `json:"email" validate:"required"`
 	Firstname *string `json:"firstname" validate:"required"`
 	Lastname  *string `json:"lastname" validate:"required"`
+	PhoneNum  *string `json:"phone_num" validate:"required"`
 	UserPic   *string `json:"user_pic" validate:"required"`
 }
 
 //////////////////////////////////////////////////////////////////////////////
 
-type ProfileOfCurrentUserResponse struct {
+type CurrentUserResponse struct {
+	UserID    *uint   `json:"user_id" validate:"required"`
+	Username  *string `json:"username" validate:"required"`
+	Password  *string `json:"password" validate:"required"`
+	Email     *string `json:"email" validate:"required"`
+	Firstname *string `json:"firstname" validate:"required"`
+	Lastname  *string `json:"lastname" validate:"required"`
+	PhoneNum  *string `json:"phone_num" validate:"required"`
+	UserPic   *string `json:"user_pic" validate:"required"`
+}
+
+type ProfileOfCurrentUserByIdResponse struct {
 	UserID    *uint   `json:"user_id" validate:"required"`
 	Username  *string `json:"username" validate:"required"`
 	Email     *string `json:"email" validate:"required"`
@@ -42,13 +56,7 @@ type ProfileOfCurrentUserResponse struct {
 	UserPic   *string `json:"user_pic" validate:"required"`
 }
 
-type SearchFriendResponse struct {
-	UserID   *uint   `json:"user_id" validate:"required"`
-	Username *string `json:"username" validate:"required"`
-	UserPic  *string `json:"user_pic" validate:"required"`
-}
-
-type EditUserProfileResponse struct {
+type EditUserProfileByIdResponse struct {
 	UserID    *uint   `json:"user_id" validate:"required"`
 	Username  *string `json:"username" validate:"required"`
 	Email     *string `json:"email" validate:"required"`
@@ -57,7 +65,7 @@ type EditUserProfileResponse struct {
 	PhoneNum  *string `json:"phone_num" validate:"required"`
 }
 
-type EditUserProfileRequest struct {
+type EditUserProfileByIdRequest struct {
 	Username  *string `json:"username" validate:"required"`
 	Email     *string `json:"email" validate:"required"`
 	Firstname *string `json:"firstname" validate:"required"`

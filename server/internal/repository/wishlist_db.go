@@ -1,7 +1,7 @@
 package repository
 
 import (
-	"sugar_stream/internal/entities"
+	"needful/internal/entities"
 
 	"gorm.io/gorm"
 )

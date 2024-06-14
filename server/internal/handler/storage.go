@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"sugar_stream/internal/service"
+	"needful/internal/service"
 
 	"github.com/gofiber/fiber/v2"
 )

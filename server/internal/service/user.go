@@ -1,20 +1,22 @@
 package service
 
 import (
-	"sugar_stream/internal/dtos"
-	"sugar_stream/internal/entities"
+	"needful/internal/dtos"
+	"needful/internal/entities"
 )
 
 type UserService interface {
 	GetUsers() ([]entities.User, error)
-	GetUser(int) (*entities.User, error)
+	GetUserById(int) (*entities.User, error)
+	GetUserByToken(int) (*entities.User, error)
+
 	////////////////////////////////////////////////////////////////////
-	GetProfileOfCurrentUser(int) (*entities.User, error)
-	GetSearchFriend(int, string) ([]entities.User, error)
 
-	GetEditUserProfile(int) (*entities.User, error)
+	GetCurrentUser(int) (*entities.User, error)
+	GetProfileOfCurrentUserById(int) (*entities.User, error)
 
-	UpdateEditUserProfile(int, dtos.EditUserProfileRequest) (*entities.User, error)
+	GetEditUserProfileById(int) (*entities.User, error)
+	PatchEditUserProfileById(int, dtos.EditUserProfileByIdRequest) (*entities.User, error)
 
 	Register(request dtos.RegisterRequest) (*dtos.UserResponse, error)
 	Login(request dtos.LoginRequest, jwtSecret string) (*dtos.LoginResponse, error)

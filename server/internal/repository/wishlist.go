@@ -1,6 +1,6 @@
 package repository
 
-import "sugar_stream/internal/entities"
+import "needful/internal/entities"
 
 type WishlistRepository interface {
 	GetAllWishlist() ([]entities.Wishlist, error)

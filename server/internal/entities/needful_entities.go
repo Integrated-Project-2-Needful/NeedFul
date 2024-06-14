@@ -24,9 +24,9 @@ type Item struct {
 	AskedByUserID *uint `gorm:"index"`
 	AlreadyGave   *bool
 	/////////////////////////////////////////
-	UsernameOfWishOwner *string `gorm:"->"`
-	UserPicOfWishOwner  *string `gorm:"->"`
-	UsernameOfAsker     *string `gorm:"->"`
+	//UsernameOfWishOwner *string `gorm:"->"`
+	//UserPicOfWishOwner  *string `gorm:"->"`
+	//UsernameOfAsker     *string `gorm:"->"`
 }
 
 type Messages struct {
@@ -37,8 +37,8 @@ type Messages struct {
 	ConFromItemOwner *bool
 	ConFromItemAsker *bool
 	/////////////////////////////////////////
-	UsernameOfSender   *string `gorm:"->"`
-	UserPicOfSender    *string `gorm:"->"`
-	UsernameOfReceiver *string `gorm:"->"`
-	UserPicOfReceiver  *string `gorm:"->"`
+	//UsernameOfSender   *string `gorm:"->"`
+	//UserPicOfSender    *string `gorm:"->"`
+	//UsernameOfReceiver *string `gorm:"->"`
+	//UserPicOfReceiver  *string `gorm:"->"`
 }

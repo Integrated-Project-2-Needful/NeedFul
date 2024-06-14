@@ -3,11 +3,11 @@ package handler
 import (
 	"errors"
 	"github.com/gofiber/fiber/v2"
+	"needful/internal/dtos"
+	"needful/internal/service"
+	"needful/internal/utils"
 	"strconv"
 	"strings"
-	"sugar_stream/internal/dtos"
-	"sugar_stream/internal/service"
-	"sugar_stream/internal/utils"
 )
 
 type userHandler struct {
@@ -43,27 +43,15 @@ func (h *userHandler) GetUsers(c *fiber.Ctx) error {
 	return c.JSON(usersResponse)
 }
 
-func (h *userHandler) GetUser(c *fiber.Ctx) error {
-	// Extract the token from the request headers
-	token := c.Get("Authorization")
+func (h *userHandler) GetUserById(c *fiber.Ctx) error {
+	userIDReceive, err := strconv.Atoi(c.Params("UserID"))
 
-	// Check if the token is empty
-	if token == "" {
-		return errors.New("token is missing")
-	}
-
-	// Extract the user ID from the token
-	userIDExtract, err := utils.ExtractUserIDFromToken(strings.Replace(token, "Bearer ", "", 1), h.jwtSecret)
+	user, err := h.userSer.GetUserById(userIDReceive)
 	if err != nil {
 		return err
 	}
 
-	user, err := h.userSer.GetUser(userIDExtract)
-	if err != nil {
-		return err
-	}
-
-	userResponse := dtos.UserIDInfoResponse{
+	userResponse := dtos.UserByIdDataResponse{
 		UserID:    user.UserID,
 		Username:  user.Username,
 		Password:  user.Password,
@@ -77,63 +65,7 @@ func (h *userHandler) GetUser(c *fiber.Ctx) error {
 	return c.JSON(userResponse)
 }
 
-func (h *userHandler) GetUserCurrent(c *fiber.Ctx) error {
-	// userIDExtract, err := 1, nil
-	// if err != nil {
-	//     return err
-	// }
-	userIDExtract := 2
-
-	user, err := h.userSer.GetUser(userIDExtract)
-	if err != nil {
-		return err
-	}
-
-	userResponse := dtos.UserCurrentResponse{
-		UserID:    user.UserID,
-		Username:  user.Username,
-		Firstname: user.Firstname,
-		Lastname:  user.Lastname,
-		UserPic:   user.UserPic,
-	}
-
-	return c.JSON(userResponse)
-}
-
-/////////////////////////////////////////////////////////////////////////
-
-func (h *userHandler) GetProfileOfCurrentUser(c *fiber.Ctx) error {
-	userID := c.Params("userID")
-
-	userIDReceive, err := strconv.Atoi(userID)
-	if err != nil {
-		return err
-	}
-
-	user, err := h.userSer.GetProfileOfCurrentUser(userIDReceive)
-	if err != nil {
-		return err
-	}
-
-	userResponse := dtos.ProfileOfCurrentUserResponse{
-		UserID:    user.UserID,
-		Username:  user.Username,
-		Email:     user.Email,
-		Firstname: user.Firstname,
-		Lastname:  user.Lastname,
-		PhoneNum:  user.PhoneNum,
-		UserPic:   user.UserPic,
-	}
-
-	return c.JSON(userResponse)
-}
-
-func (h *userHandler) GetSearchFriend(c *fiber.Ctx) error {
-	query := c.Query("query")
-	if query == "" {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "query parameter is required"})
-	}
-
+func (h *userHandler) GetUserByToken(c *fiber.Ctx) error {
 	// Extract the token from the request headers
 	token := c.Get("Authorization")
 
@@ -148,37 +80,91 @@ func (h *userHandler) GetSearchFriend(c *fiber.Ctx) error {
 		return err
 	}
 
-	usersResponse := make([]dtos.SearchFriendResponse, 0)
-
-	users, err := h.userSer.GetSearchFriend(userIDExtract, query)
+	user, err := h.userSer.GetUserByToken(userIDExtract)
 	if err != nil {
 		return err
 	}
 
-	for _, user := range users {
-		usersResponse = append(usersResponse, dtos.SearchFriendResponse{
-			UserID:   user.UserID,
-			Username: user.Username,
-			UserPic:  user.UserPic,
-		})
+	userResponse := dtos.UserByTokenDataResponse{
+		UserID:    user.UserID,
+		Username:  user.Username,
+		Password:  user.Password,
+		Email:     user.Email,
+		Firstname: user.Firstname,
+		Lastname:  user.Lastname,
+		PhoneNum:  user.PhoneNum,
+		UserPic:   user.UserPic,
 	}
-	return c.JSON(usersResponse)
+
+	return c.JSON(userResponse)
 }
 
-func (h *userHandler) GetEditUserProfile(c *fiber.Ctx) error {
-	userID := c.Params("userID")
+/////////////////////////////////////////////////////////////////////////
 
-	userIDReceive, err := strconv.Atoi(userID)
+func (h *userHandler) GetCurrentUser(c *fiber.Ctx) error {
+	// Extract the token from the request headers
+	token := c.Get("Authorization")
+
+	// Check if the token is empty
+	if token == "" {
+		return errors.New("token is missing")
+	}
+
+	// Extract the user ID from the token
+	userIDExtract, err := utils.ExtractUserIDFromToken(strings.Replace(token, "Bearer ", "", 1), h.jwtSecret)
 	if err != nil {
 		return err
 	}
 
-	user, err := h.userSer.GetEditUserProfile(userIDReceive)
+	user, err := h.userSer.GetUserById(userIDExtract)
 	if err != nil {
 		return err
 	}
 
-	userResponse := dtos.EditUserProfileResponse{
+	userResponse := dtos.CurrentUserResponse{
+		UserID:    user.UserID,
+		Username:  user.Username,
+		Password:  user.Password,
+		Email:     user.Email,
+		Firstname: user.Firstname,
+		Lastname:  user.Lastname,
+		PhoneNum:  user.PhoneNum,
+		UserPic:   user.UserPic,
+	}
+
+	return c.JSON(userResponse)
+}
+
+func (h *userHandler) GetProfileOfCurrentUserById(c *fiber.Ctx) error {
+	userIDReceive, err := strconv.Atoi(c.Params("UserID"))
+
+	user, err := h.userSer.GetProfileOfCurrentUserById(userIDReceive)
+	if err != nil {
+		return err
+	}
+
+	userResponse := dtos.ProfileOfCurrentUserByIdResponse{
+		UserID:    user.UserID,
+		Username:  user.Username,
+		Email:     user.Email,
+		Firstname: user.Firstname,
+		Lastname:  user.Lastname,
+		PhoneNum:  user.PhoneNum,
+		UserPic:   user.UserPic,
+	}
+
+	return c.JSON(userResponse)
+}
+
+func (h *userHandler) GetEditUserProfileById(c *fiber.Ctx) error {
+	userIDReceive, err := strconv.Atoi(c.Params("UserID"))
+
+	user, err := h.userSer.GetEditUserProfileById(userIDReceive)
+	if err != nil {
+		return err
+	}
+
+	userResponse := dtos.EditUserProfileByIdResponse{
 		UserID:    user.UserID,
 		Username:  user.Username,
 		Email:     user.Email,
@@ -190,23 +176,20 @@ func (h *userHandler) GetEditUserProfile(c *fiber.Ctx) error {
 	return c.JSON(userResponse)
 }
 
-func (h *userHandler) UpdateEditUserProfile(c *fiber.Ctx) error {
-	userID, err := strconv.Atoi(c.Params("UserID"))
-	if err != nil {
-		return err
-	}
+func (h *userHandler) PatchEditUserProfileById(c *fiber.Ctx) error {
+	userIDReceive, err := strconv.Atoi(c.Params("UserID"))
 
-	var req dtos.EditUserProfileRequest
+	var req dtos.EditUserProfileByIdRequest
 	if err := c.BodyParser(&req); err != nil {
 		return err
 	}
 
-	user, err := h.userSer.UpdateEditUserProfile(userID, req)
+	user, err := h.userSer.PatchEditUserProfileById(userIDReceive, req)
 	if err != nil {
 		return err
 	}
 
-	userResponse := dtos.EditUserProfileRequest{
+	userResponse := dtos.EditUserProfileByIdRequest{
 		Username:  user.Username,
 		Email:     user.Email,
 		Firstname: user.Firstname,
