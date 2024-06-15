@@ -1,101 +1,77 @@
 package dtos
 
-type WishlistResponse struct {
-	WishlistID      *uint   `json:"wishlist_id" validate:"required"`
-	UserID          *uint   `json:"user_id" validate:"required"`
-	Itemname        *string `json:"itemname" validate:"required"`
-	Price           *uint   `json:"price" validate:"required"`
-	LinkURL         *string `json:"link_url" validate:"required"`
-	ItemPic         *string `json:"item_pic" validate:"required"`
-	AlreadyBought   *bool   `json:"already_bought" validate:"required"`
-	GrantedByUserID *uint   `json:"granted_by_user_id" validate:"required"`
+//ItemID        *uint `gorm:"primaryKey;autoIncrement"`
+//UserID        *uint `gorm:"not null"`
+//Itemname      *string
+//Description   *string
+//ItemPic       *string
+//OfferType     *string
+//AskedByUserID *uint
+//AlreadyGave   *bool
+
+type ItemDataResponse struct {
+	ItemID        *uint   `json:"item_id" validate:"required"`
+	UserID        *uint   `json:"user_id" validate:"required"`
+	Itemname      *string `json:"itemname" validate:"required"`
+	Description   *string `json:"description" validate:"required"`
+	ItemPic       *string `json:"item_pic" validate:"required"`
+	OfferType     *string `json:"offer_type" validate:"required"`
+	AskedByUserID *uint   `json:"asked_by_user_id" validate:"required"`
+	AlreadyGave   *bool   `json:"already_gave" validate:"required"`
 }
 
-type WishlistsUserCurrentResponse struct {
-	WishlistID      *uint   `json:"wishlist_id" validate:"required"`
-	UserID          *uint   `json:"user_id" validate:"required"`
-	Itemname        *string `json:"itemname" validate:"required"`
-	Price           *uint   `json:"price" validate:"required"`
-	LinkURL         *string `json:"link_url" validate:"required"`
-	ItemPic         *string `json:"item_pic" validate:"required"`
-	AlreadyBought   *bool   `json:"already_bought" validate:"required"`
-	GrantedByUserID *uint   `json:"granted_by_user_id" validate:"required"`
+type ItemDataByUserIdResponse struct {
+	ItemID        *uint   `json:"item_id" validate:"required"`
+	UserID        *uint   `json:"user_id" validate:"required"`
+	Itemname      *string `json:"itemname" validate:"required"`
+	Description   *string `json:"description" validate:"required"`
+	ItemPic       *string `json:"item_pic" validate:"required"`
+	OfferType     *string `json:"offer_type" validate:"required"`
+	AskedByUserID *uint   `json:"asked_by_user_id" validate:"required"`
+	AlreadyGave   *bool   `json:"already_gave" validate:"required"`
 }
 
-type WishlistIDInfoResponse struct {
-	WishlistID      *uint   `json:"wishlist_id" validate:"required"`
-	UserID          *uint   `json:"user_id" validate:"required"`
-	Itemname        *string `json:"itemname" validate:"required"`
-	Price           *uint   `json:"price" validate:"required"`
-	LinkURL         *string `json:"link_url" validate:"required"`
-	ItemPic         *string `json:"item_pic" validate:"required"`
-	AlreadyBought   *bool   `json:"already_bought" validate:"required"`
-	GrantedByUserID *uint   `json:"granted_by_user_id" validate:"required"`
+type ItemDataByItemIdResponse struct {
+	ItemID        *uint   `json:"item_id" validate:"required"`
+	UserID        *uint   `json:"user_id" validate:"required"`
+	Itemname      *string `json:"itemname" validate:"required"`
+	Description   *string `json:"description" validate:"required"`
+	ItemPic       *string `json:"item_pic" validate:"required"`
+	OfferType     *string `json:"offer_type" validate:"required"`
+	AskedByUserID *uint   `json:"asked_by_user_id" validate:"required"`
+	AlreadyGave   *bool   `json:"already_gave" validate:"required"`
 }
 
 ///////////////////////////////////////////////////
 
-type WishlistsOfCurrentUserResponse struct {
-	WishlistID        *uint   `json:"wishlist_id" validate:"required"`
-	UserID            *uint   `json:"user_id" validate:"required"`
-	Itemname          *string `json:"itemname" validate:"required"`
-	Price             *uint   `json:"price" validate:"required"`
-	LinkURL           *string `json:"link_url" validate:"required"`
-	ItemPic           *string `json:"item_pic" validate:"required"`
-	AlreadyBought     *bool   `json:"already_bought" validate:"required"`
-	GrantedByUserID   *uint   `json:"granted_by_user_id" validate:"required"`
-	UsernameOfGranter *string `json:"username_of_granter" validate:"required"`
+type ItemDetailsByItemIdResponse struct {
+	ItemID        *uint   `json:"item_id" validate:"required"`
+	UserID        *uint   `json:"user_id" validate:"required"`
+	Itemname      *string `json:"itemname" validate:"required"`
+	Description   *string `json:"description" validate:"required"`
+	ItemPic       *string `json:"item_pic" validate:"required"`
+	OfferType     *string `json:"offer_type" validate:"required"`
+	AskedByUserID *uint   `json:"asked_by_user_id" validate:"required"`
+	AlreadyGave   *bool   `json:"already_gave" validate:"required"`
 }
 
-type FriendsWishlistsResponse struct {
-	WishlistID         *uint   `json:"wishlist_id" validate:"required"`
-	UserID             *uint   `json:"user_id" validate:"required"`
-	Itemname           *string `json:"itemname" validate:"required"`
-	Price              *uint   `json:"price" validate:"required"`
-	LinkURL            *string `json:"link_url" validate:"required"`
-	ItemPic            *string `json:"item_pic" validate:"required"`
-	AlreadyBought      *bool   `json:"already_bought" validate:"required"`
-	GrantedByUserID    *uint   `json:"granted_by_user_id" validate:"required"`
-	UsernameOfWishlist *string `json:"username_of_wishlist" validate:"required"`
-	UserPicOfWishlist  *string `json:"user_pic_of_wishlist" validate:"required"`
+///////////////////////////////////////////////////
+
+type ItemsOfCurrentUserResponse struct {
+	ItemID        *uint   `json:"item_id" validate:"required"`
+	UserID        *uint   `json:"user_id" validate:"required"`
+	Itemname      *string `json:"itemname" validate:"required"`
+	Description   *string `json:"description" validate:"required"`
+	ItemPic       *string `json:"item_pic" validate:"required"`
+	OfferType     *string `json:"offer_type" validate:"required"`
+	AskedByUserID *uint   `json:"asked_by_user_id" validate:"required"`
+	AlreadyGave   *bool   `json:"already_gave" validate:"required"`
 }
 
-type WishlistDetailsResponse struct {
-	WishlistID      *uint   `json:"wishlist_id" validate:"required"`
-	UserID          *uint   `json:"user_id" validate:"required"`
-	Itemname        *string `json:"itemname" validate:"required"`
-	Price           *uint   `json:"price" validate:"required"`
-	LinkURL         *string `json:"link_url" validate:"required"`
-	ItemPic         *string `json:"item_pic" validate:"required"`
-	AlreadyBought   *bool   `json:"already_bought" validate:"required"`
-	GrantedByUserID *uint   `json:"granted_by_user_id" validate:"required"`
-}
-
-type ProfileFriendWishlistsResponse struct {
-	WishlistID         *uint   `json:"wishlist_id" validate:"required"`
-	UserID             *uint   `json:"user_id" validate:"required"`
-	Itemname           *string `json:"itemname" validate:"required"`
-	Price              *uint   `json:"price" validate:"required"`
-	LinkURL            *string `json:"link_url" validate:"required"`
-	ItemPic            *string `json:"item_pic" validate:"required"`
-	AlreadyBought      *bool   `json:"already_bought" validate:"required"`
-	GrantedByUserID    *uint   `json:"granted_by_user_id" validate:"required"`
-	UsernameOfWishlist *string `json:"username_of_wishlist" validate:"required"`
-	UserPicOfWishlist  *string `json:"user_pic_of_wishlist" validate:"required"`
-}
-
-type AddWishlistRequest struct {
-	UserID   *uint   `json:"user_id" validate:"required"`
-	Itemname *string `json:"itemname" validate:"required"`
-	Price    *uint   `json:"price" validate:"required"`
-	LinkURL  *string `json:"link_url" validate:"required"`
-	ItemPic  *string `json:"item_pic" validate:"required"`
-}
-
-type CopyWishlistRequest struct {
-	UserID   *uint   `json:"user_id" validate:"required"`
-	Itemname *string `json:"itemname" validate:"required"`
-	Price    *uint   `json:"price" validate:"required"`
-	LinkURL  *string `json:"link_url" validate:"required"`
-	ItemPic  *string `json:"item_pic" validate:"required"`
+type AddItemRequest struct {
+	UserID      *uint   `json:"user_id" validate:"required"`
+	Itemname    *string `json:"itemname" validate:"required"`
+	Description *string `json:"description" validate:"required"`
+	ItemPic     *string `json:"item_pic" validate:"required"`
+	OfferType   *string `json:"offer_type" validate:"required"`
 }

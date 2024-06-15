@@ -21,7 +21,7 @@ type Item struct {
 	Description   *string
 	ItemPic       *string
 	OfferType     *string
-	AskedByUserID *uint `gorm:"index"`
+	AskedByUserID *uint
 	AlreadyGave   *bool
 	/////////////////////////////////////////
 	//UsernameOfWishOwner *string `gorm:"->"`
@@ -31,8 +31,8 @@ type Item struct {
 
 type Messages struct {
 	MsgID            *uint `gorm:"primaryKey;autoIncrement"`
-	SenderUserID     *uint `gorm:"not null;index"`
-	ReceiverUserID   *uint `gorm:"not null;index"`
+	SenderUserID     *uint `gorm:"not null;"`
+	ReceiverUserID   *uint `gorm:"not null;"`
 	MsgText          *string
 	ConFromItemOwner *bool
 	ConFromItemAsker *bool

@@ -23,7 +23,7 @@ func (r userRepositoryDB) GetAllUser() ([]entities.User, error) {
 	return users, nil
 }
 
-func (r userRepositoryDB) GetUserById(userid int) (*entities.User, error) {
+func (r userRepositoryDB) GetUserByUserId(userid int) (*entities.User, error) {
 	users := entities.User{}
 	result := r.db.Where("user_id = ?", userid).Find(&users)
 	if result.Error != nil {
@@ -52,7 +52,7 @@ func (r userRepositoryDB) GetCurrentUser(userid int) (*entities.User, error) {
 	return &users, nil
 }
 
-func (r userRepositoryDB) GetProfileOfCurrentUserById(userid int) (*entities.User, error) {
+func (r userRepositoryDB) GetProfileOfCurrentUserByUserId(userid int) (*entities.User, error) {
 	users := entities.User{}
 	result := r.db.Where("user_id = ?", userid).Find(&users)
 	if result.Error != nil {
@@ -61,7 +61,7 @@ func (r userRepositoryDB) GetProfileOfCurrentUserById(userid int) (*entities.Use
 	return &users, nil
 }
 
-func (r userRepositoryDB) GetEditUserProfileById(userid int) (*entities.User, error) {
+func (r userRepositoryDB) GetEditUserProfileByUserId(userid int) (*entities.User, error) {
 	users := entities.User{}
 	result := r.db.Where("user_id = ?", userid).Find(&users)
 	if result.Error != nil {
@@ -70,7 +70,7 @@ func (r userRepositoryDB) GetEditUserProfileById(userid int) (*entities.User, er
 	return &users, nil
 }
 
-func (r userRepositoryDB) UpdateEditUserProfileById(user *entities.User) error {
+func (r userRepositoryDB) PatchEditUserProfileByUserId(user *entities.User) error {
 	result := r.db.Updates(user)
 	if result.Error != nil {
 		return result.Error

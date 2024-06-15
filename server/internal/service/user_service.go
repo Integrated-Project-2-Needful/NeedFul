@@ -50,8 +50,8 @@ func (s userService) GetUsers() ([]entities.User, error) {
 	return userResponses, nil
 }
 
-func (s userService) GetUserById(userid int) (*entities.User, error) {
-	user, err := s.userRepo.GetUserById(userid)
+func (s userService) GetUserByUserId(userid int) (*entities.User, error) {
+	user, err := s.userRepo.GetUserByUserId(userid)
 	if err != nil {
 		log.Println(err)
 		return nil, err
@@ -112,8 +112,8 @@ func (s userService) GetCurrentUser(userid int) (*entities.User, error) {
 	return &userResponse, nil
 }
 
-func (s userService) GetProfileOfCurrentUserById(userid int) (*entities.User, error) {
-	user, err := s.userRepo.GetProfileOfCurrentUserById(userid)
+func (s userService) GetProfileOfCurrentUserByUserId(userid int) (*entities.User, error) {
+	user, err := s.userRepo.GetProfileOfCurrentUserByUserId(userid)
 	if err != nil {
 		log.Println(err)
 		return nil, err
@@ -132,8 +132,8 @@ func (s userService) GetProfileOfCurrentUserById(userid int) (*entities.User, er
 	return &userResponse, nil
 }
 
-func (s userService) GetEditUserProfileById(userid int) (*entities.User, error) {
-	user, err := s.userRepo.GetEditUserProfileById(userid)
+func (s userService) GetEditUserProfileByUserId(userid int) (*entities.User, error) {
+	user, err := s.userRepo.GetEditUserProfileByUserId(userid)
 	if err != nil {
 		log.Println(err)
 		return nil, err
@@ -150,7 +150,7 @@ func (s userService) GetEditUserProfileById(userid int) (*entities.User, error) 
 	return &userResponse, nil
 }
 
-func (s userService) PatchEditUserProfileById(userid int, req dtos.EditUserProfileByIdRequest) (*entities.User, error) {
+func (s userService) PatchEditUserProfileByUserId(userid int, req dtos.EditUserProfileByUserIdRequest) (*entities.User, error) {
 	user := &entities.User{
 		UserID:    v.UintPtr(userid),
 		Username:  req.Username,
@@ -160,7 +160,7 @@ func (s userService) PatchEditUserProfileById(userid int, req dtos.EditUserProfi
 		PhoneNum:  req.PhoneNum,
 	}
 
-	err := s.userRepo.PatchEditUserProfileById(user)
+	err := s.userRepo.PatchEditUserProfileByUserId(user)
 	if err != nil {
 		log.Println(err)
 		return nil, err

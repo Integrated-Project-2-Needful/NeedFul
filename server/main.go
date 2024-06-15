@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	jwtware "github.com/gofiber/contrib/jwt"
+
 	//jwtware "github.com/gofiber/contrib/jwt"
 	"github.com/minio/minio-go/v7"
 	"github.com/minio/minio-go/v7/pkg/credentials"
@@ -68,32 +70,32 @@ func main() {
 	storageHandler := handler.NewStorageHandler(uploadSer)
 
 	userRepositoryDB := repository.NewUserRepositoryDB(db)
-	wishlistRepositoryDB := repository.NewWishlistRepositoryDB(db)
+	itemRepositoryDB := repository.NewItemRepositoryDB(db)
 	//followRepositoryDB := repository.NewFollowRepositoryDB(db)
 
 	userService := service.NewUserService(userRepositoryDB, jwtSecret)
-	wishlistService := service.NewWishlistService(wishlistRepositoryDB)
+	itemService := service.NewItemService(itemRepositoryDB)
 	//followService := service.NewFollowService(followRepositoryDB)
 	uploadService := service.NewUploadService(minioClient)
 
 	userHandler := handler.NewUserHandler(userService, jwtSecret, uploadService)
-	wishlistHandler := handler.NewWishlistHandler(wishlistService, jwtSecret, uploadService)
+	itemHandler := handler.NewItemHandler(itemService, jwtSecret, uploadService)
 	//followHandler := handler.NewFollowHandler(followService, jwtSecret)
 
 	app := fiber.New()
 
-	//app.Use(func(c *fiber.Ctx) error {
-	//	if c.Path() != "/Register" && c.Path() != "/Login" {
-	//		jwtMiddleware := jwtware.New(jwtware.Config{
-	//			SigningKey: jwtware.SigningKey{Key: []byte(jwtSecret)},
-	//			ErrorHandler: func(c *fiber.Ctx, err error) error {
-	//				return fiber.ErrUnauthorized
-	//			},
-	//		})
-	//		return jwtMiddleware(c)
-	//	}
-	//	return c.Next()
-	//})
+	app.Use(func(c *fiber.Ctx) error {
+		if c.Path() != "/Register" && c.Path() != "/Login" {
+			jwtMiddleware := jwtware.New(jwtware.Config{
+				SigningKey: jwtware.SigningKey{Key: []byte(jwtSecret)},
+				ErrorHandler: func(c *fiber.Ctx, err error) error {
+					return fiber.ErrUnauthorized
+				},
+			})
+			return jwtMiddleware(c)
+		}
+		return c.Next()
+	})
 
 	//Endpoint ###########################################################################
 
@@ -102,10 +104,9 @@ func main() {
 	app.Get("/UserById/:UserID", userHandler.GetUserById)
 	app.Get("/UserByToken", userHandler.GetUserByToken) //#
 
-	app.Get("/Wishlists", wishlistHandler.GetWishlists)
-	app.Get("/Wishlist/:WishlistID", wishlistHandler.GetWishlist)
-
-	app.Get("/WishlistOfUser/:UserID", wishlistHandler.GetWishlistsOfUser)
+	app.Get("/Items", itemHandler.GetItems)
+	app.Get("/ItemByItemId/:ItemID", itemHandler.GetItemByItemId)
+	app.Get("/ItemByUserID/:UserID", itemHandler.GetItemByUserId)
 
 	app.Post("/upload", storageHandler.UploadFile)
 
@@ -120,21 +121,15 @@ func main() {
 	app.Get("/GetEditUserProfile/:UserID", userHandler.GetEditUserProfileById)
 	app.Patch("/UpdateEditUserProfile/:UserID", userHandler.PatchEditUserProfileById)
 
-	app.Get("/GetWishlistsOfCurrentUser", wishlistHandler.GetWishlistsOfCurrentUser) //#
+	app.Get("/GetItemDetailsByItemId/:ItemID", itemHandler.GetItemDetailsByItemId)
 
-	app.Get("/GetFriendsWishlists", wishlistHandler.GetFriendsWishlists) //#
-	app.Get("/GetWishlistDetails/:WishlistID", wishlistHandler.GetWishlistDetails)
-	app.Get("/GetProfileFriendWishlists/:CurrentUserID/:WishlistOwnerID", wishlistHandler.GetProfileFriendWishlists)
+	app.Get("/GetItemsOfCurrentUser", itemHandler.GetItemsOfCurrentUser) //#
 
-	app.Put("/UpdateGrantForFriend/:WishlistID/:GranterUserID", wishlistHandler.UpdateGrantForFriend)
-	app.Put("/UpdateReceiverGotIt/:WishlistID/:GranterUserID", wishlistHandler.UpdateReceiverGotIt)
-	app.Put("/UpdateReceiverDidntGetIt/:WishlistID/:GranterUserID", wishlistHandler.UpdateReceiverDidntGetIt)
-
-	app.Post("/PostAddWishlist", wishlistHandler.PostAddWishlist) //#
+	app.Post("/PostAddItem", itemHandler.PostAddItem) //#
 
 	//#####################################################################################
 
-	log.Printf("SweetFavors run at port:  %v", viper.GetInt("app.port"))
+	log.Printf("NeedFul running at port:  %v", viper.GetInt("app.port"))
 	app.Listen(fmt.Sprintf(":%v", viper.GetInt("app.port")))
 
 }
