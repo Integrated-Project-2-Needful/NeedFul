@@ -43,7 +43,7 @@ func (h *userHandler) GetUsers(c *fiber.Ctx) error {
 	return c.JSON(usersResponse)
 }
 
-func (h *userHandler) GetUserById(c *fiber.Ctx) error {
+func (h *userHandler) GetUserByUserId(c *fiber.Ctx) error {
 	userIDReceive, err := strconv.Atoi(c.Params("UserID"))
 
 	user, err := h.userSer.GetUserByUserId(userIDReceive)
@@ -135,7 +135,7 @@ func (h *userHandler) GetCurrentUser(c *fiber.Ctx) error {
 	return c.JSON(userResponse)
 }
 
-func (h *userHandler) GetProfileOfCurrentUserById(c *fiber.Ctx) error {
+func (h *userHandler) GetProfileOfCurrentUserByUserId(c *fiber.Ctx) error {
 	userIDReceive, err := strconv.Atoi(c.Params("UserID"))
 
 	user, err := h.userSer.GetProfileOfCurrentUserByUserId(userIDReceive)
@@ -156,7 +156,7 @@ func (h *userHandler) GetProfileOfCurrentUserById(c *fiber.Ctx) error {
 	return c.JSON(userResponse)
 }
 
-func (h *userHandler) GetEditUserProfileById(c *fiber.Ctx) error {
+func (h *userHandler) GetEditUserProfileByUserId(c *fiber.Ctx) error {
 	userIDReceive, err := strconv.Atoi(c.Params("UserID"))
 
 	user, err := h.userSer.GetEditUserProfileByUserId(userIDReceive)
@@ -176,7 +176,7 @@ func (h *userHandler) GetEditUserProfileById(c *fiber.Ctx) error {
 	return c.JSON(userResponse)
 }
 
-func (h *userHandler) PatchEditUserProfileById(c *fiber.Ctx) error {
+func (h *userHandler) PatchEditUserProfileByUserId(c *fiber.Ctx) error {
 	userIDReceive, err := strconv.Atoi(c.Params("UserID"))
 
 	var req dtos.EditUserProfileByUserIdRequest

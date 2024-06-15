@@ -58,7 +58,7 @@ func main() {
 	}
 
 	minioClient, err := minio.New(viper.GetString("minio.host")+":"+viper.GetString("minio.port"), &minio.Options{
-		Creds:  credentials.NewStaticV4("EneudJTZpjRIZuFYq6MF", "eo1uLxOg33oeuOHbI7kokmSNSp1AgJTfw1QMWLda", ""),
+		Creds:  credentials.NewStaticV4("HDeAly8XddiQTvjjTRfL", "9OtiaCEOL1586uDgPAXNANDndM04ga3oMdGy7kGF", ""),
 		Secure: false,
 	})
 	if err != nil {
@@ -100,13 +100,13 @@ func main() {
 	//Endpoint ###########################################################################
 
 	// Endpoint of test
-	app.Get("/Users", userHandler.GetUsers)
-	app.Get("/UserById/:UserID", userHandler.GetUserById)
-	app.Get("/UserByToken", userHandler.GetUserByToken) //#
+	app.Get("/GetUsers", userHandler.GetUsers)
+	app.Get("/GetUserByUserId/:UserID", userHandler.GetUserByUserId)
+	app.Get("/GetUserByToken", userHandler.GetUserByToken) //#
 
-	app.Get("/Items", itemHandler.GetItems)
-	app.Get("/ItemByItemId/:ItemID", itemHandler.GetItemByItemId)
-	app.Get("/ItemByUserID/:UserID", itemHandler.GetItemByUserId)
+	app.Get("/GetItems", itemHandler.GetItems)
+	app.Get("/GetItemByItemId/:ItemID", itemHandler.GetItemByItemId)
+	app.Get("/GetItemByUserID/:UserID", itemHandler.GetItemByUserId)
 
 	app.Post("/upload", storageHandler.UploadFile)
 
@@ -116,10 +116,10 @@ func main() {
 	app.Post("/Register", userHandler.Register)
 	app.Post("/Login", userHandler.Login)
 
-	app.Get("/CurrentUser", userHandler.GetCurrentUser) //#
-	app.Get("/GetProfileOfCurrentUser/:UserID", userHandler.GetProfileOfCurrentUserById)
-	app.Get("/GetEditUserProfile/:UserID", userHandler.GetEditUserProfileById)
-	app.Patch("/UpdateEditUserProfile/:UserID", userHandler.PatchEditUserProfileById)
+	app.Get("/GetCurrentUser", userHandler.GetCurrentUser) //#
+	app.Get("/GetProfileOfCurrentUserByUserId/:UserID", userHandler.GetProfileOfCurrentUserByUserId)
+	app.Get("/GetEditUserProfileByUserId/:UserID", userHandler.GetEditUserProfileByUserId)
+	app.Patch("/PatchEditUserProfileByUserId/:UserID", userHandler.PatchEditUserProfileByUserId)
 
 	app.Get("/GetItemDetailsByItemId/:ItemID", itemHandler.GetItemDetailsByItemId)
 
