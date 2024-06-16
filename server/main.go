@@ -129,14 +129,13 @@ func main() {
 
 	app.Post("/PostAddItem", itemHandler.PostAddItem) //#
 
-	app.Delete("/DeleteItemByItemID/:ItemID", itemHandler.DeleteItemByItemID)
+	app.Delete("/DeleteItemByItemId/:ItemID", itemHandler.DeleteItemByItemId)
 
 	app.Get("/GetMarketPlace", itemHandler.GetMarketPlace)               //#
 	app.Get("/GetDonateMarketPlace", itemHandler.GetDonateMarketPlace)   //#
 	app.Get("/GetReceiveMarketPlace", itemHandler.GetReceiveMarketPlace) //#
 
-	//Put.PutDonateByItemID
-	//Put.PutReceiveByItemID
+	app.Put("/PutAsk/:ItemID/:AskByUserID", itemHandler.PutAskByItemId)
 
 	//#####################################################################################
 

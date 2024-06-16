@@ -177,7 +177,7 @@ func (r itemRepositoryDB) PostAddItem(item *entities.Item) error {
 	return nil
 }
 
-func (r itemRepositoryDB) DeleteItemByItemID(itemid int) error {
+func (r itemRepositoryDB) DeleteItemByItemId(itemid int) error {
 	items := entities.Item{}
 	result := r.db.Where("item_id = ?", itemid).Unscoped().Delete(&items)
 	if result.Error != nil {
@@ -246,4 +246,13 @@ func (r itemRepositoryDB) GetReceiveMarketPlace(userid int) ([]dtos.ReceiveMarke
 		return nil, result.Error
 	}
 	return items, nil
+}
+
+func (r itemRepositoryDB) PutAskByItemId(item *entities.Item) error {
+	result := r.db.Save(item)
+	if result.Error != nil {
+		return result.Error
+	}
+
+	return nil
 }

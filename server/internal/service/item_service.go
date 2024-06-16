@@ -217,7 +217,7 @@ func (s itemService) PostAddItem(userID int, req dtos.AddItemRequest) (*entities
 	return item, nil
 }
 
-func (s itemService) DeleteItemByItemID(itemID int) error {
+func (s itemService) DeleteItemByItemId(itemID int) error {
 	_, err := s.GetItemByItemId(itemID)
 	if err != nil {
 		if strings.Contains(err.Error(), "item doesn't exist") {
@@ -226,7 +226,7 @@ func (s itemService) DeleteItemByItemID(itemID int) error {
 		return err
 	}
 
-	err = s.itemRepo.DeleteItemByItemID(itemID)
+	err = s.itemRepo.DeleteItemByItemId(itemID)
 	if err != nil {
 		return err
 	}
@@ -310,4 +310,23 @@ func (s itemService) GetReceiveMarketPlace(userid int) ([]dtos.ReceiveMarketPlac
 		itemsResponse = append(itemsResponse, itemResponse)
 	}
 	return itemsResponse, nil
+}
+
+func (s itemService) PutAskByItemId(itemID, askerUserID int) (*entities.Item, error) {
+	item, err := s.itemRepo.GetItemByItemId(itemID)
+	if err != nil {
+		return nil, err
+	}
+
+	gave := false
+	item.AlreadyGave = &gave
+
+	item.AskedByUserID = v.UintPtr(askerUserID)
+
+	err = s.itemRepo.PutAskByItemId(item)
+	if err != nil {
+		return nil, err
+	}
+
+	return item, nil
 }
