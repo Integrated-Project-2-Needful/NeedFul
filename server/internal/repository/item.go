@@ -23,12 +23,12 @@ type ItemRepository interface {
 	PostAddItem(item *entities.Item) error
 
 	DeleteItemByItemID(itemID int) error
+
+	GetMarketPlace(int) ([]dtos.MarketPlaceResponse, error)
+	GetDonateMarketPlace(int) ([]dtos.DonateMarketPlaceResponse, error)
+	GetReceiveMarketPlace(int) ([]dtos.ReceiveMarketPlaceResponse, error)
 }
 
-//Get.GetDonateItemOfCurrentUser //#
-//Get.GetReceiveItemOfCurrentUser //#
-//
-//Delete.DeleteItemByID
 //
 //Get.GetMarketPlace //#
 //Get.GetDonateMarketPlace //#

@@ -233,3 +233,81 @@ func (s itemService) DeleteItemByItemID(itemID int) error {
 
 	return nil
 }
+
+func (s itemService) GetMarketPlace(userid int) ([]dtos.MarketPlaceResponse, error) {
+	items, err := s.itemRepo.GetMarketPlace(userid)
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
+
+	itemsResponse := []dtos.MarketPlaceResponse{}
+	for _, item := range items {
+		itemResponse := dtos.MarketPlaceResponse{
+			ItemID:        item.ItemID,
+			UserID:        item.UserID,
+			Itemname:      item.Itemname,
+			Description:   item.Description,
+			ItemPic:       item.ItemPic,
+			OfferType:     item.OfferType,
+			AskedByUserID: item.AskedByUserID,
+			AlreadyGave:   item.AlreadyGave,
+			Username:      item.Username,
+			UserPic:       item.UserPic,
+		}
+		itemsResponse = append(itemsResponse, itemResponse)
+	}
+	return itemsResponse, nil
+}
+
+func (s itemService) GetDonateMarketPlace(userid int) ([]dtos.DonateMarketPlaceResponse, error) {
+	items, err := s.itemRepo.GetDonateMarketPlace(userid)
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
+
+	itemsResponse := []dtos.DonateMarketPlaceResponse{}
+	for _, item := range items {
+		itemResponse := dtos.DonateMarketPlaceResponse{
+			ItemID:        item.ItemID,
+			UserID:        item.UserID,
+			Itemname:      item.Itemname,
+			Description:   item.Description,
+			ItemPic:       item.ItemPic,
+			OfferType:     item.OfferType,
+			AskedByUserID: item.AskedByUserID,
+			AlreadyGave:   item.AlreadyGave,
+			Username:      item.Username,
+			UserPic:       item.UserPic,
+		}
+		itemsResponse = append(itemsResponse, itemResponse)
+	}
+	return itemsResponse, nil
+}
+
+func (s itemService) GetReceiveMarketPlace(userid int) ([]dtos.ReceiveMarketPlaceResponse, error) {
+	items, err := s.itemRepo.GetReceiveMarketPlace(userid)
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
+
+	itemsResponse := []dtos.ReceiveMarketPlaceResponse{}
+	for _, item := range items {
+		itemResponse := dtos.ReceiveMarketPlaceResponse{
+			ItemID:        item.ItemID,
+			UserID:        item.UserID,
+			Itemname:      item.Itemname,
+			Description:   item.Description,
+			ItemPic:       item.ItemPic,
+			OfferType:     item.OfferType,
+			AskedByUserID: item.AskedByUserID,
+			AlreadyGave:   item.AlreadyGave,
+			Username:      item.Username,
+			UserPic:       item.UserPic,
+		}
+		itemsResponse = append(itemsResponse, itemResponse)
+	}
+	return itemsResponse, nil
+}

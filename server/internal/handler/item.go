@@ -305,3 +305,117 @@ func (h *itemHandler) DeleteItemByItemID(c *fiber.Ctx) error {
 
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{"message": "item deleted successfully"})
 }
+
+func (h *itemHandler) GetMarketPlace(c *fiber.Ctx) error {
+	// Extract the token from the request headers
+	token := c.Get("Authorization")
+
+	// Check if the token is empty
+	if token == "" {
+		return errors.New("token is missing")
+	}
+
+	// Extract the user ID from the token
+	userID, err := utils.ExtractUserIDFromToken(strings.Replace(token, "Bearer ", "", 1), h.jwtSecret)
+	if err != nil {
+		return err
+	}
+
+	items, err := h.itemSer.GetMarketPlace(userID)
+	if err != nil {
+		return err
+	}
+
+	itemsResponse := make([]dtos.MarketPlaceResponse, 0)
+	for _, item := range items {
+		itemsResponse = append(itemsResponse, dtos.MarketPlaceResponse{
+			ItemID:        item.ItemID,
+			UserID:        item.UserID,
+			Itemname:      item.Itemname,
+			Description:   item.Description,
+			ItemPic:       item.ItemPic,
+			OfferType:     item.OfferType,
+			AskedByUserID: item.AskedByUserID,
+			AlreadyGave:   item.AlreadyGave,
+			Username:      item.Username,
+			UserPic:       item.UserPic,
+		})
+	}
+	return c.JSON(itemsResponse)
+}
+
+func (h *itemHandler) GetDonateMarketPlace(c *fiber.Ctx) error {
+	// Extract the token from the request headers
+	token := c.Get("Authorization")
+
+	// Check if the token is empty
+	if token == "" {
+		return errors.New("token is missing")
+	}
+
+	// Extract the user ID from the token
+	userID, err := utils.ExtractUserIDFromToken(strings.Replace(token, "Bearer ", "", 1), h.jwtSecret)
+	if err != nil {
+		return err
+	}
+
+	items, err := h.itemSer.GetDonateMarketPlace(userID)
+	if err != nil {
+		return err
+	}
+
+	itemsResponse := make([]dtos.DonateMarketPlaceResponse, 0)
+	for _, item := range items {
+		itemsResponse = append(itemsResponse, dtos.DonateMarketPlaceResponse{
+			ItemID:        item.ItemID,
+			UserID:        item.UserID,
+			Itemname:      item.Itemname,
+			Description:   item.Description,
+			ItemPic:       item.ItemPic,
+			OfferType:     item.OfferType,
+			AskedByUserID: item.AskedByUserID,
+			AlreadyGave:   item.AlreadyGave,
+			Username:      item.Username,
+			UserPic:       item.UserPic,
+		})
+	}
+	return c.JSON(itemsResponse)
+}
+
+func (h *itemHandler) GetReceiveMarketPlace(c *fiber.Ctx) error {
+	// Extract the token from the request headers
+	token := c.Get("Authorization")
+
+	// Check if the token is empty
+	if token == "" {
+		return errors.New("token is missing")
+	}
+
+	// Extract the user ID from the token
+	userID, err := utils.ExtractUserIDFromToken(strings.Replace(token, "Bearer ", "", 1), h.jwtSecret)
+	if err != nil {
+		return err
+	}
+
+	items, err := h.itemSer.GetReceiveMarketPlace(userID)
+	if err != nil {
+		return err
+	}
+
+	itemsResponse := make([]dtos.ReceiveMarketPlaceResponse, 0)
+	for _, item := range items {
+		itemsResponse = append(itemsResponse, dtos.ReceiveMarketPlaceResponse{
+			ItemID:        item.ItemID,
+			UserID:        item.UserID,
+			Itemname:      item.Itemname,
+			Description:   item.Description,
+			ItemPic:       item.ItemPic,
+			OfferType:     item.OfferType,
+			AskedByUserID: item.AskedByUserID,
+			AlreadyGave:   item.AlreadyGave,
+			Username:      item.Username,
+			UserPic:       item.UserPic,
+		})
+	}
+	return c.JSON(itemsResponse)
+}

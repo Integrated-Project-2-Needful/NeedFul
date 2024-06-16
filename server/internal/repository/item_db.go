@@ -151,7 +151,8 @@ func (r itemRepositoryDB) GetReceiveItemsOfCurrentUser(userid int) ([]dtos.Recei
             (SELECT username FROM users WHERE user_id = items.asked_by_user_id) AS username_of_asked_by_user_id
         `).
 		Joins("JOIN users ON items.user_id = users.user_id").
-		Where("users.user_id = ?", userid).Where("offer_type = ?", "Receive").
+		Where("users.user_id = ?", userid).
+		Where("offer_type = ?", "Receive").
 		Find(&items)
 	if result.Error != nil {
 		return nil, result.Error
@@ -183,4 +184,66 @@ func (r itemRepositoryDB) DeleteItemByItemID(itemid int) error {
 		return result.Error
 	}
 	return nil
+}
+
+func (r itemRepositoryDB) GetMarketPlace(userid int) ([]dtos.MarketPlaceResponse, error) {
+	items := []dtos.MarketPlaceResponse{}
+	result := r.db.
+		Table("items").
+		Select(`
+			items.*,
+			users.username,
+			users.user_pic
+		`).
+		Joins("JOIN users ON items.user_id = users.user_id").
+		Where("users.user_id != ?", userid).
+		Where("items.already_gave IS NULL").
+		Where("items.asked_by_user_id IS NULL").
+		Find(&items)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	return items, nil
+}
+
+func (r itemRepositoryDB) GetDonateMarketPlace(userid int) ([]dtos.DonateMarketPlaceResponse, error) {
+	items := []dtos.DonateMarketPlaceResponse{}
+	result := r.db.
+		Table("items").
+		Select(`
+			items.*,
+			users.username,
+			users.user_pic
+		`).
+		Joins("JOIN users ON items.user_id = users.user_id").
+		Where("users.user_id != ?", userid).
+		Where("items.already_gave IS NULL").
+		Where("items.asked_by_user_id IS NULL").
+		Where("offer_type = ?", "Donate").
+		Find(&items)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	return items, nil
+}
+
+func (r itemRepositoryDB) GetReceiveMarketPlace(userid int) ([]dtos.ReceiveMarketPlaceResponse, error) {
+	items := []dtos.ReceiveMarketPlaceResponse{}
+	result := r.db.
+		Table("items").
+		Select(`
+			items.*,
+			users.username,
+			users.user_pic
+		`).
+		Joins("JOIN users ON items.user_id = users.user_id").
+		Where("users.user_id != ?", userid).
+		Where("items.already_gave IS NULL").
+		Where("items.asked_by_user_id IS NULL").
+		Where("offer_type = ?", "Receive").
+		Find(&items)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	return items, nil
 }

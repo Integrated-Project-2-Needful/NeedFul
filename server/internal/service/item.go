@@ -23,4 +23,8 @@ type ItemService interface {
 	PostAddItem(int, dtos.AddItemRequest) (*entities.Item, error)
 
 	DeleteItemByItemID(itemID int) error
+
+	GetMarketPlace(userid int) ([]dtos.MarketPlaceResponse, error)
+	GetDonateMarketPlace(userid int) ([]dtos.DonateMarketPlaceResponse, error)
+	GetReceiveMarketPlace(userid int) ([]dtos.ReceiveMarketPlaceResponse, error)
 }

@@ -131,6 +131,13 @@ func main() {
 
 	app.Delete("/DeleteItemByItemID/:ItemID", itemHandler.DeleteItemByItemID)
 
+	app.Get("/GetMarketPlace", itemHandler.GetMarketPlace)               //#
+	app.Get("/GetDonateMarketPlace", itemHandler.GetDonateMarketPlace)   //#
+	app.Get("/GetReceiveMarketPlace", itemHandler.GetReceiveMarketPlace) //#
+
+	//Put.PutDonateByItemID
+	//Put.PutReceiveByItemID
+
 	//#####################################################################################
 
 	log.Printf("NeedFul running at port:  %v", viper.GetInt("app.port"))

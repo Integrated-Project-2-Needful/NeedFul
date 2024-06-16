@@ -22,6 +22,8 @@ type Item struct {
 	AlreadyGave   *bool
 	///////////////////////////////////////////////
 	User User `gorm:"foreignKey:UserID"`
+	//////////////////////////////////////////////
+
 }
 
 type Messages struct {
@@ -31,4 +33,17 @@ type Messages struct {
 	MsgText          *string
 	ConFromItemOwner *bool
 	ConFromItemAsker *bool
+}
+
+type MarketPlaceResponse struct {
+	ItemID        *uint
+	UserID        *uint
+	Itemname      *string
+	Description   *string
+	ItemPic       *string
+	OfferType     *string
+	AskedByUserID *uint
+	AlreadyGave   *bool
+	Username      *string
+	UserPic       *string
 }
