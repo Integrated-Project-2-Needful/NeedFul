@@ -1,7 +1,9 @@
 package repository
 
 import (
+	"needful/internal/dtos"
 	"needful/internal/entities"
+	"needful/internal/utils/v"
 
 	"gorm.io/gorm"
 )
@@ -54,13 +56,54 @@ func (r itemRepositoryDB) GetItemDetailsByItemId(itemid int) (*entities.Item, er
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-func (r itemRepositoryDB) GetAllItemOfCurrentUser(userid int) ([]entities.Item, error) {
-	items := []entities.Item{}
-	result := r.db.Where("user_id = ?", userid).Find(&items)
+//func (r itemRepositoryDB) GetAllItemOfCurrentUser(userid int) ([]dtos.ItemsOfCurrentUserResponse, error) {
+//	items := []dtos.ItemsOfCurrentUserResponse{}
+//	result := r.db.
+//		Table("items").
+//		Select(`
+//			items.*,
+//			users.username,
+//			users.user_pic,
+//			(SELECT u.username FROM users u WHERE u.user_id = items.asked_by_user_id) AS username_asked_by_user_id
+//		`).
+//		Joins("JOIN users ON items.user_id = users.user_id").
+//		Where("users.user_id = ?", userid).
+//		Find(&items)
+//	if result.Error != nil {
+//		return nil, result.Error
+//	}
+//	return items, nil
+//}
+
+func (r itemRepositoryDB) GetAllItemOfCurrentUser(userid int) ([]dtos.ItemsOfCurrentUserResponse, error) {
+	var items []struct {
+		dtos.ItemsOfCurrentUserResponse
+		UsernameOfAskedByUserID string
+	}
+	result := r.db.
+		Table("items").
+		Select(`
+            items.*,
+            users.username,
+            users.user_pic,
+            (SELECT username FROM users WHERE user_id = items.asked_by_user_id) AS username_of_asked_by_user_id
+        `).
+		Joins("JOIN users ON items.user_id = users.user_id").
+		Where("users.user_id = ?", userid).
+		Find(&items)
 	if result.Error != nil {
 		return nil, result.Error
 	}
-	return items, nil
+	// Merge the nested field into the main struct
+	for i, item := range items {
+		items[i].ItemsOfCurrentUserResponse.UsernameOfAskedByUserID = v.Ptr(item.UsernameOfAskedByUserID)
+	}
+	// Convert to the desired response type
+	var itemsResponse []dtos.ItemsOfCurrentUserResponse
+	for _, item := range items {
+		itemsResponse = append(itemsResponse, item.ItemsOfCurrentUserResponse)
+	}
+	return itemsResponse, nil
 }
 
 func (r itemRepositoryDB) PostAddItem(item *entities.Item) error {

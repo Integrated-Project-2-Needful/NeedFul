@@ -139,14 +139,17 @@ func (h *itemHandler) GetItemsOfCurrentUser(c *fiber.Ctx) error {
 	itemsResponse := make([]dtos.ItemsOfCurrentUserResponse, 0)
 	for _, item := range items {
 		itemsResponse = append(itemsResponse, dtos.ItemsOfCurrentUserResponse{
-			ItemID:        item.ItemID,
-			UserID:        item.UserID,
-			Itemname:      item.Itemname,
-			Description:   item.Description,
-			ItemPic:       item.ItemPic,
-			OfferType:     item.OfferType,
-			AskedByUserID: item.AskedByUserID,
-			AlreadyGave:   item.AlreadyGave,
+			ItemID:                  item.ItemID,
+			UserID:                  item.UserID,
+			Itemname:                item.Itemname,
+			Description:             item.Description,
+			ItemPic:                 item.ItemPic,
+			OfferType:               item.OfferType,
+			AskedByUserID:           item.AskedByUserID,
+			AlreadyGave:             item.AlreadyGave,
+			Username:                item.Username,
+			UserPic:                 item.UserPic,
+			UsernameOfAskedByUserID: item.UsernameOfAskedByUserID,
 		})
 	}
 	return c.JSON(itemsResponse)

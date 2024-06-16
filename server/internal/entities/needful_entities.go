@@ -9,9 +9,6 @@ type User struct {
 	Lastname  *string
 	PhoneNum  *string
 	UserPic   *string
-
-	// Define associations
-	Items []Item `gorm:"foreignKey:UserID"`
 }
 
 type Item struct {
@@ -23,10 +20,8 @@ type Item struct {
 	OfferType     *string
 	AskedByUserID *uint
 	AlreadyGave   *bool
-	/////////////////////////////////////////
-	//UsernameOfWishOwner *string `gorm:"->"`
-	//UserPicOfWishOwner  *string `gorm:"->"`
-	//UsernameOfAsker     *string `gorm:"->"`
+	///////////////////////////////////////////////
+	User User `gorm:"foreignKey:UserID"`
 }
 
 type Messages struct {
@@ -36,9 +31,4 @@ type Messages struct {
 	MsgText          *string
 	ConFromItemOwner *bool
 	ConFromItemAsker *bool
-	/////////////////////////////////////////
-	//UsernameOfSender   *string `gorm:"->"`
-	//UserPicOfSender    *string `gorm:"->"`
-	//UsernameOfReceiver *string `gorm:"->"`
-	//UserPicOfReceiver  *string `gorm:"->"`
 }

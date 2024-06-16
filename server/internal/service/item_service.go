@@ -108,28 +108,31 @@ func (s itemService) GetItemDetailsByItemId(itemid int) (*entities.Item, error) 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-func (s itemService) GetItemsOfCurrentUser(userid int) ([]entities.Item, error) {
+func (s itemService) GetItemsOfCurrentUser(userid int) ([]dtos.ItemsOfCurrentUserResponse, error) {
 	items, err := s.itemRepo.GetAllItemOfCurrentUser(userid)
 	if err != nil {
 		log.Println(err)
 		return nil, err
 	}
 
-	itemResponses := []entities.Item{}
+	itemsResponse := []dtos.ItemsOfCurrentUserResponse{}
 	for _, item := range items {
-		itemResponse := entities.Item{
-			ItemID:        item.ItemID,
-			UserID:        item.UserID,
-			Itemname:      item.Itemname,
-			Description:   item.Description,
-			ItemPic:       item.ItemPic,
-			OfferType:     item.OfferType,
-			AskedByUserID: item.AskedByUserID,
-			AlreadyGave:   item.AlreadyGave,
+		itemResponse := dtos.ItemsOfCurrentUserResponse{
+			ItemID:                  item.ItemID,
+			UserID:                  item.UserID,
+			Itemname:                item.Itemname,
+			Description:             item.Description,
+			ItemPic:                 item.ItemPic,
+			OfferType:               item.OfferType,
+			AskedByUserID:           item.AskedByUserID,
+			AlreadyGave:             item.AlreadyGave,
+			Username:                item.Username,
+			UserPic:                 item.UserPic,
+			UsernameOfAskedByUserID: item.UsernameOfAskedByUserID,
 		}
-		itemResponses = append(itemResponses, itemResponse)
+		itemsResponse = append(itemsResponse, itemResponse)
 	}
-	return itemResponses, nil
+	return itemsResponse, nil
 }
 
 func (s itemService) PostAddItem(userID int, req dtos.AddItemRequest) (*entities.Item, error) {
