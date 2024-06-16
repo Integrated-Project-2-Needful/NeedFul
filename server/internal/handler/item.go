@@ -155,6 +155,84 @@ func (h *itemHandler) GetItemsOfCurrentUser(c *fiber.Ctx) error {
 	return c.JSON(itemsResponse)
 }
 
+func (h *itemHandler) GetDonateItemsOfCurrentUser(c *fiber.Ctx) error {
+	// Extract the token from the request headers
+	token := c.Get("Authorization")
+
+	// Check if the token is empty
+	if token == "" {
+		return errors.New("token is missing")
+	}
+
+	// Extract the user ID from the token
+	userID, err := utils.ExtractUserIDFromToken(strings.Replace(token, "Bearer ", "", 1), h.jwtSecret)
+	if err != nil {
+		return err
+	}
+
+	items, err := h.itemSer.GetDonateItemsOfCurrentUser(userID)
+	if err != nil {
+		return err
+	}
+
+	itemsResponse := make([]dtos.DonateItemsOfCurrentUserResponse, 0)
+	for _, item := range items {
+		itemsResponse = append(itemsResponse, dtos.DonateItemsOfCurrentUserResponse{
+			ItemID:                  item.ItemID,
+			UserID:                  item.UserID,
+			Itemname:                item.Itemname,
+			Description:             item.Description,
+			ItemPic:                 item.ItemPic,
+			OfferType:               item.OfferType,
+			AskedByUserID:           item.AskedByUserID,
+			AlreadyGave:             item.AlreadyGave,
+			Username:                item.Username,
+			UserPic:                 item.UserPic,
+			UsernameOfAskedByUserID: item.UsernameOfAskedByUserID,
+		})
+	}
+	return c.JSON(itemsResponse)
+}
+
+func (h *itemHandler) GetReceiveItemsOfCurrentUser(c *fiber.Ctx) error {
+	// Extract the token from the request headers
+	token := c.Get("Authorization")
+
+	// Check if the token is empty
+	if token == "" {
+		return errors.New("token is missing")
+	}
+
+	// Extract the user ID from the token
+	userID, err := utils.ExtractUserIDFromToken(strings.Replace(token, "Bearer ", "", 1), h.jwtSecret)
+	if err != nil {
+		return err
+	}
+
+	items, err := h.itemSer.GetReceiveItemsOfCurrentUser(userID)
+	if err != nil {
+		return err
+	}
+
+	itemsResponse := make([]dtos.ReceiveItemsOfCurrentUserResponse, 0)
+	for _, item := range items {
+		itemsResponse = append(itemsResponse, dtos.ReceiveItemsOfCurrentUserResponse{
+			ItemID:                  item.ItemID,
+			UserID:                  item.UserID,
+			Itemname:                item.Itemname,
+			Description:             item.Description,
+			ItemPic:                 item.ItemPic,
+			OfferType:               item.OfferType,
+			AskedByUserID:           item.AskedByUserID,
+			AlreadyGave:             item.AlreadyGave,
+			Username:                item.Username,
+			UserPic:                 item.UserPic,
+			UsernameOfAskedByUserID: item.UsernameOfAskedByUserID,
+		})
+	}
+	return c.JSON(itemsResponse)
+}
+
 func (h *itemHandler) PostAddItem(c *fiber.Ctx) error {
 	// Extract the token from the request headers
 	token := c.Get("Authorization")

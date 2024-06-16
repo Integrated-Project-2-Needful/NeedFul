@@ -17,6 +17,8 @@ type ItemRepository interface {
 	/////////////////////////////////////////////////////////////////
 
 	GetAllItemOfCurrentUser(int) ([]dtos.ItemsOfCurrentUserResponse, error)
+	GetDonateItemsOfCurrentUser(int) ([]dtos.DonateItemsOfCurrentUserResponse, error)
+	GetReceiveItemsOfCurrentUser(int) ([]dtos.ReceiveItemsOfCurrentUserResponse, error)
 
 	PostAddItem(item *entities.Item) error
 }

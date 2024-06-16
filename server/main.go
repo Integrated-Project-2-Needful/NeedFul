@@ -123,7 +123,9 @@ func main() {
 
 	app.Get("/GetItemDetailsByItemId/:ItemID", itemHandler.GetItemDetailsByItemId)
 
-	app.Get("/GetItemsOfCurrentUser", itemHandler.GetItemsOfCurrentUser) //#
+	app.Get("/GetItemsOfCurrentUser", itemHandler.GetItemsOfCurrentUser)               //#
+	app.Get("/GetDonateItemsOfCurrentUser", itemHandler.GetDonateItemsOfCurrentUser)   //#
+	app.Get("/GetReceiveItemsOfCurrentUser", itemHandler.GetReceiveItemsOfCurrentUser) //#
 
 	app.Post("/PostAddItem", itemHandler.PostAddItem) //#
 

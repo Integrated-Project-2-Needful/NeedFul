@@ -106,6 +106,68 @@ func (r itemRepositoryDB) GetAllItemOfCurrentUser(userid int) ([]dtos.ItemsOfCur
 	return itemsResponse, nil
 }
 
+func (r itemRepositoryDB) GetDonateItemsOfCurrentUser(userid int) ([]dtos.DonateItemsOfCurrentUserResponse, error) {
+	var items []struct {
+		dtos.DonateItemsOfCurrentUserResponse
+		UsernameOfAskedByUserID string
+	}
+	result := r.db.
+		Table("items").
+		Select(`
+            items.*,
+            users.username,
+            users.user_pic,
+            (SELECT username FROM users WHERE user_id = items.asked_by_user_id) AS username_of_asked_by_user_id
+        `).
+		Joins("JOIN users ON items.user_id = users.user_id").
+		Where("users.user_id = ?", userid).Where("offer_type = ?", "Donate").
+		Find(&items)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	// Merge the nested field into the main struct
+	for i, item := range items {
+		items[i].DonateItemsOfCurrentUserResponse.UsernameOfAskedByUserID = v.Ptr(item.UsernameOfAskedByUserID)
+	}
+	// Convert to the desired response type
+	var itemsResponse []dtos.DonateItemsOfCurrentUserResponse
+	for _, item := range items {
+		itemsResponse = append(itemsResponse, item.DonateItemsOfCurrentUserResponse)
+	}
+	return itemsResponse, nil
+}
+
+func (r itemRepositoryDB) GetReceiveItemsOfCurrentUser(userid int) ([]dtos.ReceiveItemsOfCurrentUserResponse, error) {
+	var items []struct {
+		dtos.ReceiveItemsOfCurrentUserResponse
+		UsernameOfAskedByUserID string
+	}
+	result := r.db.
+		Table("items").
+		Select(`
+            items.*,
+            users.username,
+            users.user_pic,
+            (SELECT username FROM users WHERE user_id = items.asked_by_user_id) AS username_of_asked_by_user_id
+        `).
+		Joins("JOIN users ON items.user_id = users.user_id").
+		Where("users.user_id = ?", userid).Where("offer_type = ?", "Receive").
+		Find(&items)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	// Merge the nested field into the main struct
+	for i, item := range items {
+		items[i].ReceiveItemsOfCurrentUserResponse.UsernameOfAskedByUserID = v.Ptr(item.UsernameOfAskedByUserID)
+	}
+	// Convert to the desired response type
+	var itemsResponse []dtos.ReceiveItemsOfCurrentUserResponse
+	for _, item := range items {
+		itemsResponse = append(itemsResponse, item.ReceiveItemsOfCurrentUserResponse)
+	}
+	return itemsResponse, nil
+}
+
 func (r itemRepositoryDB) PostAddItem(item *entities.Item) error {
 	result := r.db.Create(item)
 	if result.Error != nil {

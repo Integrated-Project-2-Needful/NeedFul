@@ -135,6 +135,60 @@ func (s itemService) GetItemsOfCurrentUser(userid int) ([]dtos.ItemsOfCurrentUse
 	return itemsResponse, nil
 }
 
+func (s itemService) GetDonateItemsOfCurrentUser(userid int) ([]dtos.DonateItemsOfCurrentUserResponse, error) {
+	items, err := s.itemRepo.GetDonateItemsOfCurrentUser(userid)
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
+
+	itemsResponse := []dtos.DonateItemsOfCurrentUserResponse{}
+	for _, item := range items {
+		itemResponse := dtos.DonateItemsOfCurrentUserResponse{
+			ItemID:                  item.ItemID,
+			UserID:                  item.UserID,
+			Itemname:                item.Itemname,
+			Description:             item.Description,
+			ItemPic:                 item.ItemPic,
+			OfferType:               item.OfferType,
+			AskedByUserID:           item.AskedByUserID,
+			AlreadyGave:             item.AlreadyGave,
+			Username:                item.Username,
+			UserPic:                 item.UserPic,
+			UsernameOfAskedByUserID: item.UsernameOfAskedByUserID,
+		}
+		itemsResponse = append(itemsResponse, itemResponse)
+	}
+	return itemsResponse, nil
+}
+
+func (s itemService) GetReceiveItemsOfCurrentUser(userid int) ([]dtos.ReceiveItemsOfCurrentUserResponse, error) {
+	items, err := s.itemRepo.GetReceiveItemsOfCurrentUser(userid)
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
+
+	itemsResponse := []dtos.ReceiveItemsOfCurrentUserResponse{}
+	for _, item := range items {
+		itemResponse := dtos.ReceiveItemsOfCurrentUserResponse{
+			ItemID:                  item.ItemID,
+			UserID:                  item.UserID,
+			Itemname:                item.Itemname,
+			Description:             item.Description,
+			ItemPic:                 item.ItemPic,
+			OfferType:               item.OfferType,
+			AskedByUserID:           item.AskedByUserID,
+			AlreadyGave:             item.AlreadyGave,
+			Username:                item.Username,
+			UserPic:                 item.UserPic,
+			UsernameOfAskedByUserID: item.UsernameOfAskedByUserID,
+		}
+		itemsResponse = append(itemsResponse, itemResponse)
+	}
+	return itemsResponse, nil
+}
+
 func (s itemService) PostAddItem(userID int, req dtos.AddItemRequest) (*entities.Item, error) {
 	item := &entities.Item{
 		UserID:      v.UintPtr(userID),

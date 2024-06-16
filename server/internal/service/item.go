@@ -17,6 +17,8 @@ type ItemService interface {
 	///////////////////////////////////////////////////////////
 
 	GetItemsOfCurrentUser(userid int) ([]dtos.ItemsOfCurrentUserResponse, error)
+	GetDonateItemsOfCurrentUser(userid int) ([]dtos.DonateItemsOfCurrentUserResponse, error)
+	GetReceiveItemsOfCurrentUser(userid int) ([]dtos.ReceiveItemsOfCurrentUserResponse, error)
 
 	PostAddItem(int, dtos.AddItemRequest) (*entities.Item, error)
 }
