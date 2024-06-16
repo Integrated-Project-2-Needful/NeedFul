@@ -347,10 +347,19 @@ func (s itemService) PutAskByItemIdAndPostAskMessage(itemID, askerUserID int) (*
 		return nil, err
 	}
 
-	// Create the message text
-	messageText := fmt.Sprintf("Hi! I want %s %s to you", *item.OfferType, *item.Itemname)
+	// Determine the preposition based on the OfferType
+	var preposition string
+	if *item.OfferType == "Receive" {
+		preposition = "from"
+	} else if *item.OfferType == "Donate" {
+		preposition = "to"
+	} else {
+		preposition = "with"
+	}
 
-	// Create the message entity
+	// Create the message text
+	messageText := fmt.Sprintf("Hi! I want %s %s %s you", *item.OfferType, *item.Itemname, preposition)
+
 	message := &entities.Message{
 		SenderUserID:   v.UintPtr(askerUserID),
 		ReceiverUserID: item.UserID,
