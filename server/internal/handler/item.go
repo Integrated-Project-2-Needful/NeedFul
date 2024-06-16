@@ -288,3 +288,20 @@ func (h *itemHandler) PostAddItem(c *fiber.Ctx) error {
 
 	return c.JSON(itemResponse)
 }
+
+func (h *itemHandler) DeleteItemByItemID(c *fiber.Ctx) error {
+	itemIDReceive, err := strconv.Atoi(c.Params("ItemID"))
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "invalid itemID"})
+	}
+
+	err = h.itemSer.DeleteItemByItemID(itemIDReceive)
+	if err != nil {
+		if strings.Contains(err.Error(), "item not found") {
+			return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"message": "item not found"})
+		}
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"message": err.Error()}) //failed to delete project
+	}
+
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{"message": "item deleted successfully"})
+}

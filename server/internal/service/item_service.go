@@ -1,11 +1,13 @@
 package service
 
 import (
+	"github.com/gofiber/fiber/v2"
 	"log"
 	"needful/internal/dtos"
 	"needful/internal/entities"
 	"needful/internal/repository"
 	"needful/internal/utils/v"
+	"strings"
 )
 
 type itemService struct {
@@ -69,6 +71,10 @@ func (s itemService) GetItemByItemId(itemid int) (*entities.Item, error) {
 	if err != nil {
 		log.Println(err)
 		return nil, err
+	}
+
+	if *item == (entities.Item{}) {
+		return nil, fiber.NewError(fiber.StatusNotFound, "item doesn't exist")
 	}
 
 	itemResponse := entities.Item{
@@ -205,4 +211,21 @@ func (s itemService) PostAddItem(userID int, req dtos.AddItemRequest) (*entities
 	}
 
 	return item, nil
+}
+
+func (s itemService) DeleteItemByItemID(itemID int) error {
+	_, err := s.GetItemByItemId(itemID)
+	if err != nil {
+		if strings.Contains(err.Error(), "item doesn't exist") {
+			return fiber.NewError(fiber.StatusNotFound, "item not found")
+		}
+		return err
+	}
+
+	err = s.itemRepo.DeleteItemByItemID(itemID)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

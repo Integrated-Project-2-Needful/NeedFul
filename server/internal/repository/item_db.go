@@ -175,3 +175,12 @@ func (r itemRepositoryDB) PostAddItem(item *entities.Item) error {
 	}
 	return nil
 }
+
+func (r itemRepositoryDB) DeleteItemByItemID(itemid int) error {
+	items := entities.Item{}
+	result := r.db.Where("item_id = ?", itemid).Unscoped().Delete(&items)
+	if result.Error != nil {
+		return result.Error
+	}
+	return nil
+}

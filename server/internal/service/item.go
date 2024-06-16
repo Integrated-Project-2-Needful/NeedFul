@@ -21,4 +21,6 @@ type ItemService interface {
 	GetReceiveItemsOfCurrentUser(userid int) ([]dtos.ReceiveItemsOfCurrentUserResponse, error)
 
 	PostAddItem(int, dtos.AddItemRequest) (*entities.Item, error)
+
+	DeleteItemByItemID(itemID int) error
 }

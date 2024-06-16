@@ -129,6 +129,8 @@ func main() {
 
 	app.Post("/PostAddItem", itemHandler.PostAddItem) //#
 
+	app.Delete("/DeleteItemByItemID/:ItemID", itemHandler.DeleteItemByItemID)
+
 	//#####################################################################################
 
 	log.Printf("NeedFul running at port:  %v", viper.GetInt("app.port"))
