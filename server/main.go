@@ -135,7 +135,7 @@ func main() {
 	app.Get("/GetDonateMarketPlace", itemHandler.GetDonateMarketPlace)   //#
 	app.Get("/GetReceiveMarketPlace", itemHandler.GetReceiveMarketPlace) //#
 
-	app.Put("/PutAsk/:ItemID/:AskByUserID", itemHandler.PutAskByItemId)
+	app.Put("/PutAsk/:ItemID/:AskByUserID", itemHandler.PutAskByItemIdAndPostAskMessage)
 
 	//#####################################################################################
 

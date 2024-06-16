@@ -28,5 +28,7 @@ type ItemService interface {
 	GetDonateMarketPlace(userid int) ([]entities.DonateMarketPlaceResponse, error)
 	GetReceiveMarketPlace(userid int) ([]entities.ReceiveMarketPlaceResponse, error)
 
-	PutAskByItemId(int, int) (*entities.Item, error)
+	//PutAskByItemId(int, int) (*entities.Item, error)
+
+	PutAskByItemIdAndPostAskMessage(int, int) (*entities.Item, error)
 }

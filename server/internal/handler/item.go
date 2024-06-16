@@ -420,7 +420,26 @@ func (h *itemHandler) GetReceiveMarketPlace(c *fiber.Ctx) error {
 	return c.JSON(itemsResponse)
 }
 
-func (h *itemHandler) PutAskByItemId(c *fiber.Ctx) error {
+//func (h *itemHandler) PutAskByItemId(c *fiber.Ctx) error {
+//	itemIDReceive, err := strconv.Atoi(c.Params("ItemID"))
+//	if err != nil {
+//		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "invalid ItemID"})
+//	}
+//
+//	askedByUserID, err := strconv.Atoi(c.Params("AskByUserID"))
+//	if err != nil {
+//		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "invalid UserID"})
+//	}
+//
+//	_, err = h.itemSer.PutAskByItemId(itemIDReceive, askedByUserID)
+//	if err != nil {
+//		return err
+//	}
+//
+//	return c.JSON(fiber.Map{"message": "Update asked_by_user_id & already_gave By ItemID & UserID successfully"})
+//}
+
+func (h *itemHandler) PutAskByItemIdAndPostAskMessage(c *fiber.Ctx) error {
 	itemIDReceive, err := strconv.Atoi(c.Params("ItemID"))
 	if err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "invalid ItemID"})
@@ -431,10 +450,10 @@ func (h *itemHandler) PutAskByItemId(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "invalid UserID"})
 	}
 
-	_, err = h.itemSer.PutAskByItemId(itemIDReceive, askedByUserID)
+	_, err = h.itemSer.PutAskByItemIdAndPostAskMessage(itemIDReceive, askedByUserID)
 	if err != nil {
 		return err
 	}
 
-	return c.JSON(fiber.Map{"message": "Update asked_by_user_id & already_gave By ItemID & UserID successfully"})
+	return c.JSON(fiber.Map{"message": "Update asked_by_user_id & already_gave By ItemID & UserID successfully and message posted"})
 }

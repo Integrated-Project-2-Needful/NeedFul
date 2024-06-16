@@ -1,6 +1,7 @@
 package service
 
 import (
+	"fmt"
 	"github.com/gofiber/fiber/v2"
 	"log"
 	"needful/internal/dtos"
@@ -312,7 +313,26 @@ func (s itemService) GetReceiveMarketPlace(userid int) ([]entities.ReceiveMarket
 	return itemsResponse, nil
 }
 
-func (s itemService) PutAskByItemId(itemID, askerUserID int) (*entities.Item, error) {
+//func (s itemService) PutAskByItemId(itemID, askerUserID int) (*entities.Item, error) {
+//	item, err := s.itemRepo.GetItemByItemId(itemID)
+//	if err != nil {
+//		return nil, err
+//	}
+//
+//	gave := false
+//	item.AlreadyGave = &gave
+//
+//	item.AskedByUserID = v.UintPtr(askerUserID)
+//
+//	err = s.itemRepo.PutAskByItemId(item)
+//	if err != nil {
+//		return nil, err
+//	}
+//
+//	return item, nil
+//}
+
+func (s itemService) PutAskByItemIdAndPostAskMessage(itemID, askerUserID int) (*entities.Item, error) {
 	item, err := s.itemRepo.GetItemByItemId(itemID)
 	if err != nil {
 		return nil, err
@@ -320,10 +340,25 @@ func (s itemService) PutAskByItemId(itemID, askerUserID int) (*entities.Item, er
 
 	gave := false
 	item.AlreadyGave = &gave
-
 	item.AskedByUserID = v.UintPtr(askerUserID)
 
 	err = s.itemRepo.PutAskByItemId(item)
+	if err != nil {
+		return nil, err
+	}
+
+	// Create the message text
+	messageText := fmt.Sprintf("Hi! I want %s %s to you", *item.OfferType, *item.Itemname)
+
+	// Create the message entity
+	message := &entities.Messages{
+		SenderUserID:   v.UintPtr(askerUserID),
+		ReceiverUserID: item.UserID,
+		MsgText:        &messageText,
+	}
+
+	// Post the message
+	err = s.itemRepo.PostAskMessage(message)
 	if err != nil {
 		return nil, err
 	}

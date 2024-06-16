@@ -255,3 +255,11 @@ func (r itemRepositoryDB) PutAskByItemId(item *entities.Item) error {
 
 	return nil
 }
+
+func (r itemRepositoryDB) PostAskMessage(message *entities.Messages) error {
+	result := r.db.Create(message)
+	if result.Error != nil {
+		return result.Error
+	}
+	return nil
+}
