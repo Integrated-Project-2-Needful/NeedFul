@@ -28,5 +28,5 @@ type ItemRepository interface {
 	GetReceiveMarketPlace(int) ([]entities.ReceiveMarketPlaceResponse, error)
 
 	PutAskByItemId(item *entities.Item) error
-	PostAskMessage(message *entities.Messages) error
+	PostAskMessage(message *entities.Message) error
 }

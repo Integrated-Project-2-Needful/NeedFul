@@ -26,7 +26,7 @@ type Item struct {
 
 }
 
-type Messages struct {
+type Message struct {
 	MsgID            *uint `gorm:"primaryKey;autoIncrement"`
 	SenderUserID     *uint `gorm:"not null;"`
 	ReceiverUserID   *uint `gorm:"not null;"`

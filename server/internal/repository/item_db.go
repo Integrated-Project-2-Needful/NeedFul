@@ -256,7 +256,7 @@ func (r itemRepositoryDB) PutAskByItemId(item *entities.Item) error {
 	return nil
 }
 
-func (r itemRepositoryDB) PostAskMessage(message *entities.Messages) error {
+func (r itemRepositoryDB) PostAskMessage(message *entities.Message) error {
 	result := r.db.Create(message)
 	if result.Error != nil {
 		return result.Error

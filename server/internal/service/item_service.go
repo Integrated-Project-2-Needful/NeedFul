@@ -351,7 +351,7 @@ func (s itemService) PutAskByItemIdAndPostAskMessage(itemID, askerUserID int) (*
 	messageText := fmt.Sprintf("Hi! I want %s %s to you", *item.OfferType, *item.Itemname)
 
 	// Create the message entity
-	message := &entities.Messages{
+	message := &entities.Message{
 		SenderUserID:   v.UintPtr(askerUserID),
 		ReceiverUserID: item.UserID,
 		MsgText:        &messageText,

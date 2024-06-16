@@ -1,14 +1,5 @@
 package dtos
 
-//ItemID        *uint `gorm:"primaryKey;autoIncrement"`
-//UserID        *uint `gorm:"not null"`
-//Itemname      *string
-//Description   *string
-//ItemPic       *string
-//OfferType     *string
-//AskedByUserID *uint
-//AlreadyGave   *bool
-
 type ItemDataResponse struct {
 	ItemID        *uint   `json:"item_id" validate:"required"`
 	UserID        *uint   `json:"user_id" validate:"required"`

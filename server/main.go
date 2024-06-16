@@ -52,7 +52,7 @@ func main() {
 		panic("Failed to AutoMigrate Item")
 	}
 
-	err = db.AutoMigrate(&entities.Messages{})
+	err = db.AutoMigrate(&entities.Message{})
 	if err != nil {
 		panic("Failed to AutoMigrate Messages")
 	}
@@ -71,16 +71,16 @@ func main() {
 
 	userRepositoryDB := repository.NewUserRepositoryDB(db)
 	itemRepositoryDB := repository.NewItemRepositoryDB(db)
-	//followRepositoryDB := repository.NewFollowRepositoryDB(db)
+	messageRepositoryDB := repository.NewMessageRepositoryDB(db)
 
 	userService := service.NewUserService(userRepositoryDB, jwtSecret)
 	itemService := service.NewItemService(itemRepositoryDB)
-	//followService := service.NewFollowService(followRepositoryDB)
+	messageService := service.NewMessageService(messageRepositoryDB)
 	uploadService := service.NewUploadService(minioClient)
 
 	userHandler := handler.NewUserHandler(userService, jwtSecret, uploadService)
 	itemHandler := handler.NewItemHandler(itemService, jwtSecret, uploadService)
-	//followHandler := handler.NewFollowHandler(followService, jwtSecret)
+	messageHandler := handler.NewMessageHandler(messageService, jwtSecret)
 
 	app := fiber.New()
 
@@ -99,7 +99,7 @@ func main() {
 
 	//Endpoint ###########################################################################
 
-	// Endpoint of test
+	// Endpoint for test
 	app.Get("/GetUsers", userHandler.GetUsers)
 	app.Get("/GetUserByUserId/:UserID", userHandler.GetUserByUserId)
 	app.Get("/GetUserByToken", userHandler.GetUserByToken) //#
@@ -107,6 +107,10 @@ func main() {
 	app.Get("/GetItems", itemHandler.GetItems)
 	app.Get("/GetItemByItemId/:ItemID", itemHandler.GetItemByItemId)
 	app.Get("/GetItemByUserID/:UserID", itemHandler.GetItemByUserId)
+
+	app.Get("/GetMessages", messageHandler.GetMessages)
+	app.Get("/GetMessageByUserId/:UserID", messageHandler.GetMessageByUserId)
+	app.Get("/GetMessageByMsgId/:MsgID", messageHandler.GetMessageByMsgId)
 
 	app.Post("/upload", storageHandler.UploadFile)
 
