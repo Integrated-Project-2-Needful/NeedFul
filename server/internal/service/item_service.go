@@ -357,7 +357,6 @@ func (s itemService) PutAskByItemIdAndPostAskMessage(itemID, askerUserID int) (*
 		MsgText:        &messageText,
 	}
 
-	// Post the message
 	err = s.itemRepo.PostAskMessage(message)
 	if err != nil {
 		return nil, err
