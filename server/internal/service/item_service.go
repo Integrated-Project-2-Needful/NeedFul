@@ -99,6 +99,10 @@ func (s itemService) GetItemDetailsByItemId(itemid int) (*entities.Item, error) 
 		return nil, err
 	}
 
+	if *item == (entities.Item{}) {
+		return nil, fiber.NewError(fiber.StatusNotFound, "item doesn't exist")
+	}
+
 	itemResponse := entities.Item{
 		ItemID:        item.ItemID,
 		UserID:        item.UserID,

@@ -48,12 +48,12 @@ func (h *itemHandler) GetItemByUserId(c *fiber.Ctx) error {
 	userIDReceive, err := strconv.Atoi(c.Params("UserID"))
 
 	itemsResponse := make([]dtos.ItemDataByUserIdResponse, 0)
-	items, err := h.itemSer.GetItemByUserId(userIDReceive)
+	item, err := h.itemSer.GetItemByUserId(userIDReceive)
 	if err != nil {
 		return err
 	}
 
-	for _, item := range items {
+	for _, item := range item {
 		itemsResponse = append(itemsResponse, dtos.ItemDataByUserIdResponse{
 			ItemID:        item.ItemID,
 			UserID:        item.UserID,
