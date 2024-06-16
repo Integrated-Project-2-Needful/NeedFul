@@ -118,16 +118,16 @@ func (s itemService) GetItemDetailsByItemId(itemid int) (*entities.Item, error) 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-func (s itemService) GetItemsOfCurrentUser(userid int) ([]dtos.ItemsOfCurrentUserResponse, error) {
+func (s itemService) GetItemsOfCurrentUser(userid int) ([]entities.ItemsOfCurrentUserResponse, error) {
 	items, err := s.itemRepo.GetAllItemOfCurrentUser(userid)
 	if err != nil {
 		log.Println(err)
 		return nil, err
 	}
 
-	itemsResponse := []dtos.ItemsOfCurrentUserResponse{}
+	itemsResponse := []entities.ItemsOfCurrentUserResponse{}
 	for _, item := range items {
-		itemResponse := dtos.ItemsOfCurrentUserResponse{
+		itemResponse := entities.ItemsOfCurrentUserResponse{
 			ItemID:                  item.ItemID,
 			UserID:                  item.UserID,
 			Itemname:                item.Itemname,
@@ -145,16 +145,16 @@ func (s itemService) GetItemsOfCurrentUser(userid int) ([]dtos.ItemsOfCurrentUse
 	return itemsResponse, nil
 }
 
-func (s itemService) GetDonateItemsOfCurrentUser(userid int) ([]dtos.DonateItemsOfCurrentUserResponse, error) {
+func (s itemService) GetDonateItemsOfCurrentUser(userid int) ([]entities.DonateItemsOfCurrentUserResponse, error) {
 	items, err := s.itemRepo.GetDonateItemsOfCurrentUser(userid)
 	if err != nil {
 		log.Println(err)
 		return nil, err
 	}
 
-	itemsResponse := []dtos.DonateItemsOfCurrentUserResponse{}
+	itemsResponse := []entities.DonateItemsOfCurrentUserResponse{}
 	for _, item := range items {
-		itemResponse := dtos.DonateItemsOfCurrentUserResponse{
+		itemResponse := entities.DonateItemsOfCurrentUserResponse{
 			ItemID:                  item.ItemID,
 			UserID:                  item.UserID,
 			Itemname:                item.Itemname,
@@ -172,16 +172,16 @@ func (s itemService) GetDonateItemsOfCurrentUser(userid int) ([]dtos.DonateItems
 	return itemsResponse, nil
 }
 
-func (s itemService) GetReceiveItemsOfCurrentUser(userid int) ([]dtos.ReceiveItemsOfCurrentUserResponse, error) {
+func (s itemService) GetReceiveItemsOfCurrentUser(userid int) ([]entities.ReceiveItemsOfCurrentUserResponse, error) {
 	items, err := s.itemRepo.GetReceiveItemsOfCurrentUser(userid)
 	if err != nil {
 		log.Println(err)
 		return nil, err
 	}
 
-	itemsResponse := []dtos.ReceiveItemsOfCurrentUserResponse{}
+	itemsResponse := []entities.ReceiveItemsOfCurrentUserResponse{}
 	for _, item := range items {
-		itemResponse := dtos.ReceiveItemsOfCurrentUserResponse{
+		itemResponse := entities.ReceiveItemsOfCurrentUserResponse{
 			ItemID:                  item.ItemID,
 			UserID:                  item.UserID,
 			Itemname:                item.Itemname,
@@ -234,16 +234,16 @@ func (s itemService) DeleteItemByItemId(itemID int) error {
 	return nil
 }
 
-func (s itemService) GetMarketPlace(userid int) ([]dtos.MarketPlaceResponse, error) {
+func (s itemService) GetMarketPlace(userid int) ([]entities.MarketPlaceResponse, error) {
 	items, err := s.itemRepo.GetMarketPlace(userid)
 	if err != nil {
 		log.Println(err)
 		return nil, err
 	}
 
-	itemsResponse := []dtos.MarketPlaceResponse{}
+	itemsResponse := []entities.MarketPlaceResponse{}
 	for _, item := range items {
-		itemResponse := dtos.MarketPlaceResponse{
+		itemResponse := entities.MarketPlaceResponse{
 			ItemID:        item.ItemID,
 			UserID:        item.UserID,
 			Itemname:      item.Itemname,
@@ -260,16 +260,16 @@ func (s itemService) GetMarketPlace(userid int) ([]dtos.MarketPlaceResponse, err
 	return itemsResponse, nil
 }
 
-func (s itemService) GetDonateMarketPlace(userid int) ([]dtos.DonateMarketPlaceResponse, error) {
+func (s itemService) GetDonateMarketPlace(userid int) ([]entities.DonateMarketPlaceResponse, error) {
 	items, err := s.itemRepo.GetDonateMarketPlace(userid)
 	if err != nil {
 		log.Println(err)
 		return nil, err
 	}
 
-	itemsResponse := []dtos.DonateMarketPlaceResponse{}
+	itemsResponse := []entities.DonateMarketPlaceResponse{}
 	for _, item := range items {
-		itemResponse := dtos.DonateMarketPlaceResponse{
+		itemResponse := entities.DonateMarketPlaceResponse{
 			ItemID:        item.ItemID,
 			UserID:        item.UserID,
 			Itemname:      item.Itemname,
@@ -286,16 +286,16 @@ func (s itemService) GetDonateMarketPlace(userid int) ([]dtos.DonateMarketPlaceR
 	return itemsResponse, nil
 }
 
-func (s itemService) GetReceiveMarketPlace(userid int) ([]dtos.ReceiveMarketPlaceResponse, error) {
+func (s itemService) GetReceiveMarketPlace(userid int) ([]entities.ReceiveMarketPlaceResponse, error) {
 	items, err := s.itemRepo.GetReceiveMarketPlace(userid)
 	if err != nil {
 		log.Println(err)
 		return nil, err
 	}
 
-	itemsResponse := []dtos.ReceiveMarketPlaceResponse{}
+	itemsResponse := []entities.ReceiveMarketPlaceResponse{}
 	for _, item := range items {
-		itemResponse := dtos.ReceiveMarketPlaceResponse{
+		itemResponse := entities.ReceiveMarketPlaceResponse{
 			ItemID:        item.ItemID,
 			UserID:        item.UserID,
 			Itemname:      item.Itemname,

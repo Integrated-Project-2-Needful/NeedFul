@@ -35,7 +35,75 @@ type Messages struct {
 	ConFromItemAsker *bool
 }
 
+type ItemsOfCurrentUserResponse struct {
+	ItemID                  *uint
+	UserID                  *uint
+	Itemname                *string
+	Description             *string
+	ItemPic                 *string
+	OfferType               *string
+	AskedByUserID           *uint
+	AlreadyGave             *bool
+	Username                *string
+	UserPic                 *string
+	UsernameOfAskedByUserID *string
+}
+
+type DonateItemsOfCurrentUserResponse struct {
+	ItemID                  *uint
+	UserID                  *uint
+	Itemname                *string
+	Description             *string
+	ItemPic                 *string
+	OfferType               *string
+	AskedByUserID           *uint
+	AlreadyGave             *bool
+	Username                *string
+	UserPic                 *string
+	UsernameOfAskedByUserID *string
+}
+
+type ReceiveItemsOfCurrentUserResponse struct {
+	ItemID                  *uint
+	UserID                  *uint
+	Itemname                *string
+	Description             *string
+	ItemPic                 *string
+	OfferType               *string
+	AskedByUserID           *uint
+	AlreadyGave             *bool
+	Username                *string
+	UserPic                 *string
+	UsernameOfAskedByUserID *string
+}
+
 type MarketPlaceResponse struct {
+	ItemID        *uint
+	UserID        *uint
+	Itemname      *string
+	Description   *string
+	ItemPic       *string
+	OfferType     *string
+	AskedByUserID *uint
+	AlreadyGave   *bool
+	Username      *string
+	UserPic       *string
+}
+
+type DonateMarketPlaceResponse struct {
+	ItemID        *uint
+	UserID        *uint
+	Itemname      *string
+	Description   *string
+	ItemPic       *string
+	OfferType     *string
+	AskedByUserID *uint
+	AlreadyGave   *bool
+	Username      *string
+	UserPic       *string
+}
+
+type ReceiveMarketPlaceResponse struct {
 	ItemID        *uint
 	UserID        *uint
 	Itemname      *string

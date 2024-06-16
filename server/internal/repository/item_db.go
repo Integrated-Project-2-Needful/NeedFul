@@ -1,7 +1,6 @@
 package repository
 
 import (
-	"needful/internal/dtos"
 	"needful/internal/entities"
 	"needful/internal/utils/v"
 
@@ -75,9 +74,9 @@ func (r itemRepositoryDB) GetItemDetailsByItemId(itemid int) (*entities.Item, er
 //	return items, nil
 //}
 
-func (r itemRepositoryDB) GetAllItemOfCurrentUser(userid int) ([]dtos.ItemsOfCurrentUserResponse, error) {
+func (r itemRepositoryDB) GetAllItemOfCurrentUser(userid int) ([]entities.ItemsOfCurrentUserResponse, error) {
 	var items []struct {
-		dtos.ItemsOfCurrentUserResponse
+		entities.ItemsOfCurrentUserResponse
 		UsernameOfAskedByUserID string
 	}
 	result := r.db.
@@ -99,16 +98,16 @@ func (r itemRepositoryDB) GetAllItemOfCurrentUser(userid int) ([]dtos.ItemsOfCur
 		items[i].ItemsOfCurrentUserResponse.UsernameOfAskedByUserID = v.Ptr(item.UsernameOfAskedByUserID)
 	}
 	// Convert to the desired response type
-	var itemsResponse []dtos.ItemsOfCurrentUserResponse
+	var itemsResponse []entities.ItemsOfCurrentUserResponse
 	for _, item := range items {
 		itemsResponse = append(itemsResponse, item.ItemsOfCurrentUserResponse)
 	}
 	return itemsResponse, nil
 }
 
-func (r itemRepositoryDB) GetDonateItemsOfCurrentUser(userid int) ([]dtos.DonateItemsOfCurrentUserResponse, error) {
+func (r itemRepositoryDB) GetDonateItemsOfCurrentUser(userid int) ([]entities.DonateItemsOfCurrentUserResponse, error) {
 	var items []struct {
-		dtos.DonateItemsOfCurrentUserResponse
+		entities.DonateItemsOfCurrentUserResponse
 		UsernameOfAskedByUserID string
 	}
 	result := r.db.
@@ -130,16 +129,16 @@ func (r itemRepositoryDB) GetDonateItemsOfCurrentUser(userid int) ([]dtos.Donate
 		items[i].DonateItemsOfCurrentUserResponse.UsernameOfAskedByUserID = v.Ptr(item.UsernameOfAskedByUserID)
 	}
 	// Convert to the desired response type
-	var itemsResponse []dtos.DonateItemsOfCurrentUserResponse
+	var itemsResponse []entities.DonateItemsOfCurrentUserResponse
 	for _, item := range items {
 		itemsResponse = append(itemsResponse, item.DonateItemsOfCurrentUserResponse)
 	}
 	return itemsResponse, nil
 }
 
-func (r itemRepositoryDB) GetReceiveItemsOfCurrentUser(userid int) ([]dtos.ReceiveItemsOfCurrentUserResponse, error) {
+func (r itemRepositoryDB) GetReceiveItemsOfCurrentUser(userid int) ([]entities.ReceiveItemsOfCurrentUserResponse, error) {
 	var items []struct {
-		dtos.ReceiveItemsOfCurrentUserResponse
+		entities.ReceiveItemsOfCurrentUserResponse
 		UsernameOfAskedByUserID string
 	}
 	result := r.db.
@@ -162,7 +161,7 @@ func (r itemRepositoryDB) GetReceiveItemsOfCurrentUser(userid int) ([]dtos.Recei
 		items[i].ReceiveItemsOfCurrentUserResponse.UsernameOfAskedByUserID = v.Ptr(item.UsernameOfAskedByUserID)
 	}
 	// Convert to the desired response type
-	var itemsResponse []dtos.ReceiveItemsOfCurrentUserResponse
+	var itemsResponse []entities.ReceiveItemsOfCurrentUserResponse
 	for _, item := range items {
 		itemsResponse = append(itemsResponse, item.ReceiveItemsOfCurrentUserResponse)
 	}
@@ -186,8 +185,8 @@ func (r itemRepositoryDB) DeleteItemByItemId(itemid int) error {
 	return nil
 }
 
-func (r itemRepositoryDB) GetMarketPlace(userid int) ([]dtos.MarketPlaceResponse, error) {
-	items := []dtos.MarketPlaceResponse{}
+func (r itemRepositoryDB) GetMarketPlace(userid int) ([]entities.MarketPlaceResponse, error) {
+	items := []entities.MarketPlaceResponse{}
 	result := r.db.
 		Table("items").
 		Select(`
@@ -206,8 +205,8 @@ func (r itemRepositoryDB) GetMarketPlace(userid int) ([]dtos.MarketPlaceResponse
 	return items, nil
 }
 
-func (r itemRepositoryDB) GetDonateMarketPlace(userid int) ([]dtos.DonateMarketPlaceResponse, error) {
-	items := []dtos.DonateMarketPlaceResponse{}
+func (r itemRepositoryDB) GetDonateMarketPlace(userid int) ([]entities.DonateMarketPlaceResponse, error) {
+	items := []entities.DonateMarketPlaceResponse{}
 	result := r.db.
 		Table("items").
 		Select(`
@@ -227,8 +226,8 @@ func (r itemRepositoryDB) GetDonateMarketPlace(userid int) ([]dtos.DonateMarketP
 	return items, nil
 }
 
-func (r itemRepositoryDB) GetReceiveMarketPlace(userid int) ([]dtos.ReceiveMarketPlaceResponse, error) {
-	items := []dtos.ReceiveMarketPlaceResponse{}
+func (r itemRepositoryDB) GetReceiveMarketPlace(userid int) ([]entities.ReceiveMarketPlaceResponse, error) {
+	items := []entities.ReceiveMarketPlaceResponse{}
 	result := r.db.
 		Table("items").
 		Select(`

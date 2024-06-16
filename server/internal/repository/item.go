@@ -1,7 +1,6 @@
 package repository
 
 import (
-	"needful/internal/dtos"
 	"needful/internal/entities"
 )
 
@@ -16,17 +15,17 @@ type ItemRepository interface {
 
 	/////////////////////////////////////////////////////////////////
 
-	GetAllItemOfCurrentUser(int) ([]dtos.ItemsOfCurrentUserResponse, error)
-	GetDonateItemsOfCurrentUser(int) ([]dtos.DonateItemsOfCurrentUserResponse, error)
-	GetReceiveItemsOfCurrentUser(int) ([]dtos.ReceiveItemsOfCurrentUserResponse, error)
+	GetAllItemOfCurrentUser(int) ([]entities.ItemsOfCurrentUserResponse, error)
+	GetDonateItemsOfCurrentUser(int) ([]entities.DonateItemsOfCurrentUserResponse, error)
+	GetReceiveItemsOfCurrentUser(int) ([]entities.ReceiveItemsOfCurrentUserResponse, error)
 
 	PostAddItem(item *entities.Item) error
 
 	DeleteItemByItemId(itemID int) error
 
-	GetMarketPlace(int) ([]dtos.MarketPlaceResponse, error)
-	GetDonateMarketPlace(int) ([]dtos.DonateMarketPlaceResponse, error)
-	GetReceiveMarketPlace(int) ([]dtos.ReceiveMarketPlaceResponse, error)
+	GetMarketPlace(int) ([]entities.MarketPlaceResponse, error)
+	GetDonateMarketPlace(int) ([]entities.DonateMarketPlaceResponse, error)
+	GetReceiveMarketPlace(int) ([]entities.ReceiveMarketPlaceResponse, error)
 
 	PutAskByItemId(item *entities.Item) error
 }

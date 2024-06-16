@@ -16,17 +16,17 @@ type ItemService interface {
 
 	///////////////////////////////////////////////////////////
 
-	GetItemsOfCurrentUser(userid int) ([]dtos.ItemsOfCurrentUserResponse, error)
-	GetDonateItemsOfCurrentUser(userid int) ([]dtos.DonateItemsOfCurrentUserResponse, error)
-	GetReceiveItemsOfCurrentUser(userid int) ([]dtos.ReceiveItemsOfCurrentUserResponse, error)
+	GetItemsOfCurrentUser(userid int) ([]entities.ItemsOfCurrentUserResponse, error)
+	GetDonateItemsOfCurrentUser(userid int) ([]entities.DonateItemsOfCurrentUserResponse, error)
+	GetReceiveItemsOfCurrentUser(userid int) ([]entities.ReceiveItemsOfCurrentUserResponse, error)
 
 	PostAddItem(int, dtos.AddItemRequest) (*entities.Item, error)
 
 	DeleteItemByItemId(itemID int) error
 
-	GetMarketPlace(userid int) ([]dtos.MarketPlaceResponse, error)
-	GetDonateMarketPlace(userid int) ([]dtos.DonateMarketPlaceResponse, error)
-	GetReceiveMarketPlace(userid int) ([]dtos.ReceiveMarketPlaceResponse, error)
+	GetMarketPlace(userid int) ([]entities.MarketPlaceResponse, error)
+	GetDonateMarketPlace(userid int) ([]entities.DonateMarketPlaceResponse, error)
+	GetReceiveMarketPlace(userid int) ([]entities.ReceiveMarketPlaceResponse, error)
 
 	PutAskByItemId(int, int) (*entities.Item, error)
 }
