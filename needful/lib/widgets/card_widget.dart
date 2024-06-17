@@ -11,24 +11,26 @@ import 'package:needful/Utils/text_use.dart';
 
 class CardWidget extends StatelessWidget {
   final String product;
-  final String? grantBy;
-  final int wishlistId;
+  final String? askBy;
+  final int itemlistId;
   final String? username;
   final int? userid;
-  final bool? alreadyBought;
-  final int? grantedByUserId;
+  final bool? alreadyGave;
+  final int? askedByUserId;
+  final String description;
   final VoidCallback? onUpdate;
   final VoidCallback? onUpdateBuy;
 
   const CardWidget({
     super.key,
     required this.product,
-    this.grantBy,
-    required this.wishlistId,
+    this.askBy,
+    required this.itemlistId,
+    required this.description,
     this.username,
     this.userid,
-    this.alreadyBought,
-    this.grantedByUserId,
+    this.alreadyGave,
+    this.askedByUserId,
     this.onUpdate,
     this.onUpdateBuy,
   });
@@ -82,18 +84,18 @@ class CardWidget extends StatelessWidget {
         margin: const EdgeInsets.only(bottom: 25),
         child: InkWell(
           onTap: () {
-            if (grantBy != null && alreadyBought == true) {
+            if (askedByUserId == null && alreadyGave == null) {
               Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) => ItemDetails(
-                    wishlist_id: wishlistId,
+                    itemid: itemlistId,
                     username: username ?? 'null',
                     onUpdateBuy: onUpdateBuy,
                   ),
                 ),
               );
-            } else if (grantBy != null && alreadyBought != true) {
+            } else if (askedByUserId != null && alreadyGave == false) {
               // showDialog(
               //     context: context,
               //     builder: (BuildContext dialogContext) {
@@ -117,12 +119,12 @@ class CardWidget extends StatelessWidget {
               //         ],
               //       );
               //     });
-            } else if (grantBy == null && alreadyBought == null) {
+            } else if (askedByUserId != null && alreadyGave == true) {
               Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) => ItemDetails(
-                    wishlist_id: wishlistId,
+                    itemid: itemlistId,
                     username: username ?? 'null',
                     onUpdateBuy: onUpdateBuy,
                   ),
@@ -132,11 +134,12 @@ class CardWidget extends StatelessWidget {
           },
           child: Card(
             // margin: EdgeInsets.only(bottom: 25),
-            color: grantBy != null && alreadyBought == true
+            color: askedByUserId == null && alreadyGave == null
                 ? colorUse.activeButton // Green (granted and bought)
-                : (grantBy != null || alreadyBought == true)
+                : (askedByUserId != null && alreadyGave == false)
                     ? const Color(0xFFFCDDA2)
-                    : const Color.fromARGB(198, 242, 215, 255),
+                    : (askedByUserId != null && alreadyGave == true)
+                    ? colorUse.activeButton : colorUse.rejectButton,
             elevation: 7,
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -150,9 +153,13 @@ class CardWidget extends StatelessWidget {
                     child: Text(
                       product,
                       style: TextStyles.cardTitleStyle().merge(TextStyle(
-                          color: grantBy != null && alreadyBought == true
-                              ? const Color.fromARGB(224, 255, 255, 255)
-                              : const Color.fromARGB(184, 0, 0, 0))),
+                          color: askedByUserId == null && alreadyGave == null
+                                ? Colors.white // Green (granted and bought)
+                                : (askedByUserId != null && alreadyGave == false)
+                                    ? Colors.black
+                                    : (askedByUserId != null && alreadyGave == true)
+                                    ? Colors.white : Colors.white,
+                              )),
                     ),
                   ),
                 ),

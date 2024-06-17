@@ -65,7 +65,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
     try {
       final response = await dio.post(
-        'http://10.0.2.2:1432/Register',
+        'http://10.0.2.2:5428/Register',
         data: payload,
         options: Options(
           headers: {

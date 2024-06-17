@@ -1,7 +1,10 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:needful/Pages/Item/Item_details.dart';
 import 'package:needful/Utils/color_use.dart';
 import 'package:needful/components/integrate_model.dart' as components;
+import 'package:needful/provider/token_provider.dart';
+import 'package:provider/provider.dart';
 // import 'package:sweet_favors/Utils/color_use.dart';
 // import 'package:sweet_favors/pages/Friends/friend_wishlist_followers.dart';
 // import 'package:sweet_favors/components/follower_model.dart';
@@ -35,46 +38,33 @@ class _MarketPlaceDonateState extends State<MarketPlaceDonate> {
   //   return followers;
   // }
 
-  Future<List<components.Itemlist>> fetchItems() async {
-    // Mock data
-    final List<Map<String, dynamic>> mockData = [
-      {
-        'wishlist_id': 3,
-        'user_id': 106,
-        'itemname': 'PC',
-        'price': 799,
-        'link_url': 'https://img.freepik.com/free-photo/zen-balancing-pebbles-misty-lake_53876-138198.jpg',
-        'item_pic': 'https://www.digitaltrends.com/wp-content/uploads/2023/07/clx-hathor-review-11.jpg?fit=720%2C480&p=1',
-        'already_bought': false,
-        'username_of_granter': 'Alice',
-        'username_of_wishlist': 'Test',
-        'granted_by_user_id': 201,
-      },
-      {
-        'wishlist_id': 4,
-        'user_id': 104,
-        'itemname': 'Peace',
-        'price': 69,
-        'link_url': 'https://img.freepik.com/free-photo/zen-balancing-pebbles-misty-lake_53876-138198.jpg',
-        'item_pic': 'https://img.freepik.com/free-photo/zen-balancing-pebbles-misty-lake_53876-138198.jpg',
-        'already_bought': true,
-        'username_of_granter': 'Test',
-        'username_of_wishlist': 'Dave',
-        'granted_by_user_id': 202,
-      },
-    ];
+  Future<List<components.Itemlist>> fetchMarketDonate() async {
+    final token = Provider.of<TokenProvider>(context, listen: false).token;
+    Dio dio = Dio();
+    final response = await dio.get(
+      'http://10.0.2.2:5428/GetDonateMarketPlace',
+      options: Options(
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json',
+        },
+      ),
+    );
 
-    // Simulate network delay
-    // await Future.delayed(Duration(seconds: 2));
+    if (response.statusCode == 200) {
+      final parsedJson = response.data as List;
+      List<components.Itemlist> items = parsedJson.map((json) => components.Itemlist.fromJson(json)).toList();
+      return items;
+    } else {
+      throw Exception('Failed to load items');
+    }
+  }
 
-    // Parse the mock data
-    List<components.Itemlist> items = mockData.map((json) => components.Itemlist.fromJson(json)).toList();
-
+  void refreshMarketItemLists() {
     setState(() {
-      this.items = items;
+      // Trigger rebuild by updating state
+      fetchMarketDonate(); // Re-fetch wishlists
     });
-
-    return items;
   }
 
   @override
@@ -82,7 +72,7 @@ class _MarketPlaceDonateState extends State<MarketPlaceDonate> {
     return Container(
       margin: const EdgeInsets.only(bottom: 25),
       child: FutureBuilder<List<components.Itemlist>>(
-        future: fetchItems(),
+        future: fetchMarketDonate(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return GridView.count(
@@ -98,7 +88,10 @@ class _MarketPlaceDonateState extends State<MarketPlaceDonate> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => ItemDetails(wishlist_id: item.itemlistId, username: '',
+                          builder: (context) => ItemDetails(
+                            itemid: item.itemlistId,
+                            username: item.username!,
+                            onUpdateBuy: fetchMarketDonate,
                           ),
                         ),
                       );

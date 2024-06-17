@@ -1,42 +1,41 @@
 import 'package:flutter/material.dart';
-import 'package:needful/Pages/Auth/register.dart';
-import 'package:needful/pages/home.dart';
-import 'package:needful/pages/Auth/login.dart';
+import 'package:needful/Pages/Home/FirstHomePage.dart';
 import 'package:needful/pages/Auth/LoR.dart';
-
-// import 'package:provider/provider.dart';
-// import 'package:shared_preferences/shared_preferences.dart';
+import 'package:needful/provider/token_provider.dart';
+import 'package:needful/welcome.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   runApp(
-    // MultiProvider(
-      // providers: [
-        // ChangeNotifierProvider(create: (context) => TokenProvider()),
-        // ChangeNotifierProvider(create: (context) => WelcomeProvider()),
-      // ],
-      const MainApp(),
-    // ),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => TokenProvider()),
+        ChangeNotifierProvider(create: (context) => WelcomeProvider()),
+      ],
+      child: const MainApp(),
+    ),
   );
 }
 
-// class WelcomeProvider with ChangeNotifier {
-//   bool _isWelcomeShown = false;
+class WelcomeProvider with ChangeNotifier {
+  bool _isWelcomeShown = false;
 
-//   bool get isWelcomeShown => _isWelcomeShown;
+  bool get isWelcomeShown => _isWelcomeShown;
 
-//   Future<void> checkWelcomeStatus() async {
-//     SharedPreferences prefs = await SharedPreferences.getInstance();
-//     _isWelcomeShown = prefs.getBool('isWelcomeShown') ?? false;
-//     notifyListeners();
-//   }
+  Future<void> checkWelcomeStatus() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    _isWelcomeShown = prefs.getBool('isWelcomeShown') ?? false;
+    notifyListeners();
+  }
 
-//   Future<void> setWelcomeShown() async {
-//     SharedPreferences prefs = await SharedPreferences.getInstance();
-//     await prefs.setBool('isWelcomeShown', true);
-//     _isWelcomeShown = true;
-//     notifyListeners();
-//   }
-// }
+  Future<void> setWelcomeShown() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isWelcomeShown', true);
+    _isWelcomeShown = true;
+    notifyListeners();
+  }
+}
 
 class MainApp extends StatefulWidget {
   const MainApp({super.key});
@@ -49,26 +48,26 @@ class _MainAppState extends State<MainApp> {
   @override
   void initState() {
     super.initState();
-    // Provider.of<WelcomeProvider>(context, listen: false).checkWelcomeStatus();
+    Provider.of<WelcomeProvider>(context, listen: false).checkWelcomeStatus();
   }
 
   @override
   Widget build(BuildContext context) {
-    // final tokenProvider = Provider.of<TokenProvider>(context);
-    // final welcomeProvider = Provider.of<WelcomeProvider>(context);
+    final tokenProvider = Provider.of<TokenProvider>(context);
+    final welcomeProvider = Provider.of<WelcomeProvider>(context);
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: 'Inter'),
-      // home: const LoginOrRegister()
-      home: Home(),
-      //  !welcomeProvider.isWelcomeShown
-      //     ? Welcome(onFinished: () {
-      //         welcomeProvider.setWelcomeShown();
-      //       })
-      //     : tokenProvider.token == null
-      //         ? const LoginOrRegister()
-      //         : const FirstHomePage(),
+      home: 
+      // home: Home(),
+       !welcomeProvider.isWelcomeShown
+          ? Welcome(onFinished: () {
+              welcomeProvider.setWelcomeShown();
+            })
+          : tokenProvider.token == null
+              ? const LoginOrRegister()
+              : const FirstHomePage(),
     );
   }
 }

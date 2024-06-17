@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:needful/Pages/Auth/login.dart';
+import 'package:needful/Pages/Auth/register.dart';
 // import 'package:needful/Auth/login.dart';
 // import 'package:needful/Auth/sign_up.dart';
 import 'package:needful/Utils/color_use.dart';
@@ -11,6 +13,7 @@ class Welcome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: colorUse.primaryColor,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -19,71 +22,77 @@ class Welcome extends StatelessWidget {
               height: 50,
             ),
             Image.asset(
-              "assets/Logo.png",
+              "assets/Logo.jpg",
               width: 400,
               height: 400,
             ),
             const SizedBox(
               height: 10,
             ),
-            const Text('Welcome to Sweet Favors!',
+            const Text('Welcome to Needful!',
                 style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
-                    color: colorUse.textFriend)),
+                    color: colorUse.accent)),
             const SizedBox(
               height: 35,
             ),
-            // ElevatedButton(
-            //   onPressed: () {
-            //     Navigator.push(
-            //       context,
-            //       MaterialPageRoute(
-            //         builder: (context) => LoginPage(
-            //           onTap: () {},
-            //         ),
-            //       ),
-            //     );
-            //   },
-            //   style: ElevatedButton.styleFrom(
-            //     fixedSize: const Size(200, 50),
-            //     elevation: 5,
-            //   ),
-            //   child: const Text(
-            //     "Login",
-            //     style: TextStyle(
-            //       fontSize: 16,
-            //       fontWeight: FontWeight.w600,
-            //     ),
-            //   ),
-            // ),
-            // const SizedBox(
-            //   height: 15,
-            // ),
-            // ElevatedButton(
-            //   onPressed: () {
-            //     Navigator.push(
-            //       context,
-            //       MaterialPageRoute(
-            //         builder: (context) => SignUpPage(
-            //           onTap: () {},
-            //         ),
-            //       ),
-            //     );
-            //   },
-            //   style: ElevatedButton.styleFrom(
-            //     fixedSize: const Size(200, 50),
-            //     elevation: 5,
-            //     backgroundColor: colorUse.activeButton,
-            //   ),
-            //   child: const Text(
-            //     "Register",
-            //     style: TextStyle(
-            //         fontSize: 16,
-            //         fontWeight: FontWeight.w600,
-            //         color: Colors.white),
-            //   ),
-            // ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => LoginPage(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ),
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                fixedSize: const Size(200, 50),
+                elevation: 5,
+                backgroundColor: colorUse.activeButton
+              ),
+              child: const Text(
+                "Login",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 15,
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SignUpPage(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ),
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                fixedSize: const Size(200, 50),
+                elevation: 5,
+                backgroundColor: colorUse.accent,
+              ),
+              child: const Text(
+                "Register",
+                style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black54),
+              ),
+            ),
           ],
         ),
       ),

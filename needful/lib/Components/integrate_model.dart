@@ -1,41 +1,47 @@
 class Itemlist {
-  int itemlistId;
-  int userId;
-  String itemname;
-  int price;
-  String? linkurl;
-  String? itemPic;
-  bool? alreadyBought; // Make it nullable to handle potential null values
-  String? userNameOfGranter;
-  String? userNameOfWishlist;
-  int? grantedByUserId;
+ final int itemlistId;         // Renamed from item_id for consistency
+ final int userId;
+ final String itemname;
+ final String description;     // Added to match the JSON
+ final String itemPic;
+ final String offerType;       // Renamed for consistency, was offer_type
+ final int? askedByUserId;      // Renamed for consistency, was asked_by_user_id
+ final bool? alreadyGave;       // Renamed for consistency, was already_gave
+ final String? username;
+ final String? userPic;         // Added to match the JSON
+ final String? usernameAskedByUserId; // Renamed for consistency
 
-  Itemlist(
-      {required this.itemlistId,
-      required this.userId,
-      required this.itemname,
-      required this.price,
-      this.linkurl,
-      this.itemPic,
-      this.alreadyBought,
-      this.userNameOfGranter,
-      this.userNameOfWishlist,
-      this.grantedByUserId});
+  Itemlist({
+    required this.itemlistId,
+    required this.userId,
+    required this.itemname,
+    required this.description, // Now required since it's in JSON
+    required this.itemPic,
+    required this.offerType,
+    required this.askedByUserId,
+    required this.alreadyGave,
+    required this.username,
+    required this.userPic, 
+    required this.usernameAskedByUserId,
+  });
 
   factory Itemlist.fromJson(Map<String, dynamic> json) {
     return Itemlist(
-        itemlistId: json['wishlist_id'],
-        userId: json['user_id'],
-        itemname: json['itemname'],
-        price: json['price'],
-        linkurl: json['link_url'],
-        itemPic: json['item_pic'],
-        alreadyBought: json['already_bought'],
-        userNameOfGranter: json['username_of_granter'],
-        userNameOfWishlist: json['username_of_wishlist'],
-        grantedByUserId: json['granted_by_user_id']);
+      itemlistId: json['item_id'],
+      userId: json['user_id'],
+      itemname: json['itemname'],
+      description: json['description'], 
+      itemPic: json['item_pic'],
+      offerType: json['offer_type'],
+      askedByUserId: json['asked_by_user_id'],
+      alreadyGave: json['already_gave'],
+      username: json['username'],
+      userPic: json['user_pic'],
+      usernameAskedByUserId: json['username_asked_by_user_id'],
+    );
   }
 }
+
 
 class WishlistItem {
   final int id;

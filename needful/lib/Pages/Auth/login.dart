@@ -18,18 +18,19 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   //text constrollers
-  final TextEditingController emailController = TextEditingController();
+  final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final Dio dio = Dio();
 
   void _login() async {
     final data = {
-      "username": emailController.text,
+      "username": usernameController.text,
       "password": passwordController.text,
     };
 
     try {
       final response = await _makeLoginRequest(data);
+      print('start');
 
       if (response.statusCode == 200) {
         final token = response.data['token'];
@@ -48,19 +49,19 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
 void dispose() {
-  emailController.dispose();
+  usernameController.dispose();
   passwordController.dispose();
   super.dispose();
 }
 
   Future<Response> _makeLoginRequest(Map<String, dynamic> data) async {
     return dio.post(
-      'http://10.0.2.2:1432/Login', // Use HTTPS
+      'http://10.0.2.2:5428/Login', // Use HTTPS
       data: data,
       options: Options(
         headers: {
           'Content-Type': 'application/json',
-          'secret': 'SweetSecret',
+          // 'secret': 'NeedfulSecret',
         },
       ),
     );
@@ -104,7 +105,7 @@ void dispose() {
                 MyTextField(
                   hintText: 'Enter Username',
                   obscureText: false,
-                  controller: emailController,
+                  controller: usernameController,
                 ),
 
                 const SizedBox(height: 20),

@@ -41,25 +41,6 @@ class _FriendpageState extends State<MarketPlacePage>
         shadowColor: const Color.fromARGB(255, 98, 98, 98),
         centerTitle: true,
         automaticallyImplyLeading: false,
-        // actions: <Widget>[
-        //   Padding(
-        //     padding: const EdgeInsets.only(right: 18.0),
-        //     child: IconButton(
-        //       icon: const Icon(Icons.person_add),
-        //       color: const Color.fromARGB(240, 255, 255, 255),
-        //       tooltip: 'Add friend',
-        //       onPressed: () {
-        //         Navigator.push(
-        //           context,
-        //           MaterialPageRoute(
-        //             builder: (context) => const AddFriend(),
-        //             // this is not completed, it needs to check if the friend is mutual follow or not
-        //           ),
-        //         );
-        //       },
-        //     ),
-        //   ),
-        // ],
       ),
       body: Column(
         children: [

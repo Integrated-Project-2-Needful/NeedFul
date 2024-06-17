@@ -1,7 +1,9 @@
 // import 'package:dio/dio.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:needful/Components/profile_bar.dart';
 import 'package:needful/Utils/color_use.dart';
+import 'package:needful/provider/token_provider.dart';
 import 'package:needful/widgets/HomepageDonate.dart';
 import 'package:needful/widgets/HomepageReceive.dart';
 import 'package:needful/widgets/card_widget.dart';
@@ -11,6 +13,7 @@ import 'package:needful/widgets/card_widget.dart';
 // // import 'package:sweet_favors/widgets/friends_msg_card.dart';
 // import 'package:sweet_favors/widgets/profile_bar.dart';
 import 'package:needful/components/integrate_model.dart' as components;
+import 'package:provider/provider.dart';
 
 
 class FirstHomePage extends StatefulWidget {
@@ -35,73 +38,69 @@ class _FirstHomePageState extends State<FirstHomePage> with SingleTickerProvider
   void initState() {
     super.initState();
     fetchUserData();
-    fetchItems();
+    // fetchItems();
     _tabController = TabController(length: 2, vsync: this);
   }
 
   Future<void> fetchUserData() async {
-    // final token = Provider.of<TokenProvider>(context, listen: false).token;
-    // final userId = Provider.of<TokenProvider>(context, listen: false).userId;
+    final token = Provider.of<TokenProvider>(context, listen: false).token;
+    final userId = Provider.of<TokenProvider>(context, listen: false).userId;
+    Dio dio = Dio();
+    final response = await dio.get(
+      'http://10.0.2.2:5428/GetProfileOfCurrentUserByUserId/$userId',
+      options: Options(
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json', // Adjust content type as needed
+        },
+      ),
+    );
 
-    // Mock user data
-    setState(() {
-      username = 'JohnDoe';
-      email = 'johndoe@example.com';
-      img = 'https://img.freepik.com/free-photo/zen-balancing-pebbles-misty-lake_53876-138198.jpg';
-      firstname = 'John';
-      lastname = 'Doe';
-      fullname = '$firstname $lastname';
-      userid = 1;
-    });
+    if (response.statusCode == 200) {
+      final parsedJson = response.data; // Directly get the parsed data
+      setState(() {
+        // Update the username and email variables with the parsed user data
+        username = parsedJson['username'];
+        email = parsedJson['email'];
+        img = parsedJson['user_pic'];
+        firstname = parsedJson['firstname'];
+        lastname = parsedJson['lastname'];
+        fullname = '$firstname $lastname';
+        userid = userId;
+      });
+    } else {
+      throw Exception('Failed to load user data');
+    }
   }
 
-  Future<List<components.Itemlist>> fetchItems() async {
-    // Mock data
-    final List<Map<String, dynamic>> mockData = [
-      {
-        'wishlist_id': 1,
-        'user_id': 101,
-        'itemname': 'Smartphone',
-        'price': 699,
-        'link_url': 'https://example.com/smartphone',
-        'item_pic': 'https://example.com/smartphone.jpg',
-        'already_bought': false,
-        'username_of_granter': 'Alice',
-        'username_of_wishlist': 'Bob',
-        'granted_by_user_id': 201,
-      },
-      {
-        'wishlist_id': 2,
-        'user_id': 102,
-        'itemname': 'Laptop',
-        'price': 999,
-        'link_url': 'https://example.com/laptop',
-        'item_pic': 'https://example.com/laptop.jpg',
-        'already_bought': true,
-        'username_of_granter': 'Charlie',
-        'username_of_wishlist': 'Dave',
-        'granted_by_user_id': 202,
-      },
-    ];
+  //   Future<List<components.Itemlist>> fetchItems() async {
+  //   final token = Provider.of<TokenProvider>(context, listen: false).token;
+  //   Dio dio = Dio();
+  //   final response = await dio.get(
+  //     'http://10.0.2.2:5428/GetWishlistsOfCurrentUser',
+  //     options: Options(
+  //       headers: {
+  //         'Authorization': 'Bearer $token',
+  //         'Content-Type': 'application/json',
+  //       },
+  //     ),
+  //   );
 
-    // Simulate network delay
-    // await Future.delayed(Duration(seconds: 2));
+  //   if (response.statusCode == 200) {
+  //     final parsedJson = response.data as List;
+  //     List<components.Itemlist> items = parsedJson.map((json) => components.Itemlist.fromJson(json)).toList();
+  //     return items;
+  //   } else {
+  //     throw Exception('Failed to load items');
+  //   }
+  // }
 
-    // Parse the mock data
-    List<components.Itemlist> items = mockData.map((json) => components.Itemlist.fromJson(json)).toList();
 
-    setState(() {
-      this.items = items;
-    });
-
-    return items;
-  }
-
-  void refreshItems() {
-    setState(() {
-      fetchItems();
-    });
-  }
+  // void refreshItems() {
+  //   setState(() {
+  //     fetchItems();
+  //   });
+  // }
 // class FirstHomePage extends StatefulWidget {
 //   const FirstHomePage({super.key});
 
@@ -140,7 +139,7 @@ class _FirstHomePageState extends State<FirstHomePage> with SingleTickerProvider
   //   final token = Provider.of<TokenProvider>(context, listen: false).token;
   //   Dio dio = Dio();
   //   final response = await dio.get(
-  //     'http://10.0.2.2:1432/GetWishlistsOfCurrentUser',
+  //     'http://10.0.2.2:5428/GetWishlistsOfCurrentUser',
   //     options: Options(
   //       headers: {
   //         'Authorization': 'Bearer $token',
@@ -170,7 +169,7 @@ class _FirstHomePageState extends State<FirstHomePage> with SingleTickerProvider
   //   final userId = Provider.of<TokenProvider>(context, listen: false).userId;
   //   Dio dio = Dio();
   //   final response = await dio.get(
-  //     'http://10.0.2.2:1432/GetProfileOfCurrentUser/$userId',
+  //     'http://10.0.2.2:5428/GetProfileOfCurrentUser/$userId',
   //     options: Options(
   //       headers: {
   //         'Authorization': 'Bearer $token',

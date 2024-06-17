@@ -1,12 +1,15 @@
 import 'dart:io';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:needful/Utils/color_use.dart';
+import 'package:needful/provider/token_provider.dart';
 import 'package:needful/widgets/radioButton.dart';
 import 'package:needful/pages/home.dart';
 // import 'package:sweet_favors/provider/token_provider.dart';
 import 'package:needful/widgets/text_form.dart';
 import 'package:needful/widgets/button_at_bottom.dart';
 import 'package:needful/widgets/add_image.dart';
+import 'package:provider/provider.dart';
 
 class NewItemAdd extends StatefulWidget {
   const NewItemAdd({super.key});
@@ -18,61 +21,60 @@ class NewItemAdd extends StatefulWidget {
 class _NewItemAddState extends State<NewItemAdd> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _itemNameController = TextEditingController();
-  // final TextEditingController _quantityController = TextEditingController();
   final TextEditingController _DescriptionController = TextEditingController();
-  final TextEditingController _linkUrlController = TextEditingController();
   String _selectedValueForRadioButton = '';
   File? _selectedImage;
 
-  // Future<bool> addWishlistItem() async {
-  //   // final token = Provider.of<TokenProvider>(context, listen: false).token;
-  //   // final userId = Provider.of<TokenProvider>(context, listen: false).userId;
-  //   const url = 'http://10.0.2.2:1432/PostAddWishlist';
-  //   String fileName = 'image_${DateTime.now().millisecondsSinceEpoch}.jpg';
-  //   try {
-  //     var formData = FormData.fromMap({
-  //       'itemname': _itemNameController.text ?? '',
-  //       // 'quantity': _quantityController.text ?? '',
-  //       'Price': _priceController.text ?? '',
-  //       'LinkURL': _linkUrlController.text ?? '',
-  //       'file': await MultipartFile.fromFile(
-  //         _selectedImage!.path,
-  //         filename: fileName,
-  //       ),
-  //     });
+  Future<bool> addItem() async {
+    final token = Provider.of<TokenProvider>(context, listen: false).token;
+    const url = 'http://10.0.2.2:5428/PostAddItem';
+    String fileName = 'image_${DateTime.now().millisecondsSinceEpoch}.jpg';
+    try {
+      var formData = FormData.fromMap({
+        'itemname': _itemNameController.text ?? '',
+        'description': _DescriptionController.text ?? '',
+        'file': await MultipartFile.fromFile(
+          _selectedImage!.path,
+          filename: fileName,
+        ),
+        'offertype': _selectedValueForRadioButton ?? ''
+      });
 
-  //     final response = await Dio().post(
-  //       url,
-  //       data: formData,
-  //       options: Options(
-  //         headers: {
-  //           'Authorization': 'Bearer $token',
-  //           'Content-Type': 'application/json', // Adjust content type as needed
-  //         },
-  //       ),
-  //     );
+      final response = await Dio().post(
+        url,
+        data: formData,
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer $token',
+            'Content-Type': 'application/json', // Adjust content type as needed
+          },
+        ),
+      );
 
-  //     if (response.statusCode == 200) {
-  //       var map = response.data as Map;
+      if (response.statusCode == 200) {
+        var map = response.data as Map;
 
-  //       if (map['status'] == 'Successfully registered') {
-  //         return true;
-  //       }
-  //       return true;
-  //     } else {
-  //       return false;
-  //     }
-  //   } catch (e) {
-  //     return false;
-  //   }
-  // }
+        if (map['status'] == 'Successfully registered') {
+          return true;
+        }
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      return false;
+    }
+  }
 
   @override
   void dispose() {
     _itemNameController.dispose();
-    // _quantityController.dispose();
     _DescriptionController.dispose();
-    _linkUrlController.dispose();
+    if (_selectedImage != null) {
+    _selectedImage!.delete(); // Attempt to delete the file
+    _selectedImage = null; // Clear the reference
+    }
+    _selectedValueForRadioButton = '';
     super.dispose();
   }
 
@@ -120,7 +122,15 @@ class _NewItemAddState extends State<NewItemAdd> {
                 ),
                 Radiobutton(title: 'Purpose', labels: const ['Looking to receive','Looking to donate'],
                 onChanged: (value) {
-                  _selectedValueForRadioButton = value;
+                  if(value == 'Looking to receive'){
+                    setState(() {
+                      _selectedValueForRadioButton = 'Receive';
+                    });
+                  }else{
+                    setState(() {
+                      _selectedValueForRadioButton = 'Donate';
+                    });
+                  }
                 },),
                 Padding(
                   padding: const EdgeInsets.only(top: 20.0),
@@ -137,8 +147,7 @@ class _NewItemAddState extends State<NewItemAdd> {
                   padding: const EdgeInsets.only(top: 20.0, bottom: 20),
                   child: ButtonAtBottom(
                     onPressed: () async {
-                      // bool success = await addWishlistItem();
-                      bool success = true;
+                      bool success = await addItem();
                       if (success) {
                         print('true');
                         Navigator.push(
@@ -146,11 +155,12 @@ class _NewItemAddState extends State<NewItemAdd> {
                             MaterialPageRoute(
                                 builder: (context) => const Home()));
                       }
-                      //  else {
-                      //   print('false not successful');
-                      // }
+                       else {
+                        print('false not successful');
+                      }
                     },
                     text: 'SUBMIT',
+                    color: colorUse.activeButton,
                   ),
                 ),
               ],

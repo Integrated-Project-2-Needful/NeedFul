@@ -1,8 +1,11 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:needful/Pages/Item/Item_details.dart';
 import 'package:needful/Utils/color_use.dart';
 import 'package:needful/components/integrate_model.dart' as components;
+import 'package:needful/provider/token_provider.dart';
 import 'package:needful/widgets/card_widget.dart';
+import 'package:provider/provider.dart';
 // import 'package:sweet_favors/Utils/color_use.dart';
 // import 'package:sweet_favors/pages/Friends/friend_wishlist_followers.dart';
 // import 'package:sweet_favors/components/follower_model.dart';
@@ -17,101 +20,41 @@ class HomePageReceive extends StatefulWidget {
 }
 
 class _HomePageReceiveState extends State<HomePageReceive> {
-  // late FollowerService _followerService;
-  // late Future<List<Follower>> _followersFuture;
   List<components.Itemlist> items = [];
 
   @override
   void initState() {
     super.initState();
-    // _followerService = FollowerService(Dio());
-    // _followersFuture = _fetchFollowers();
+    fetchItemsReceieve();
   }
 
-  // Future<List<Follower>> _fetchFollowers() async {
-  //   final token = Provider.of<TokenProvider>(context, listen: false).token;
-  //   final userId = Provider.of<TokenProvider>(context, listen: false).userId;
-  //   final followers =
-  //       await _followerService.fetchFollowersOfCurrentUser(token!, userId!);
-  //   return followers;
-  // }
+  Future<List<components.Itemlist>> fetchItemsReceieve() async {
+    final token = Provider.of<TokenProvider>(context, listen: false).token;
+    Dio dio = Dio();
+    final response = await dio.get(
+      'http://10.0.2.2:5428/GetReceiveItemsOfCurrentUser',
+      options: Options(
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json',
+        },
+      ),
+    );
 
-  Future<List<components.Itemlist>> fetchItems() async {
-    // Mock data
-    final List<Map<String, dynamic>> mockData = [
-      {
-        'wishlist_id': 1,
-        'user_id': 101,
-        'itemname': 'Tea',
-        'price': 699,
-        'link_url': 'https://img.freepik.com/free-photo/zen-balancing-pebbles-misty-lake_53876-138198.jpg',
-        'item_pic': 'https://cdn-prod.medicalnewstoday.com/content/images/articles/324/324771/close-up-of-a-cup-of-tea.jpg',
-        'already_bought': false,
-        'username_of_granter': 'Alice',
-        'username_of_wishlist': 'Bob',
-        'granted_by_user_id': 201,
-      },
-      {
-        'wishlist_id': 2,
-        'user_id': 102,
-        'itemname': 'Laptop',
-        'price': 999,
-        'link_url': 'https://img.freepik.com/free-photo/zen-balancing-pebbles-misty-lake_53876-138198.jpg',
-        'item_pic': 'https://reviewed-com-res.cloudinary.com/image/fetch/s--SHZfNhYu--/b_white,c_fill,cs_srgb,f_auto,fl_progressive.strip_profile,g_xy_center,h_668,q_auto,w_1187,x_833,y_803/https://reviewed-production.s3.amazonaws.com/1588384493638/macbook-hero-ii.jpg',
-        'already_bought': true,
-        'username_of_granter': 'Charlie',
-        'username_of_wishlist': 'Dave',
-        'granted_by_user_id': 202,
-      },
-      {
-        'wishlist_id': 2,
-        'user_id': 102,
-        'itemname': 'Laptop',
-        'price': 999,
-        'link_url': 'https://img.freepik.com/free-photo/zen-balancing-pebbles-misty-lake_53876-138198.jpg',
-        'item_pic': 'https://reviewed-com-res.cloudinary.com/image/fetch/s--SHZfNhYu--/b_white,c_fill,cs_srgb,f_auto,fl_progressive.strip_profile,g_xy_center,h_668,q_auto,w_1187,x_833,y_803/https://reviewed-production.s3.amazonaws.com/1588384493638/macbook-hero-ii.jpg',
-        'already_bought': true,
-        'username_of_granter': 'Charlie',
-        'username_of_wishlist': 'Dave',
-        'granted_by_user_id': 202,
-      },
-      {
-        'wishlist_id': 2,
-        'user_id': 102,
-        'itemname': 'Laptop',
-        'price': 999,
-        'link_url': 'https://img.freepik.com/free-photo/zen-balancing-pebbles-misty-lake_53876-138198.jpg',
-        'item_pic': 'https://reviewed-com-res.cloudinary.com/image/fetch/s--SHZfNhYu--/b_white,c_fill,cs_srgb,f_auto,fl_progressive.strip_profile,g_xy_center,h_668,q_auto,w_1187,x_833,y_803/https://reviewed-production.s3.amazonaws.com/1588384493638/macbook-hero-ii.jpg',
-        'already_bought': true,
-        'username_of_granter': 'Charlie',
-        'username_of_wishlist': 'Dave',
-        'granted_by_user_id': 202,
-      },
-      {
-        'wishlist_id': 2,
-        'user_id': 102,
-        'itemname': 'Laptop',
-        'price': 999,
-        'link_url': 'https://img.freepik.com/free-photo/zen-balancing-pebbles-misty-lake_53876-138198.jpg',
-        'item_pic': 'https://reviewed-com-res.cloudinary.com/image/fetch/s--SHZfNhYu--/b_white,c_fill,cs_srgb,f_auto,fl_progressive.strip_profile,g_xy_center,h_668,q_auto,w_1187,x_833,y_803/https://reviewed-production.s3.amazonaws.com/1588384493638/macbook-hero-ii.jpg',
-        'already_bought': true,
-        'username_of_granter': 'Charlie',
-        'username_of_wishlist': 'Dave',
-        'granted_by_user_id': 202,
-      },
-    ];
+    if (response.statusCode == 200) {
+      final parsedJson = response.data as List;
+      List<components.Itemlist> items = parsedJson.map((json) => components.Itemlist.fromJson(json)).toList();
+      return items;
+    } else {
+      throw Exception('Failed to load items');
+    }
+  }
 
-    // Simulate network delay
-    // await Future.delayed(Duration(seconds: 2));
-
-    // Parse the mock data
-    List<components.Itemlist> items = mockData.map((json) => components.Itemlist.fromJson(json)).toList();
-
+  void refreshItemLists() {
     setState(() {
-      this.items = items;
+      // Trigger rebuild by updating state
+      fetchItemsReceieve(); // Re-fetch wishlists
     });
-
-    return items;
   }
 
   @override
@@ -119,7 +62,7 @@ class _HomePageReceiveState extends State<HomePageReceive> {
     return Container(
       margin: const EdgeInsets.all(8),
       child: FutureBuilder<List<components.Itemlist>>(
-                future: fetchItems(),
+                future: fetchItemsReceieve(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(child: CircularProgressIndicator());
@@ -139,16 +82,22 @@ class _HomePageReceiveState extends State<HomePageReceive> {
                         itemCount: items.length,
                         itemBuilder: (context, index) {
                           final itemlist = items[index];
-                          return CardWidget(
-                            product: itemlist.itemname,
-                            grantBy: itemlist.userNameOfGranter,
-                            grantedByUserId: itemlist.grantedByUserId,
-                            wishlistId: itemlist.itemlistId,
-                            username:itemlist.userNameOfGranter, // Access from the surrounding scope
-                            userid: itemlist.userId, // Access from the surrounding scope
-                            alreadyBought: itemlist.alreadyBought,
-                            // onUpdate: refreshWishlists,
-                          );
+                          if(itemlist.askedByUserId != null && itemlist.alreadyGave == true){
+                            return SizedBox.shrink();
+                          }
+                          else{
+                            return CardWidget(
+                              product: itemlist.itemname,
+                              askBy: itemlist.usernameAskedByUserId,
+                              askedByUserId: itemlist.askedByUserId,
+                              itemlistId: itemlist.itemlistId,
+                              username:itemlist.username, // Access from the surrounding scope
+                              userid: itemlist.userId, // Access from the surrounding scope
+                              alreadyGave: itemlist.alreadyGave,
+                              onUpdate: refreshItemLists,
+                              description: itemlist.description,
+                            );
+                          }
                         },
                       );
                     }

@@ -1,11 +1,16 @@
+import 'dart:convert';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:needful/Utils/color_use.dart';
+import 'package:needful/provider/token_provider.dart';
 // Commented out for static data example
 // import 'package:dio/dio.dart';
 // import 'package:provider/provider.dart';
 import 'package:needful/widgets/button_at_bottom.dart';
 import 'package:needful/widgets/text_form.dart';
 import 'package:needful/widgets/title_bar.dart';
+import 'package:provider/provider.dart';
 
 class EditProfile extends StatefulWidget {
   const EditProfile({super.key});
@@ -37,13 +42,11 @@ class _EditProfileState extends State<EditProfile> {
   }
 
   Future<void> fetchUserData() async {
-    // Commented out for static data example
-    /*
     final token = Provider.of<TokenProvider>(context, listen: false).token;
     final userId = Provider.of<TokenProvider>(context, listen: false).userId;
     Dio dio = Dio();
     final response = await dio.get(
-      'http://10.0.2.2:1432/GetProfileOfCurrentUser/$userId',
+      'http://10.0.2.2:5428/GetEditUserProfileByUserId/$userId',
       options: Options(
         headers: {
           'Authorization': 'Bearer $token',
@@ -72,27 +75,9 @@ class _EditProfileState extends State<EditProfile> {
     } else {
       throw Exception('Failed to load user data');
     }
-    */
-
-    // Static data for testing
-    setState(() {
-      username = 'testuser';
-      email = 'testuser@example.com';
-      fname = 'Test';
-      lname = 'User';
-      phoneNum = '1234567890';
-
-      _textControllers[0].text = fname ?? '';
-      _textControllers[1].text = lname ?? '';
-      _textControllers[2].text = username ?? '';
-      _textControllers[3].text = phoneNum ?? '';
-      _textControllers[4].text = email ?? '';
-    });
   }
 
   Future<void> updateUserProfile() async {
-    // Commented out for static data example
-    /*
     Dio dio = Dio();
     final token = Provider.of<TokenProvider>(context, listen: false).token;
     final userId = Provider.of<TokenProvider>(context, listen: false).userId;
@@ -105,7 +90,7 @@ class _EditProfileState extends State<EditProfile> {
     };
 
     final response = await dio.patch(
-      'http://10.0.2.2:1432/UpdateEditUserProfile/$userId',
+      'http://10.0.2.2:5428/PatchEditUserProfileByUserId/$userId',
       data: json.encode(data),
       options: Options(
         headers: {
@@ -124,7 +109,6 @@ class _EditProfileState extends State<EditProfile> {
         const SnackBar(content: Text('Failed to update profile')),
       );
     }
-    */
 
     // Static response for testing
     ScaffoldMessenger.of(context).showSnackBar(

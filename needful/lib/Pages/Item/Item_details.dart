@@ -1,22 +1,23 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:needful/Utils/color_use.dart';
-// import 'package:provider/provider.dart';
 import 'package:needful/Utils/text_use.dart';
-// import 'package:needful/provider/token_provider.dart';
 import 'package:needful/pages/home.dart';
+import 'package:needful/provider/token_provider.dart';
 import 'package:needful/widgets/Button_for_pop_up.dart';
 import 'package:needful/widgets/button_at_bottom.dart';
 import 'package:needful/widgets/pop_up.dart';
 import 'package:needful/widgets/title_bar.dart';
+import 'package:provider/provider.dart';
 
 class ItemDetails extends StatefulWidget {
-  final int wishlist_id;
+  final int itemid;
   final String username;
   final VoidCallback? onUpdateBuy;
   // final int? userIdOfUser;
   const ItemDetails({
     super.key,
-    required this.wishlist_id,
+    required this.itemid,
     required this.username,
     this.onUpdateBuy,
   });
@@ -31,17 +32,16 @@ class _ItemDetailsState extends State<ItemDetails> {
   @override
   void initState() {
     super.initState();
-    fetchWishlists();
+    fetchItem();
   }
 
-  Future<Map<String, dynamic>> fetchWishlists() async {
-    // Commented out for static data example
-    /*
+  Future<Map<String, dynamic>> fetchItem() async {
+    
     final token = Provider.of<TokenProvider>(context, listen: false).token;
     final userId = Provider.of<TokenProvider>(context, listen: false).userId;
     Dio dio = Dio(); // Create a Dio instance
     final response = await dio.get(
-      'http://10.0.2.2:1432/GetWishlistDetails/${widget.wishlist_id}',
+      'http://10.0.2.2:5428/GetItemDetailsByItemId/${widget.itemid}',
       options: Options(
         headers: {
           'Authorization': 'Bearer $token',
@@ -58,29 +58,15 @@ class _ItemDetailsState extends State<ItemDetails> {
     } else {
       throw Exception('Failed to load wishlists');
     }
-    */
-
-    // Static data for testing
-    userIdFromToken = 1; // Example user ID from token
-    return {
-      'itemname': 'Test Item',
-      'price': 20.0,
-      'description': 'https://example.commmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm',
-      'item_pic': 'https://cdn-prod.medicalnewstoday.com/content/images/articles/324/324771/close-up-of-a-cup-of-tea.jpg',
-      'user_id': 2, // Example user ID of the wish creator
-      'already_bought': false,
-      'granted_by_user_id': null,
-    };
+    
   }
-
-  Future<Map<String, dynamic>> _postGranter() async {
-    // Commented out for static data example
-    /*
+// /DeleteItemByItemId/:ItemID
+  Future<void> deleteItem() async {
     final token = Provider.of<TokenProvider>(context, listen: false).token;
     final userId = Provider.of<TokenProvider>(context, listen: false).userId;
     Dio dio = Dio(); // Create a Dio instance
-    final response = await dio.put(
-      'http://10.0.2.2:1432/UpdateGrantForFriend/${widget.wishlist_id}/${userId}',
+    final response = await dio.delete(
+      'http://10.0.2.2:5428/DeleteItemByItemId/${widget.itemid}',
       options: Options(
         headers: {
           'Authorization': 'Bearer $token',
@@ -90,55 +76,53 @@ class _ItemDetailsState extends State<ItemDetails> {
     );
 
     if (response.statusCode == 200) {
-      return response.data;
+      return null; 
     } else {
-      throw Exception('Failed to put _PostGranter');
+      throw Exception('Failed to deleteItem');
     }
-    */
-
-    // Static data for testing
-    return {'success': true};
   }
 
-  Future<void> _launchUrl(String url) async {
-    final Uri uri = Uri.parse(url);
-    // Simulate a delay for launching the URL
-    await Future.delayed(const Duration(seconds: 1));
+  // Future<void> _launchUrl(String url) async {
+  //   // final Uri uri = Uri.parse(url);
+  //   // Simulate a delay for launching the URL
+  //   await Future.delayed(const Duration(seconds: 1));
 
-    showDialog(
-      context: context,
-      builder: (context) => PopUp(
-        title: 'Have you bought the wish?',
-        buttons: [
-          ButtonForPopUp(
-              onPressed: () async {
-                await _postGranter();
-                Navigator.of(context).pop();
-                if (widget.onUpdateBuy != null) { // Check if callback is provided
-                  widget.onUpdateBuy!();
-                  print(widget.onUpdateBuy);
-                }
-                Navigator.of(context).pop();
-              },
-              text: 'Yes'),
-          ButtonForPopUp(
-              onPressed: () {
-                Navigator.of(context).pop();
-                Navigator.of(context).pop();
-                if (widget.onUpdateBuy != null) { // Check if callback is provided
-                  widget.onUpdateBuy!(); // Call the callback
-                }
-              },
-              text: 'No'),
-        ],
-      ),
-    );
-  }
+  //   showDialog(
+  //     context: context,
+  //     builder: (context) => PopUp(
+  //       title: 'Have you bought the wish?',
+  //       buttons: [
+  //         ButtonForPopUp(
+  //             onPressed: () async {
+  //               await _postGranter();
+  //               Navigator.of(context).pop();
+  //               if (widget.onUpdateBuy != null) { // Check if callback is provided
+  //                 widget.onUpdateBuy!();
+  //                 print(widget.onUpdateBuy);
+  //               }
+  //               Navigator.of(context).pop();
+  //             },
+  //             text: 'Yes'),
+  //         ButtonForPopUp(
+  //             onPressed: () {
+  //               Navigator.of(context).pop();
+  //               Navigator.of(context).pop();
+  //               if (widget.onUpdateBuy != null) { // Check if callback is provided
+  //                 widget.onUpdateBuy!(); // Call the callback
+  //               }
+  //             },
+  //             text: 'No'),
+  //       ],
+  //     ),
+  //   );
+  // }
+
+
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<Map<String, dynamic>>(
-      future: fetchWishlists(),
+      future: fetchItem(),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return Center(child: Text('Error: ${snapshot.error}'));
@@ -150,9 +134,10 @@ class _ItemDetailsState extends State<ItemDetails> {
           final description = wishdata?['description'] ?? 'Unknown description';
           final pics = wishdata?['item_pic'] ?? 'Unknown pics';
           final userId = (wishdata?['user_id']) ?? 0;
+          final askbyUserId = wishdata?['asked_by_user_id'] ?? 0;
+          final alreadyGave = wishdata?['already_gave'] ?? null;
+          final offerType = wishdata?['offer_type'] ?? 'Unknown offerType';
           final username = widget.username;
-          final alreadyBought = (wishdata?['already_bought']);
-          final grantBy = (wishdata?['granted_by_user_id']);
           return Scaffold(
             backgroundColor: colorUse.backgroundColor,
             appBar: CustomAppBarNavigation(
@@ -199,7 +184,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                           const SizedBox(height: 20),
                           const Padding(
                             padding: EdgeInsets.only(left: 12),
-                            child: RegularTextBold('Request by'),
+                            child: RegularTextBold('Propose by'),
                           ),
                           Padding(
                             padding: const EdgeInsets.only(left: 12),
@@ -220,31 +205,35 @@ class _ItemDetailsState extends State<ItemDetails> {
                       ),
                     ),
                     const SizedBox(height: 24),
-                    if (userId != userIdFromToken)
+                    
+                    if (userId == userIdFromToken)
+                      ButtonAtBottom(
+                        onPressed: () async {
+                         await deleteItem();
+                         Navigator.push(context, 
+                          MaterialPageRoute(builder: (context) => Home()));
+                          widget.onUpdateBuy;
+                        },
+                        text: 'Delete item',
+                        color: colorUse.rejectButton,
+                      ),
+
+                    if (userId != userIdFromToken && offerType == 'Receive')
                       ButtonAtBottom(
                         onPressed: () {
-                          showDialog(
-                              context: context,
-                              builder: (BuildContext dialogContext) {
-                                return PopUp(
-                                  title: 'Do you want to grant the wish?',
-                                  buttons: [
-                                    ButtonForPopUp(
-                                        onPressed: () async {
-                                          Navigator.of(dialogContext).pop();
-                                          await _launchUrl(description);
-                                        },
-                                        text: 'Yes'),
-                                    ButtonForPopUp(
-                                        onPressed: () {
-                                          Navigator.of(dialogContext).pop();
-                                        },
-                                        text: 'No'),
-                                  ],
-                                );
-                              });
+
                         },
-                        text: 'GRANT WISH',
+                        text: 'Donate',
+                        color: colorUse.activeButton,
+                      ),
+
+                    if (userId != userIdFromToken && offerType == 'Donate')
+                      ButtonAtBottom(
+                        onPressed: () {
+                          
+                        },
+                        text: 'Ask for Receive',
+                        color: colorUse.activeButton,
                       ),
                   ],
                 ),

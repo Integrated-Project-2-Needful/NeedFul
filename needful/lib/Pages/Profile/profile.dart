@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
-// import 'package:dio/dio.dart';
+import 'package:dio/dio.dart';
+import 'package:needful/Pages/Auth/LoR.dart';
 import 'package:needful/Pages/Profile/edit_profile.dart';
 import 'package:needful/Pages/Profile/eula.dart';
 import 'package:needful/Utils/color_use.dart';
 import 'package:needful/Utils/text_use.dart';
+import 'package:needful/provider/token_provider.dart';
+import 'package:needful/widgets/button_at_bottom.dart';
 import 'package:needful/widgets/card_widget.dart';
 import 'package:needful/widgets/title_bar.dart';
-// import 'package:provider/provider.dart';
-// import 'package:sweet_favors/Auth/login_or_register.dart';
-// import 'package:sweet_favors/provider/token_provider.dart';
-// import 'package:sweet_favors/widgets/button_at_bottom.dart';
+import 'package:provider/provider.dart';
+
 
 class Profile extends StatefulWidget {
   const Profile({Key? key});
@@ -35,13 +36,13 @@ class _ProfileState extends State<Profile> {
 
   Future<Map<String, dynamic>> fetchUserData() async {
     // Commented out for static data example
-    /*
+    
     final token = Provider.of<TokenProvider>(context, listen: false).token;
     final userId = Provider.of<TokenProvider>(context, listen: false).userId;
 
     Dio dio = Dio();
     final response = await dio.get(
-      'http://10.0.2.2:1432/GetProfileOfCurrentUser/$userId',
+      'http://10.0.2.2:5428/GetProfileOfCurrentUserByUserId/$userId',
       options: Options(
         headers: {
           'Authorization': 'Bearer $token',
@@ -55,15 +56,9 @@ class _ProfileState extends State<Profile> {
     } else {
       throw Exception('Failed to load user data');
     }
-    */
+    
 
     // Static data for testing
-    return {
-      'username': 'Test User',
-      'email': 'testuser@example.com',
-      'phone_num': '123-456-7890',
-      'user_pic': 'https://img.freepik.com/free-photo/zen-balancing-pebbles-misty-lake_53876-138198.jpg', // Example profile picture URL
-    };
   }
 
   @override
@@ -114,27 +109,27 @@ class _ProfileState extends State<Profile> {
               },
             ),
             const SizedBox(height: 50), // Add some spacing at the bottom
-            // logout(),
+            logout(),
           ],
         ),
       ),
     );
   }
 
-  // Widget logout() {
-  //   void logoutFunction() {
-  //     // Notify the TokenProvider that the token has been cleared
-  //     Provider.of<TokenProvider>(context, listen: false).setToken("", 0);
+  Widget logout() {
+    void logoutFunction() {
+      // Notify the TokenProvider that the token has been cleared
+      Provider.of<TokenProvider>(context, listen: false).setToken("", 0);
 
-  //     // Navigate to the login page
-  //     Navigator.pushReplacement(
-  //       context,
-  //       MaterialPageRoute(builder: (context) => const LoginOrRegister()),
-  //     );
-  //   }
+      // Navigate to the login page
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const LoginOrRegister()),
+      );
+    }
 
-  //   return ButtonAtBottom(onPressed: logoutFunction, text: 'Logout');
-  // }
+    return ButtonAtBottom(onPressed: logoutFunction, text: 'Logout', color: colorUse.activeButton,);
+  }
 
   Widget buildtop(Map<String, dynamic>? userData) {
     final top = coverHeight - profileHeight / 2;
