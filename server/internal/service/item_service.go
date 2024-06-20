@@ -416,12 +416,18 @@ func (s itemService) PutCompleteTransaction(itemid, userid int) (*entities.Item,
 		return nil, err
 	}
 
+	T1 := true
+
 	if item.AskedByUserID != nil && *item.AskedByUserID == uint(userid) {
-		T1 := true
 		item.ConFromItemAsker = &T1
 	} else {
-		T1 := true
 		item.ConFromItemOwner = &T1
+	}
+
+	// Check if both confirmations are true
+	if item.ConFromItemOwner != nil && *item.ConFromItemOwner &&
+		item.ConFromItemAsker != nil && *item.ConFromItemAsker {
+		item.AlreadyGave = &T1
 	}
 
 	err = s.itemRepo.PutCompleteTransaction(item)
