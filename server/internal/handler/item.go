@@ -466,17 +466,14 @@ func (h *itemHandler) PutAskByItemIdAndPostAskMessage(c *fiber.Ctx) error {
 
 func (h *itemHandler) PutTransactionReady(c *fiber.Ctx) error {
 	itemIDReceive, err := strconv.Atoi(c.Params("ItemID"))
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "invalid ItemID"})
+	}
 
 	// Extract the token from the request headers
 	token := c.Get("Authorization")
-
-	// Check if the token is empty
 	if token == "" {
-		return errors.New("token is missing")
-	}
-
-	if err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "invalid ItemID"})
+		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"error": "token is missing"})
 	}
 
 	userIDExtract, err := utils.ExtractUserIDFromToken(strings.Replace(token, "Bearer ", "", 1), h.jwtSecret)
@@ -484,7 +481,7 @@ func (h *itemHandler) PutTransactionReady(c *fiber.Ctx) error {
 		return err
 	}
 
-	_, err = h.itemSer.PutAskByItemIdAndPostAskMessage(itemIDReceive, userIDExtract)
+	_, err = h.itemSer.PutTransactionReady(itemIDReceive, userIDExtract)
 	if err != nil {
 		return err
 	}
@@ -494,17 +491,14 @@ func (h *itemHandler) PutTransactionReady(c *fiber.Ctx) error {
 
 func (h *itemHandler) PutCompleteTransaction(c *fiber.Ctx) error {
 	itemIDReceive, err := strconv.Atoi(c.Params("ItemID"))
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "invalid ItemID"})
+	}
 
 	// Extract the token from the request headers
 	token := c.Get("Authorization")
-
-	// Check if the token is empty
 	if token == "" {
-		return errors.New("token is missing")
-	}
-
-	if err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "invalid ItemID"})
+		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"error": "token is missing"})
 	}
 
 	userIDExtract, err := utils.ExtractUserIDFromToken(strings.Replace(token, "Bearer ", "", 1), h.jwtSecret)
@@ -512,7 +506,7 @@ func (h *itemHandler) PutCompleteTransaction(c *fiber.Ctx) error {
 		return err
 	}
 
-	_, err = h.itemSer.PutAskByItemIdAndPostAskMessage(itemIDReceive, userIDExtract)
+	_, err = h.itemSer.PutCompleteTransaction(itemIDReceive, userIDExtract)
 	if err != nil {
 		return err
 	}
