@@ -24,7 +24,7 @@ func (s messageService) GetMessages() ([]entities.Message, error) {
 
 	messageResponses := []entities.Message{}
 	for _, message := range messages {
-		itemResponse := entities.Message{
+		messageResponse := entities.Message{
 			MsgID:            message.MsgID,
 			SenderUserID:     message.SenderUserID,
 			ReceiverUserID:   message.ReceiverUserID,
@@ -32,7 +32,7 @@ func (s messageService) GetMessages() ([]entities.Message, error) {
 			ConFromItemOwner: message.ConFromItemOwner,
 			ConFromItemAsker: message.ConFromItemAsker,
 		}
-		messageResponses = append(messageResponses, itemResponse)
+		messageResponses = append(messageResponses, messageResponse)
 	}
 	return messageResponses, nil
 }
@@ -79,4 +79,29 @@ func (s messageService) GetMessageByMsgId(messageid int) (*entities.Message, err
 		ConFromItemAsker: message.ConFromItemAsker,
 	}
 	return &messageResponse, nil
+}
+
+func (s messageService) GetMessagePageOfCurrentUser(userid int) ([]entities.MessagePageOfCurrentUserResponse, error) {
+	messages, err := s.messageRepo.GetMessagePageOfCurrentUser(userid)
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
+
+	messageResponses := []entities.MessagePageOfCurrentUserResponse{}
+	for _, message := range messages {
+		messageResponse := entities.MessagePageOfCurrentUserResponse{
+			UserID:         message.UserID,
+			Username:       message.Username,
+			Firstname:      message.Firstname,
+			Lastname:       message.Lastname,
+			UserPic:        message.UserPic,
+			MsgID:          message.MsgID,
+			SenderUserID:   message.SenderUserID,
+			ReceiverUserID: message.ReceiverUserID,
+			MsgText:        message.MsgText,
+		}
+		messageResponses = append(messageResponses, messageResponse)
+	}
+	return messageResponses, nil
 }

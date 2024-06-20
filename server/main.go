@@ -141,6 +141,8 @@ func main() {
 
 	app.Put("/PutAsk/:ItemID/:AskByUserID", itemHandler.PutAskByItemIdAndPostAskMessage)
 
+	app.Get("/GetMSGPageOfCurrentUser", messageHandler.GetMessagePageOfCurrentUser)
+
 	//#####################################################################################
 
 	log.Printf("NeedFul running at port:  %v", viper.GetInt("app.port"))

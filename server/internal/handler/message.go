@@ -1,10 +1,13 @@
 package handler
 
 import (
+	"errors"
 	"github.com/gofiber/fiber/v2"
 	"needful/internal/dtos"
 	"needful/internal/service"
+	"needful/internal/utils"
 	"strconv"
+	"strings"
 )
 
 type messageHandler struct {
@@ -79,4 +82,41 @@ func (h *messageHandler) GetMessageByMsgId(c *fiber.Ctx) error {
 	}
 
 	return c.JSON(messageResponse)
+}
+
+func (h *messageHandler) GetMessagePageOfCurrentUser(c *fiber.Ctx) error {
+	// Extract the token from the request headers
+	token := c.Get("Authorization")
+
+	// Check if the token is empty
+	if token == "" {
+		return errors.New("token is missing")
+	}
+
+	// Extract the user ID from the token
+	userIDExtract, err := utils.ExtractUserIDFromToken(strings.Replace(token, "Bearer ", "", 1), h.jwtSecret)
+	if err != nil {
+		return err
+	}
+
+	messages, err := h.messageSer.GetMessagePageOfCurrentUser(userIDExtract)
+	if err != nil {
+		return err
+	}
+
+	messagesResponse := make([]dtos.MessagePageOfCurrentUserResponse, 0)
+	for _, message := range messages {
+		messagesResponse = append(messagesResponse, dtos.MessagePageOfCurrentUserResponse{
+			UserID:         message.UserID,
+			Username:       message.Username,
+			Firstname:      message.Firstname,
+			Lastname:       message.Lastname,
+			UserPic:        message.UserPic,
+			MsgID:          message.MsgID,
+			SenderUserID:   message.SenderUserID,
+			ReceiverUserID: message.ReceiverUserID,
+			MsgText:        message.MsgText,
+		})
+	}
+	return c.JSON(messagesResponse)
 }

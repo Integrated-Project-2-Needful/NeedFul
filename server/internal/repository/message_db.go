@@ -39,3 +39,35 @@ func (r messageRepositoryDB) GetMessageByMsgId(messageid int) (*entities.Message
 	}
 	return &messages, nil
 }
+
+func (r messageRepositoryDB) GetMessagePageOfCurrentUser(userID int) ([]entities.MessagePageOfCurrentUserResponse, error) {
+	messages := []entities.MessagePageOfCurrentUserResponse{}
+
+	subquery := r.db.Table("messages AS m").
+		Select("MAX(m.msg_id) as msg_id").
+		Where("m.sender_user_id = ? OR m.receiver_user_id = ?", userID, userID).
+		Group("LEAST(m.sender_user_id, m.receiver_user_id), GREATEST(m.sender_user_id, m.receiver_user_id)")
+
+	result := r.db.Table("messages AS m").
+		Select(`
+			m.msg_id,
+			m.sender_user_id,
+			m.receiver_user_id,
+			m.msg_text,
+			u.user_id,
+			u.username,
+			u.firstname,
+			u.lastname,
+			u.user_pic
+		`).
+		Joins("JOIN (?) AS sub ON sub.msg_id = m.msg_id", subquery).
+		Joins("JOIN users AS u ON u.user_id = m.sender_user_id OR u.user_id = m.receiver_user_id").
+		Where("(m.sender_user_id = ? OR m.receiver_user_id = ?) AND u.user_id != ?", userID, userID, userID).
+		Group("m.msg_id, m.sender_user_id, m.receiver_user_id, m.msg_text, u.user_id, u.username, u.firstname, u.lastname, u.user_pic").
+		Scan(&messages)
+
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	return messages, nil
+}
