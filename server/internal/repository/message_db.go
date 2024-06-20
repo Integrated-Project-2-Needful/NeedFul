@@ -64,6 +64,7 @@ func (r messageRepositoryDB) GetMessagePageOfCurrentUser(userid int) ([]entities
 		Joins("JOIN users AS u ON u.user_id = m.sender_user_id OR u.user_id = m.receiver_user_id").
 		Where("(m.sender_user_id = ? OR m.receiver_user_id = ?) AND u.user_id != ?", userid, userid, userid).
 		Group("m.msg_id, m.sender_user_id, m.receiver_user_id, m.msg_text, u.user_id, u.username, u.firstname, u.lastname, u.user_pic").
+		Order("msg_id DESC").
 		Scan(&messages)
 
 	if result.Error != nil {

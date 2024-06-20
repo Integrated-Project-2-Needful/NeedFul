@@ -145,8 +145,8 @@ func main() {
 	app.Get("/GetConversationOfCurrentUserByOtherId/:OtherID", messageHandler.GetConversationOfCurrentUserByOtherID) //#
 	app.Post("/PostMessage/:ReceiverID", messageHandler.PostMessage)
 
-	app.Put("/PutTransactionReady/:ItemID", itemHandler.PutTransactionReady)
-	app.Put("/PutCompleteTransaction/:ItemID", itemHandler.PutCompleteTransaction)
+	app.Put("/PutTransactionReady/:ItemID", itemHandler.PutTransactionReady)       //#
+	app.Put("/PutCompleteTransaction/:ItemID", itemHandler.PutCompleteTransaction) //#
 
 	//#####################################################################################
 
