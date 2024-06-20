@@ -117,13 +117,25 @@ type ReceiveMarketPlaceResponse struct {
 }
 
 type MessagePageOfCurrentUserResponse struct {
-	UserID         *uint   `json:"user_id" validate:"required"`
-	Username       *string `json:"username" validate:"required"`
-	Firstname      *string `json:"firstname" validate:"required"`
-	Lastname       *string `json:"lastname" validate:"required"`
-	UserPic        *string `json:"user_pic" validate:"required"`
-	MsgID          *uint   `json:"msg_id" validate:"required"`
-	SenderUserID   *uint   `json:"sender_user_id" validate:"required"`
-	ReceiverUserID *uint   `json:"receiver_user_id" validate:"required"`
-	MsgText        *string `json:"msg_text" validate:"required"`
+	UserID         *uint
+	Username       *string
+	Firstname      *string
+	Lastname       *string
+	UserPic        *string
+	MsgID          *uint
+	SenderUserID   *uint
+	ReceiverUserID *uint
+	MsgText        *string
+}
+
+type ConversationOfCurrentUserByOtherIDResponse struct {
+	UserID         *uint
+	Username       *string
+	Firstname      *string
+	Lastname       *string
+	UserPic        *string
+	MsgID          *uint
+	SenderUserID   *uint
+	ReceiverUserID *uint
+	MsgText        *string
 }

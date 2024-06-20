@@ -10,4 +10,5 @@ type MessageService interface {
 	GetMessageByMsgId(int) (*entities.Message, error)
 
 	GetMessagePageOfCurrentUser(int) ([]entities.MessagePageOfCurrentUserResponse, error)
+	GetConversationOfCurrentUserByOtherID(int, int) ([]entities.ConversationOfCurrentUserByOtherIDResponse, error)
 }

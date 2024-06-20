@@ -105,3 +105,28 @@ func (s messageService) GetMessagePageOfCurrentUser(userid int) ([]entities.Mess
 	}
 	return messageResponses, nil
 }
+
+func (s messageService) GetConversationOfCurrentUserByOtherID(userid int, otherid int) ([]entities.ConversationOfCurrentUserByOtherIDResponse, error) {
+	messages, err := s.messageRepo.GetConversationOfCurrentUserByOtherID(userid, otherid)
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
+
+	messageResponses := []entities.ConversationOfCurrentUserByOtherIDResponse{}
+	for _, message := range messages {
+		messageResponse := entities.ConversationOfCurrentUserByOtherIDResponse{
+			UserID:         message.UserID,
+			Username:       message.Username,
+			Firstname:      message.Firstname,
+			Lastname:       message.Lastname,
+			UserPic:        message.UserPic,
+			MsgID:          message.MsgID,
+			SenderUserID:   message.SenderUserID,
+			ReceiverUserID: message.ReceiverUserID,
+			MsgText:        message.MsgText,
+		}
+		messageResponses = append(messageResponses, messageResponse)
+	}
+	return messageResponses, nil
+}

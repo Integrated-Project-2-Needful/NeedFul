@@ -142,6 +142,7 @@ func main() {
 	app.Put("/PutAsk/:ItemID/:AskByUserID", itemHandler.PutAskByItemIdAndPostAskMessage)
 
 	app.Get("/GetMSGPageOfCurrentUser", messageHandler.GetMessagePageOfCurrentUser)
+	app.Get("/GetConversationOfCurrentUserByOtherId/:OtherID", messageHandler.GetConversationOfCurrentUserByOtherID)
 
 	//#####################################################################################
 
