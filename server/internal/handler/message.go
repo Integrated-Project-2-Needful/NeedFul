@@ -30,12 +30,10 @@ func (h *messageHandler) GetMessages(c *fiber.Ctx) error {
 
 	for _, message := range messages {
 		messagesResponse = append(messagesResponse, dtos.MessageDataResponse{
-			MsgID:            message.MsgID,
-			SenderUserID:     message.SenderUserID,
-			ReceiverUserID:   message.ReceiverUserID,
-			MsgText:          message.MsgText,
-			ConFromItemOwner: message.ConFromItemOwner,
-			ConFromItemAsker: message.ConFromItemAsker,
+			MsgID:          message.MsgID,
+			SenderUserID:   message.SenderUserID,
+			ReceiverUserID: message.ReceiverUserID,
+			MsgText:        message.MsgText,
 		})
 	}
 	return c.JSON(messagesResponse)
@@ -53,12 +51,10 @@ func (h *messageHandler) GetMessageByUserId(c *fiber.Ctx) error {
 
 	for _, message := range message {
 		messagesResponse = append(messagesResponse, dtos.MessageDataByUserIdResponse{
-			MsgID:            message.MsgID,
-			SenderUserID:     message.SenderUserID,
-			ReceiverUserID:   message.ReceiverUserID,
-			MsgText:          message.MsgText,
-			ConFromItemOwner: message.ConFromItemOwner,
-			ConFromItemAsker: message.ConFromItemAsker,
+			MsgID:          message.MsgID,
+			SenderUserID:   message.SenderUserID,
+			ReceiverUserID: message.ReceiverUserID,
+			MsgText:        message.MsgText,
 		})
 	}
 	return c.JSON(messagesResponse)
@@ -73,12 +69,10 @@ func (h *messageHandler) GetMessageByMsgId(c *fiber.Ctx) error {
 	}
 
 	messageResponse := dtos.MessageDataByMsgIdResponse{
-		MsgID:            message.MsgID,
-		SenderUserID:     message.SenderUserID,
-		ReceiverUserID:   message.ReceiverUserID,
-		MsgText:          message.MsgText,
-		ConFromItemOwner: message.ConFromItemOwner,
-		ConFromItemAsker: message.ConFromItemAsker,
+		MsgID:          message.MsgID,
+		SenderUserID:   message.SenderUserID,
+		ReceiverUserID: message.ReceiverUserID,
+		MsgText:        message.MsgText,
 	}
 
 	return c.JSON(messageResponse)

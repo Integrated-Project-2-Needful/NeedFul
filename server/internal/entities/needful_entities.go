@@ -12,14 +12,16 @@ type User struct {
 }
 
 type Item struct {
-	ItemID        *uint `gorm:"primaryKey;autoIncrement"`
-	UserID        *uint `gorm:"not null"`
-	Itemname      *string
-	Description   *string
-	ItemPic       *string
-	OfferType     *string
-	AskedByUserID *uint
-	AlreadyGave   *bool
+	ItemID           *uint `gorm:"primaryKey;autoIncrement"`
+	UserID           *uint `gorm:"not null"`
+	Itemname         *string
+	Description      *string
+	ItemPic          *string
+	OfferType        *string
+	AskedByUserID    *uint
+	AlreadyGave      *bool
+	ConFromItemOwner *bool
+	ConFromItemAsker *bool
 	///////////////////////////////////////////////
 	User User `gorm:"foreignKey:UserID"`
 	//////////////////////////////////////////////
@@ -27,12 +29,10 @@ type Item struct {
 }
 
 type Message struct {
-	MsgID            *uint `gorm:"primaryKey;autoIncrement"`
-	SenderUserID     *uint `gorm:"not null;"`
-	ReceiverUserID   *uint `gorm:"not null;"`
-	MsgText          *string
-	ConFromItemOwner *bool
-	ConFromItemAsker *bool
+	MsgID          *uint `gorm:"primaryKey;autoIncrement"`
+	SenderUserID   *uint `gorm:"not null;"`
+	ReceiverUserID *uint `gorm:"not null;"`
+	MsgText        *string
 }
 
 type ItemsOfCurrentUserResponse struct {

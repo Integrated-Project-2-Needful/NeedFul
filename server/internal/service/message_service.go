@@ -27,12 +27,10 @@ func (s messageService) GetMessages() ([]entities.Message, error) {
 	messageResponses := []entities.Message{}
 	for _, message := range messages {
 		messageResponse := entities.Message{
-			MsgID:            message.MsgID,
-			SenderUserID:     message.SenderUserID,
-			ReceiverUserID:   message.ReceiverUserID,
-			MsgText:          message.MsgText,
-			ConFromItemOwner: message.ConFromItemOwner,
-			ConFromItemAsker: message.ConFromItemAsker,
+			MsgID:          message.MsgID,
+			SenderUserID:   message.SenderUserID,
+			ReceiverUserID: message.ReceiverUserID,
+			MsgText:        message.MsgText,
 		}
 		messageResponses = append(messageResponses, messageResponse)
 	}
@@ -49,12 +47,10 @@ func (s messageService) GetMessageByUserId(userid int) ([]entities.Message, erro
 	messageResponses := []entities.Message{}
 	for _, message := range messages {
 		messageResponse := entities.Message{
-			MsgID:            message.MsgID,
-			SenderUserID:     message.SenderUserID,
-			ReceiverUserID:   message.ReceiverUserID,
-			MsgText:          message.MsgText,
-			ConFromItemOwner: message.ConFromItemOwner,
-			ConFromItemAsker: message.ConFromItemAsker,
+			MsgID:          message.MsgID,
+			SenderUserID:   message.SenderUserID,
+			ReceiverUserID: message.ReceiverUserID,
+			MsgText:        message.MsgText,
 		}
 		messageResponses = append(messageResponses, messageResponse)
 	}
@@ -73,12 +69,10 @@ func (s messageService) GetMessageByMsgId(messageid int) (*entities.Message, err
 	}
 
 	messageResponse := entities.Message{
-		MsgID:            message.MsgID,
-		SenderUserID:     message.SenderUserID,
-		ReceiverUserID:   message.ReceiverUserID,
-		MsgText:          message.MsgText,
-		ConFromItemOwner: message.ConFromItemOwner,
-		ConFromItemAsker: message.ConFromItemAsker,
+		MsgID:          message.MsgID,
+		SenderUserID:   message.SenderUserID,
+		ReceiverUserID: message.ReceiverUserID,
+		MsgText:        message.MsgText,
 	}
 	return &messageResponse, nil
 }

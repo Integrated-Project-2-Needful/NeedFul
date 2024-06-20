@@ -29,14 +29,16 @@ func (s itemService) GetItems() ([]entities.Item, error) {
 	itemResponses := []entities.Item{}
 	for _, item := range items {
 		itemResponse := entities.Item{
-			ItemID:        item.ItemID,
-			UserID:        item.UserID,
-			Itemname:      item.Itemname,
-			Description:   item.Description,
-			ItemPic:       item.ItemPic,
-			OfferType:     item.OfferType,
-			AskedByUserID: item.AskedByUserID,
-			AlreadyGave:   item.AlreadyGave,
+			ItemID:           item.ItemID,
+			UserID:           item.UserID,
+			Itemname:         item.Itemname,
+			Description:      item.Description,
+			ItemPic:          item.ItemPic,
+			OfferType:        item.OfferType,
+			AskedByUserID:    item.AskedByUserID,
+			AlreadyGave:      item.AlreadyGave,
+			ConFromItemOwner: item.ConFromItemOwner,
+			ConFromItemAsker: item.ConFromItemAsker,
 		}
 		itemResponses = append(itemResponses, itemResponse)
 	}
@@ -53,14 +55,16 @@ func (s itemService) GetItemByUserId(userid int) ([]entities.Item, error) {
 	itemResponses := []entities.Item{}
 	for _, item := range items {
 		itemResponse := entities.Item{
-			ItemID:        item.ItemID,
-			UserID:        item.UserID,
-			Itemname:      item.Itemname,
-			Description:   item.Description,
-			ItemPic:       item.ItemPic,
-			OfferType:     item.OfferType,
-			AskedByUserID: item.AskedByUserID,
-			AlreadyGave:   item.AlreadyGave,
+			ItemID:           item.ItemID,
+			UserID:           item.UserID,
+			Itemname:         item.Itemname,
+			Description:      item.Description,
+			ItemPic:          item.ItemPic,
+			OfferType:        item.OfferType,
+			AskedByUserID:    item.AskedByUserID,
+			AlreadyGave:      item.AlreadyGave,
+			ConFromItemOwner: item.ConFromItemOwner,
+			ConFromItemAsker: item.ConFromItemAsker,
 		}
 		itemResponses = append(itemResponses, itemResponse)
 	}
@@ -79,14 +83,16 @@ func (s itemService) GetItemByItemId(itemid int) (*entities.Item, error) {
 	}
 
 	itemResponse := entities.Item{
-		ItemID:        item.ItemID,
-		UserID:        item.UserID,
-		Itemname:      item.Itemname,
-		Description:   item.Description,
-		ItemPic:       item.ItemPic,
-		OfferType:     item.OfferType,
-		AskedByUserID: item.AskedByUserID,
-		AlreadyGave:   item.AlreadyGave,
+		ItemID:           item.ItemID,
+		UserID:           item.UserID,
+		Itemname:         item.Itemname,
+		Description:      item.Description,
+		ItemPic:          item.ItemPic,
+		OfferType:        item.OfferType,
+		AskedByUserID:    item.AskedByUserID,
+		AlreadyGave:      item.AlreadyGave,
+		ConFromItemOwner: item.ConFromItemOwner,
+		ConFromItemAsker: item.ConFromItemAsker,
 	}
 	return &itemResponse, nil
 }
@@ -105,14 +111,16 @@ func (s itemService) GetItemDetailsByItemId(itemid int) (*entities.Item, error) 
 	}
 
 	itemResponse := entities.Item{
-		ItemID:        item.ItemID,
-		UserID:        item.UserID,
-		Itemname:      item.Itemname,
-		Description:   item.Description,
-		ItemPic:       item.ItemPic,
-		OfferType:     item.OfferType,
-		AskedByUserID: item.AskedByUserID,
-		AlreadyGave:   item.AlreadyGave,
+		ItemID:           item.ItemID,
+		UserID:           item.UserID,
+		Itemname:         item.Itemname,
+		Description:      item.Description,
+		ItemPic:          item.ItemPic,
+		OfferType:        item.OfferType,
+		AskedByUserID:    item.AskedByUserID,
+		AlreadyGave:      item.AlreadyGave,
+		ConFromItemOwner: item.ConFromItemOwner,
+		ConFromItemAsker: item.ConFromItemAsker,
 	}
 	return &itemResponse, nil
 }

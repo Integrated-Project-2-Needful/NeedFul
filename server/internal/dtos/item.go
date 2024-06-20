@@ -1,49 +1,57 @@
 package dtos
 
 type ItemDataResponse struct {
-	ItemID        *uint   `json:"item_id" validate:"required"`
-	UserID        *uint   `json:"user_id" validate:"required"`
-	Itemname      *string `json:"itemname" validate:"required"`
-	Description   *string `json:"description" validate:"required"`
-	ItemPic       *string `json:"item_pic" validate:"required"`
-	OfferType     *string `json:"offer_type" validate:"required"`
-	AskedByUserID *uint   `json:"asked_by_user_id" validate:"required"`
-	AlreadyGave   *bool   `json:"already_gave" validate:"required"`
+	ItemID           *uint   `json:"item_id" validate:"required"`
+	UserID           *uint   `json:"user_id" validate:"required"`
+	Itemname         *string `json:"itemname" validate:"required"`
+	Description      *string `json:"description" validate:"required"`
+	ItemPic          *string `json:"item_pic" validate:"required"`
+	OfferType        *string `json:"offer_type" validate:"required"`
+	AskedByUserID    *uint   `json:"asked_by_user_id" validate:"required"`
+	AlreadyGave      *bool   `json:"already_gave" validate:"required"`
+	ConFromItemOwner *bool   `json:"con_from_item_owner" validate:"required"`
+	ConFromItemAsker *bool   `json:"con_from_item_asker" validate:"required"`
 }
 
 type ItemDataByUserIdResponse struct {
-	ItemID        *uint   `json:"item_id" validate:"required"`
-	UserID        *uint   `json:"user_id" validate:"required"`
-	Itemname      *string `json:"itemname" validate:"required"`
-	Description   *string `json:"description" validate:"required"`
-	ItemPic       *string `json:"item_pic" validate:"required"`
-	OfferType     *string `json:"offer_type" validate:"required"`
-	AskedByUserID *uint   `json:"asked_by_user_id" validate:"required"`
-	AlreadyGave   *bool   `json:"already_gave" validate:"required"`
+	ItemID           *uint   `json:"item_id" validate:"required"`
+	UserID           *uint   `json:"user_id" validate:"required"`
+	Itemname         *string `json:"itemname" validate:"required"`
+	Description      *string `json:"description" validate:"required"`
+	ItemPic          *string `json:"item_pic" validate:"required"`
+	OfferType        *string `json:"offer_type" validate:"required"`
+	AskedByUserID    *uint   `json:"asked_by_user_id" validate:"required"`
+	AlreadyGave      *bool   `json:"already_gave" validate:"required"`
+	ConFromItemOwner *bool   `json:"con_from_item_owner" validate:"required"`
+	ConFromItemAsker *bool   `json:"con_from_item_asker" validate:"required"`
 }
 
 type ItemDataByItemIdResponse struct {
-	ItemID        *uint   `json:"item_id" validate:"required"`
-	UserID        *uint   `json:"user_id" validate:"required"`
-	Itemname      *string `json:"itemname" validate:"required"`
-	Description   *string `json:"description" validate:"required"`
-	ItemPic       *string `json:"item_pic" validate:"required"`
-	OfferType     *string `json:"offer_type" validate:"required"`
-	AskedByUserID *uint   `json:"asked_by_user_id" validate:"required"`
-	AlreadyGave   *bool   `json:"already_gave" validate:"required"`
+	ItemID           *uint   `json:"item_id" validate:"required"`
+	UserID           *uint   `json:"user_id" validate:"required"`
+	Itemname         *string `json:"itemname" validate:"required"`
+	Description      *string `json:"description" validate:"required"`
+	ItemPic          *string `json:"item_pic" validate:"required"`
+	OfferType        *string `json:"offer_type" validate:"required"`
+	AskedByUserID    *uint   `json:"asked_by_user_id" validate:"required"`
+	AlreadyGave      *bool   `json:"already_gave" validate:"required"`
+	ConFromItemOwner *bool   `json:"con_from_item_owner" validate:"required"`
+	ConFromItemAsker *bool   `json:"con_from_item_asker" validate:"required"`
 }
 
 ///////////////////////////////////////////////////
 
 type ItemDetailsByItemIdResponse struct {
-	ItemID        *uint   `json:"item_id" validate:"required"`
-	UserID        *uint   `json:"user_id" validate:"required"`
-	Itemname      *string `json:"itemname" validate:"required"`
-	Description   *string `json:"description" validate:"required"`
-	ItemPic       *string `json:"item_pic" validate:"required"`
-	OfferType     *string `json:"offer_type" validate:"required"`
-	AskedByUserID *uint   `json:"asked_by_user_id" validate:"required"`
-	AlreadyGave   *bool   `json:"already_gave" validate:"required"`
+	ItemID           *uint   `json:"item_id" validate:"required"`
+	UserID           *uint   `json:"user_id" validate:"required"`
+	Itemname         *string `json:"itemname" validate:"required"`
+	Description      *string `json:"description" validate:"required"`
+	ItemPic          *string `json:"item_pic" validate:"required"`
+	OfferType        *string `json:"offer_type" validate:"required"`
+	AskedByUserID    *uint   `json:"asked_by_user_id" validate:"required"`
+	AlreadyGave      *bool   `json:"already_gave" validate:"required"`
+	ConFromItemOwner *bool   `json:"con_from_item_owner" validate:"required"`
+	ConFromItemAsker *bool   `json:"con_from_item_asker" validate:"required"`
 }
 
 ///////////////////////////////////////////////////
