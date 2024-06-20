@@ -47,6 +47,8 @@ type ItemsOfCurrentUserResponse struct {
 	Username                *string
 	UserPic                 *string
 	UsernameOfAskedByUserID *string
+	ConFromItemOwner        *bool
+	ConFromItemAsker        *bool
 }
 
 type DonateItemsOfCurrentUserResponse struct {
@@ -61,6 +63,8 @@ type DonateItemsOfCurrentUserResponse struct {
 	Username                *string
 	UserPic                 *string
 	UsernameOfAskedByUserID *string
+	ConFromItemOwner        *bool
+	ConFromItemAsker        *bool
 }
 
 type ReceiveItemsOfCurrentUserResponse struct {
@@ -75,6 +79,8 @@ type ReceiveItemsOfCurrentUserResponse struct {
 	Username                *string
 	UserPic                 *string
 	UsernameOfAskedByUserID *string
+	ConFromItemOwner        *bool
+	ConFromItemAsker        *bool
 }
 
 type MarketPlaceResponse struct {

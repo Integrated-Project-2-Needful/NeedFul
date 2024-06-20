@@ -141,9 +141,12 @@ func main() {
 
 	app.Put("/PutAsk/:ItemID/:AskByUserID", itemHandler.PutAskByItemIdAndPostAskMessage)
 
-	app.Get("/GetMSGPageOfCurrentUser", messageHandler.GetMessagePageOfCurrentUser)                                  //#
+	app.Get("/GetMessagePageOfCurrentUser", messageHandler.GetMessagePageOfCurrentUser)                              //#
 	app.Get("/GetConversationOfCurrentUserByOtherId/:OtherID", messageHandler.GetConversationOfCurrentUserByOtherID) //#
-	app.Post("/PostMessage/:ReceiverID", messageHandler.PostMessage)                                                 //#
+	app.Post("/PostMessage/:ReceiverID", messageHandler.PostMessage)
+
+	app.Put("/PutTransactionReady/:ItemID", itemHandler.PutTransactionReady)
+	app.Put("/PutCompleteTransaction/:ItemID", itemHandler.PutCompleteTransaction)
 
 	//#####################################################################################
 

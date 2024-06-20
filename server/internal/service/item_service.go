@@ -148,6 +148,8 @@ func (s itemService) GetItemsOfCurrentUser(userid int) ([]entities.ItemsOfCurren
 			Username:                item.Username,
 			UserPic:                 item.UserPic,
 			UsernameOfAskedByUserID: item.UsernameOfAskedByUserID,
+			ConFromItemOwner:        item.ConFromItemOwner,
+			ConFromItemAsker:        item.ConFromItemAsker,
 		}
 		itemsResponse = append(itemsResponse, itemResponse)
 	}
@@ -175,6 +177,8 @@ func (s itemService) GetDonateItemsOfCurrentUser(userid int) ([]entities.DonateI
 			Username:                item.Username,
 			UserPic:                 item.UserPic,
 			UsernameOfAskedByUserID: item.UsernameOfAskedByUserID,
+			ConFromItemOwner:        item.ConFromItemOwner,
+			ConFromItemAsker:        item.ConFromItemAsker,
 		}
 		itemsResponse = append(itemsResponse, itemResponse)
 	}
@@ -202,6 +206,8 @@ func (s itemService) GetReceiveItemsOfCurrentUser(userid int) ([]entities.Receiv
 			Username:                item.Username,
 			UserPic:                 item.UserPic,
 			UsernameOfAskedByUserID: item.UsernameOfAskedByUserID,
+			ConFromItemOwner:        item.ConFromItemOwner,
+			ConFromItemAsker:        item.ConFromItemAsker,
 		}
 		itemsResponse = append(itemsResponse, itemResponse)
 	}
@@ -375,6 +381,50 @@ func (s itemService) PutAskByItemIdAndPostAskMessage(itemID, askerUserID int) (*
 	}
 
 	err = s.itemRepo.PostAskMessage(message)
+	if err != nil {
+		return nil, err
+	}
+
+	return item, nil
+}
+
+func (s itemService) PutTransactionReady(itemid, userid int) (*entities.Item, error) {
+	item, err := s.itemRepo.GetItemByItemId(itemid)
+	if err != nil {
+		return nil, err
+	}
+
+	if item.AskedByUserID != nil && *item.AskedByUserID == uint(userid) {
+		T1 := false
+		item.ConFromItemAsker = &T1
+	} else {
+		T1 := false
+		item.ConFromItemOwner = &T1
+	}
+
+	err = s.itemRepo.PutTransactionReady(item)
+	if err != nil {
+		return nil, err
+	}
+
+	return item, nil
+}
+
+func (s itemService) PutCompleteTransaction(itemid, userid int) (*entities.Item, error) {
+	item, err := s.itemRepo.GetItemByItemId(itemid)
+	if err != nil {
+		return nil, err
+	}
+
+	if item.AskedByUserID != nil && *item.AskedByUserID == uint(userid) {
+		T1 := true
+		item.ConFromItemAsker = &T1
+	} else {
+		T1 := true
+		item.ConFromItemOwner = &T1
+	}
+
+	err = s.itemRepo.PutCompleteTransaction(item)
 	if err != nil {
 		return nil, err
 	}

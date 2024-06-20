@@ -31,4 +31,7 @@ type ItemService interface {
 	//PutAskByItemId(int, int) (*entities.Item, error)
 
 	PutAskByItemIdAndPostAskMessage(int, int) (*entities.Item, error)
+
+	PutTransactionReady(int, int) (*entities.Item, error)
+	PutCompleteTransaction(int, int) (*entities.Item, error)
 }

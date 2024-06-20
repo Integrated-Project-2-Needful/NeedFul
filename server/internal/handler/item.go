@@ -150,6 +150,8 @@ func (h *itemHandler) GetItemsOfCurrentUser(c *fiber.Ctx) error {
 			Username:                item.Username,
 			UserPic:                 item.UserPic,
 			UsernameOfAskedByUserID: item.UsernameOfAskedByUserID,
+			ConFromItemOwner:        item.ConFromItemOwner,
+			ConFromItemAsker:        item.ConFromItemAsker,
 		})
 	}
 	return c.JSON(itemsResponse)
@@ -189,6 +191,8 @@ func (h *itemHandler) GetDonateItemsOfCurrentUser(c *fiber.Ctx) error {
 			Username:                item.Username,
 			UserPic:                 item.UserPic,
 			UsernameOfAskedByUserID: item.UsernameOfAskedByUserID,
+			ConFromItemOwner:        item.ConFromItemOwner,
+			ConFromItemAsker:        item.ConFromItemAsker,
 		})
 	}
 	return c.JSON(itemsResponse)
@@ -228,6 +232,8 @@ func (h *itemHandler) GetReceiveItemsOfCurrentUser(c *fiber.Ctx) error {
 			Username:                item.Username,
 			UserPic:                 item.UserPic,
 			UsernameOfAskedByUserID: item.UsernameOfAskedByUserID,
+			ConFromItemOwner:        item.ConFromItemOwner,
+			ConFromItemAsker:        item.ConFromItemAsker,
 		})
 	}
 	return c.JSON(itemsResponse)
@@ -456,4 +462,60 @@ func (h *itemHandler) PutAskByItemIdAndPostAskMessage(c *fiber.Ctx) error {
 	}
 
 	return c.JSON(fiber.Map{"message": "Update asked_by_user_id & already_gave By ItemID & UserID successfully and message posted"})
+}
+
+func (h *itemHandler) PutTransactionReady(c *fiber.Ctx) error {
+	itemIDReceive, err := strconv.Atoi(c.Params("ItemID"))
+
+	// Extract the token from the request headers
+	token := c.Get("Authorization")
+
+	// Check if the token is empty
+	if token == "" {
+		return errors.New("token is missing")
+	}
+
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "invalid ItemID"})
+	}
+
+	userIDExtract, err := utils.ExtractUserIDFromToken(strings.Replace(token, "Bearer ", "", 1), h.jwtSecret)
+	if err != nil {
+		return err
+	}
+
+	_, err = h.itemSer.PutAskByItemIdAndPostAskMessage(itemIDReceive, userIDExtract)
+	if err != nil {
+		return err
+	}
+
+	return c.JSON(fiber.Map{"message": "PutTransactionReady successfully"})
+}
+
+func (h *itemHandler) PutCompleteTransaction(c *fiber.Ctx) error {
+	itemIDReceive, err := strconv.Atoi(c.Params("ItemID"))
+
+	// Extract the token from the request headers
+	token := c.Get("Authorization")
+
+	// Check if the token is empty
+	if token == "" {
+		return errors.New("token is missing")
+	}
+
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "invalid ItemID"})
+	}
+
+	userIDExtract, err := utils.ExtractUserIDFromToken(strings.Replace(token, "Bearer ", "", 1), h.jwtSecret)
+	if err != nil {
+		return err
+	}
+
+	_, err = h.itemSer.PutAskByItemIdAndPostAskMessage(itemIDReceive, userIDExtract)
+	if err != nil {
+		return err
+	}
+
+	return c.JSON(fiber.Map{"message": "PutCompleteTransaction successfully"})
 }

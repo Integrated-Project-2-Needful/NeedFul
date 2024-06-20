@@ -29,4 +29,7 @@ type ItemRepository interface {
 
 	PutAskByItemId(item *entities.Item) error
 	PostAskMessage(message *entities.Message) error
+
+	PutTransactionReady(item *entities.Item) error
+	PutCompleteTransaction(item *entities.Item) error
 }

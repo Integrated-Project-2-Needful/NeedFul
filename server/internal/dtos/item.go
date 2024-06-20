@@ -68,6 +68,8 @@ type ItemsOfCurrentUserResponse struct {
 	Username                *string `json:"username" validate:"required"`
 	UserPic                 *string `json:"user_pic" validate:"required"`
 	UsernameOfAskedByUserID *string `json:"username_asked_by_user_id" validate:"required"`
+	ConFromItemOwner        *bool   `json:"con_from_item_owner" validate:"required"`
+	ConFromItemAsker        *bool   `json:"con_from_item_asker" validate:"required"`
 }
 
 type DonateItemsOfCurrentUserResponse struct {
@@ -82,6 +84,8 @@ type DonateItemsOfCurrentUserResponse struct {
 	Username                *string `json:"username" validate:"required"`
 	UserPic                 *string `json:"user_pic" validate:"required"`
 	UsernameOfAskedByUserID *string `json:"username_asked_by_user_id" validate:"required"`
+	ConFromItemOwner        *bool   `json:"con_from_item_owner" validate:"required"`
+	ConFromItemAsker        *bool   `json:"con_from_item_asker" validate:"required"`
 }
 
 type ReceiveItemsOfCurrentUserResponse struct {
@@ -96,6 +100,8 @@ type ReceiveItemsOfCurrentUserResponse struct {
 	Username                *string `json:"username" validate:"required"`
 	UserPic                 *string `json:"user_pic" validate:"required"`
 	UsernameOfAskedByUserID *string `json:"username_asked_by_user_id" validate:"required"`
+	ConFromItemOwner        *bool   `json:"con_from_item_owner" validate:"required"`
+	ConFromItemAsker        *bool   `json:"con_from_item_asker" validate:"required"`
 }
 
 type AddItemRequest struct {

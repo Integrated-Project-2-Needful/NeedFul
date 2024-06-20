@@ -80,6 +80,7 @@ func (r messageRepositoryDB) GetConversationOfCurrentUserByOtherID(currentUserID
 		Select("messages.*, users.user_id, users.username, users.firstname, users.lastname, users.user_pic").
 		Joins("left join users on users.user_id = messages.sender_user_id").
 		Where("(messages.sender_user_id = ? AND messages.receiver_user_id = ?) OR (messages.sender_user_id = ? AND messages.receiver_user_id = ?)", currentUserID, otherUserID, otherUserID, currentUserID).
+		Order("msg_id DESC").
 		Scan(&conversations)
 
 	if result.Error != nil {

@@ -88,7 +88,7 @@ func (r itemRepositoryDB) GetAllItemOfCurrentUser(userid int) ([]entities.ItemsO
             (SELECT username FROM users WHERE user_id = items.asked_by_user_id) AS username_of_asked_by_user_id
         `).
 		Joins("JOIN users ON items.user_id = users.user_id").
-		Where("users.user_id = ?", userid).
+		Where("users.user_id = ? OR items.asked_by_user_id = ?", userid, userid).
 		Find(&items)
 	if result.Error != nil {
 		return nil, result.Error
@@ -119,7 +119,8 @@ func (r itemRepositoryDB) GetDonateItemsOfCurrentUser(userid int) ([]entities.Do
             (SELECT username FROM users WHERE user_id = items.asked_by_user_id) AS username_of_asked_by_user_id
         `).
 		Joins("JOIN users ON items.user_id = users.user_id").
-		Where("users.user_id = ?", userid).Where("offer_type = ?", "Donate").
+		Where("users.user_id = ? OR items.asked_by_user_id = ?", userid, userid).
+		Where("offer_type = ?", "Donate").
 		Find(&items)
 	if result.Error != nil {
 		return nil, result.Error
@@ -150,7 +151,7 @@ func (r itemRepositoryDB) GetReceiveItemsOfCurrentUser(userid int) ([]entities.R
             (SELECT username FROM users WHERE user_id = items.asked_by_user_id) AS username_of_asked_by_user_id
         `).
 		Joins("JOIN users ON items.user_id = users.user_id").
-		Where("users.user_id = ?", userid).
+		Where("users.user_id = ? OR items.asked_by_user_id = ?", userid, userid).
 		Where("offer_type = ?", "Receive").
 		Find(&items)
 	if result.Error != nil {
@@ -261,5 +262,23 @@ func (r itemRepositoryDB) PostAskMessage(message *entities.Message) error {
 	if result.Error != nil {
 		return result.Error
 	}
+	return nil
+}
+
+func (r itemRepositoryDB) PutTransactionReady(item *entities.Item) error {
+	result := r.db.Save(item)
+	if result.Error != nil {
+		return result.Error
+	}
+
+	return nil
+}
+
+func (r itemRepositoryDB) PutCompleteTransaction(item *entities.Item) error {
+	result := r.db.Save(item)
+	if result.Error != nil {
+		return result.Error
+	}
+
 	return nil
 }
