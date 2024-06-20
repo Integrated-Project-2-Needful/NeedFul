@@ -65,7 +65,7 @@ class _ItemDetailsState extends State<ItemDetails> {
     final token = Provider.of<TokenProvider>(context, listen: false).token;
     final userId = Provider.of<TokenProvider>(context, listen: false).userId;
     Dio dio = Dio(); // Create a Dio instance
-    final response = await dio.delete(
+    final response = await dio.put(
       'http://10.0.2.2:5428/DeleteItemByItemId/${widget.itemid}',
       options: Options(
         headers: {
@@ -82,6 +82,71 @@ class _ItemDetailsState extends State<ItemDetails> {
     }
   }
 
+  // /PutAsk/:ItemID/:AskByUserID
+  Future<void> putAskMarketplaceItem() async {
+    final token = Provider.of<TokenProvider>(context, listen: false).token;
+    final userId = Provider.of<TokenProvider>(context, listen: false).userId;
+    Dio dio = Dio(); // Create a Dio instance
+    final response = await dio.put(
+      'http://10.0.2.2:5428/PutAsk/${widget.itemid}/${userId}',
+      options: Options(
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json', // Adjust content type as needed
+        },
+      ),
+    );
+
+    if (response.statusCode == 200) {
+      return null; 
+    } else {
+      throw Exception('Failed to deleteItem');
+    }
+  }
+
+  // /PutTransactionReady/:ItemID
+  Future<void> putTransactionReady() async {
+    final token = Provider.of<TokenProvider>(context, listen: false).token;
+    final userId = Provider.of<TokenProvider>(context, listen: false).userId;
+    Dio dio = Dio(); // Create a Dio instance
+    final response = await dio.put(
+      'http://10.0.2.2:5428/PutTransactionReady/${widget.itemid}',
+      options: Options(
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json', // Adjust content type as needed
+        },
+      ),
+    );
+
+    if (response.statusCode == 200) {
+      return null; 
+    } else {
+      throw Exception('Failed to deleteItem');
+    }
+  }
+
+    // /PutCompleteTransaction/:ItemID
+  Future<void> PutCompleteTransaction() async {
+    final token = Provider.of<TokenProvider>(context, listen: false).token;
+    final userId = Provider.of<TokenProvider>(context, listen: false).userId;
+    Dio dio = Dio(); // Create a Dio instance
+    final response = await dio.put(
+      'http://10.0.2.2:5428/PutCompleteTransaction/${widget.itemid}',
+      options: Options(
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json', // Adjust content type as needed
+        },
+      ),
+    );
+
+    if (response.statusCode == 200) {
+      return null; 
+    } else {
+      throw Exception('Failed to deleteItem');
+    }
+  }
   // Future<void> _launchUrl(String url) async {
   //   // final Uri uri = Uri.parse(url);
   //   // Simulate a delay for launching the URL
@@ -136,8 +201,11 @@ class _ItemDetailsState extends State<ItemDetails> {
           final userId = (wishdata?['user_id']) ?? 0;
           final askbyUserId = wishdata?['asked_by_user_id'] ?? 0;
           final alreadyGave = wishdata?['already_gave'] ?? null;
+          final confirmFromOwner = wishdata?['con_from_item_owner'] ?? null;
+          final confirmFromAsker = wishdata?['con_from_item_asker'] ?? null;
           final offerType = wishdata?['offer_type'] ?? 'Unknown offerType';
           final username = widget.username;
+          // print(widget.itemid);
           return Scaffold(
             backgroundColor: colorUse.backgroundColor,
             appBar: CustomAppBarNavigation(
@@ -206,7 +274,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                     ),
                     const SizedBox(height: 24),
                     
-                    if (userId == userIdFromToken)
+                    if (userId == userIdFromToken && alreadyGave == null)
                       ButtonAtBottom(
                         onPressed: () async {
                          await deleteItem();
@@ -217,20 +285,62 @@ class _ItemDetailsState extends State<ItemDetails> {
                         text: 'Delete item',
                         color: colorUse.rejectButton,
                       ),
-
-                    if (userId != userIdFromToken && offerType == 'Receive')
+                    if (alreadyGave == false && (confirmFromOwner == null || confirmFromAsker == null)
+                        )
                       ButtonAtBottom(
-                        onPressed: () {
-
+                        onPressed: () async {
+                         await putTransactionReady();
+                         Navigator.push(context, 
+                          MaterialPageRoute(builder: (context) => Home()));
+                          widget.onUpdateBuy;
+                        },
+                        text: userId == userIdFromToken && confirmFromOwner == null ? 'Ready to transaction' 
+                        : askbyUserId == userIdFromToken && confirmFromAsker == null ? 'Ready to transaction'
+                        : 'Waiting for mutal ready',
+                        color: userId == userIdFromToken && confirmFromOwner == null ? colorUse.activeButton 
+                        : askbyUserId == userIdFromToken && confirmFromAsker == null ? colorUse.activeButton
+                        : colorUse.rejectButton,
+                      ),
+                      if (alreadyGave == false && (confirmFromOwner == false || confirmFromAsker == false)
+                          && (confirmFromOwner != null || confirmFromOwner != true) &&
+                              (confirmFromAsker != null || confirmFromAsker != true))
+                      ButtonAtBottom(
+                        onPressed: () async {
+                         await PutCompleteTransaction();
+                         Navigator.push(context, 
+                          MaterialPageRoute(builder: (context) => Home()));
+                          widget.onUpdateBuy;
+                        },
+                        text: userId == userIdFromToken && confirmFromOwner == false ? 'finishing transaction' 
+                        : askbyUserId == userIdFromToken && confirmFromAsker == false ? 'finishing transaction'
+                        : 'Waiting for mutal confirmation',
+                        color: userId == userIdFromToken && confirmFromOwner == false ? colorUse.activeButton 
+                        : askbyUserId == userIdFromToken && confirmFromAsker == false ? colorUse.activeButton
+                        : colorUse.rejectButton,
+                      ),
+                    //marketplace
+                    if ((userId != userIdFromToken && offerType == 'Receive') 
+                        && alreadyGave == null
+                        )
+                      ButtonAtBottom(
+                        onPressed: () async {
+                          await putAskMarketplaceItem();
+                          Navigator.push(context, 
+                          MaterialPageRoute(builder: (context) => Home()));
+                          widget.onUpdateBuy;
                         },
                         text: 'Donate',
                         color: colorUse.activeButton,
                       ),
 
-                    if (userId != userIdFromToken && offerType == 'Donate')
+                    if (userId != userIdFromToken && offerType == 'Donate' 
+                        && alreadyGave == null)
                       ButtonAtBottom(
-                        onPressed: () {
-                          
+                        onPressed: () async {
+                          await putAskMarketplaceItem();
+                          Navigator.push(context, 
+                          MaterialPageRoute(builder: (context) => Home()));
+                          widget.onUpdateBuy;
                         },
                         text: 'Ask for Receive',
                         color: colorUse.activeButton,

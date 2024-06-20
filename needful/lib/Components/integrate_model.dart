@@ -105,52 +105,76 @@ class WishItem {
 
 class MessageLog {
   final int userid;
-  final int messageUserId;
+  final String firstname;
+  final String lastname;
   final String username;
+  final String user_pic;
+  final int msgId;
+  final int senderuserId;
+  final int receiveuserId;
   final String latestMessage;
-  final String img;
 
   MessageLog({
     required this.userid,
-    required this.messageUserId,
+    required this.firstname,
+    required this.lastname,
+    required this.msgId,
+    required this.senderuserId,
+    required this.receiveuserId,
     required this.username,
     required this.latestMessage,
-    required this.img,
+    required this.user_pic,
   });
 
   factory MessageLog.fromJson(Map<String, dynamic> json) {
     return MessageLog(
-      userid: json['userid'],
-      messageUserId: json['messageUserId'],
+      userid: json['user_id'],
+      firstname: json['firstname'],
+      lastname: json['lastname'],
+      msgId: json['msg_id'],
+      senderuserId: json['sender_user_id'],
+      receiveuserId: json['receiver_user_id'],
       username: json['username'],
-      latestMessage: json['latestMessage'],
-      img: json['img'],
+      latestMessage: json['msg_text'],
+      user_pic: json['user_pic'],
     );
   }
 }
 
-class MessagePerUser {
-  final int messageid;
+class ChatMessages {
   final int userid;
-  final String img;
+  final String firstname;
+  final String lastname;
   final String username;
-  final String message;
+  final String user_pic;
+  final int msgId;
+  final int senderuserId;
+  final int receiveuserId;
+  final String msgText;
 
-  MessagePerUser({
-    required this.messageid,
+  ChatMessages({
     required this.userid,
-    required this.img,
+    required this.firstname,
+    required this.lastname,
+    required this.msgId,
+    required this.senderuserId,
+    required this.receiveuserId,
     required this.username,
-    required this.message,
+    required this.msgText,
+    required this.user_pic,
   });
 
-  factory MessagePerUser.fromJson(Map<String, dynamic> json) {
-    return MessagePerUser(
-      messageid: json['messageid'],
-      userid: json['userid'],
+  factory ChatMessages.fromJson(Map<String, dynamic> json) {
+    return ChatMessages(
+      userid: json['user_id'],
+      firstname: json['firstname'],
+      lastname: json['lastname'],
+      msgId: json['msg_id'],
+      senderuserId: json['sender_user_id'],
+      receiveuserId: json['receiver_user_id'],
       username: json['username'],
-      message: json['message'],
-      img: json['img'],
+      msgText: json['msg_text'],
+      user_pic: json['user_pic'],
     );
   }
 }

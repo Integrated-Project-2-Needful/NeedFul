@@ -7,6 +7,7 @@ class TextForm extends StatefulWidget {
   final TextEditingController? controller;
   final bool? filled;
   final bool? decorationAsSendIcon;
+  final VoidCallback? onSend;
 
   const TextForm({
     super.key,
@@ -15,6 +16,7 @@ class TextForm extends StatefulWidget {
     this.maxLine,
     this.filled,
     this.decorationAsSendIcon,
+    this.onSend,
   });
 
   @override
@@ -22,6 +24,7 @@ class TextForm extends StatefulWidget {
 }
 
 class _TextFormState extends State<TextForm> {
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -32,7 +35,10 @@ class _TextFormState extends State<TextForm> {
           child: TextFormField(
             maxLines: widget.maxLine,
             decoration: InputDecoration(
-              suffixIcon: widget.decorationAsSendIcon != null ? Icon(Icons.send) : null,
+              suffixIcon: widget.decorationAsSendIcon != null ? IconButton(
+                icon: Icon(Icons.send),
+                onPressed: widget.onSend,
+                ) : null,
               filled: widget.filled?? false,
               fillColor: widget.filled== true? Colors.white : colorUse.backgroundColor,
               border: const OutlineInputBorder(),

@@ -96,6 +96,16 @@ class CardWidget extends StatelessWidget {
                 ),
               );
             } else if (askedByUserId != null && alreadyGave == false) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ItemDetails(
+                    itemid: itemlistId,
+                    username: username ?? 'null',
+                    onUpdateBuy: onUpdateBuy,
+                  ),
+                ),
+              );
               // showDialog(
               //     context: context,
               //     builder: (BuildContext dialogContext) {
@@ -222,9 +232,17 @@ class messageCard extends StatelessWidget {
   final String username;
   final String? latestMessage;
   final String img;
+  final VoidCallback? onRefresh;
 
   const messageCard(
-      {super.key,required this.userId,required this.messageUserId ,required this.username, this.latestMessage, required this.img});
+      {super.key,
+      required this.userId,
+      required this.messageUserId,
+      required this.username,
+      this.latestMessage,
+      required this.img,
+      this.onRefresh,
+      });
 
   @override
   Widget build(BuildContext context) {
@@ -235,7 +253,7 @@ class messageCard extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => ChatRoom(
-              userId: userId, messageUserId: messageUserId, messageUsername: username,
+              userId: userId, messageUserId: messageUserId, messageUsername: username,action: onRefresh,
             )),
           );
         },
@@ -249,7 +267,7 @@ class messageCard extends StatelessWidget {
                 CircleAvatar(
                   radius: 28,
                   backgroundImage: NetworkImage(
-                    img?? '',
+                    img,
                   ),
                 ),
                 const SizedBox(width: 15),
@@ -259,7 +277,7 @@ class messageCard extends StatelessWidget {
                     children: <Widget>[
                       // Username
                       Text(
-                        username?? '',
+                        username,
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16,

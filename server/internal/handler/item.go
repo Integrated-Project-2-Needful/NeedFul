@@ -109,6 +109,8 @@ func (h *itemHandler) GetItemDetailsByItemId(c *fiber.Ctx) error {
 		OfferType:     item.OfferType,
 		AskedByUserID: item.AskedByUserID,
 		AlreadyGave:   item.AlreadyGave,
+		ConFromItemOwner: item.ConFromItemOwner,
+		ConFromItemAsker: item.ConFromItemAsker,
 	}
 
 	return c.JSON(itemResponse)

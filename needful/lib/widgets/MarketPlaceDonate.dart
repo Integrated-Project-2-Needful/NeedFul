@@ -128,7 +128,7 @@ class _MarketPlaceDonateState extends State<MarketPlaceDonate> {
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(15.0),
                               child: Image.network(
-                                item.itemPic!,
+                                item.itemPic,
                                 width: 200,
                                 height: 400,
                                 fit: BoxFit.cover,

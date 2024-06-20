@@ -1,8 +1,12 @@
+import 'dart:async';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:needful/Components/integrate_model.dart';
 import 'package:needful/Utils/color_use.dart';
+import 'package:needful/provider/token_provider.dart';
 import 'package:needful/widgets/card_widget.dart';
-import 'package:needful/widgets/text_form.dart';
+import 'package:provider/provider.dart';
 
 class ChatLog extends StatefulWidget {
   const ChatLog({super.key});
@@ -18,98 +22,87 @@ class _ChatLogState extends State<ChatLog> {
   String? username;
   String? latestMessage;
   String? img;
+  int? selfId;
+  Timer? _timer;
 
+    Future<List<MessageLog>> fetchChatLog() async {
+    final token = Provider.of<TokenProvider>(context, listen: false).token;
+    selfId = Provider.of<TokenProvider>(context, listen: false).userId;
+    Dio dio = Dio();
+    final response = await dio.get(
+      'http://10.0.2.2:5428/GetMessagePageOfCurrentUser',
+      options: Options(
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json',
+        },
+      ),
+    );
 
+    if (response.statusCode == 200) {
+      final parsedJson = response.data as List;
+      List<MessageLog> items = parsedJson.map((json) => MessageLog.fromJson(json)).toList();
+      print('12DOne');
+      return items;
+    } else {
+      throw Exception('Failed to load items');
+    }
+  }
 
+  void refreshList() {
+    setState(() {
+      // Trigger rebuild by updating state
+      fetchChatLog(); // Re-fetch wishlists
+    });
+  }
 
-  // Future<void> fetchUserData() async {
-  //   // final token = Provider.of<TokenProvider>(context, listen: false).token;
-  //   // final userId = Provider.of<TokenProvider>(context, listen: false).userId;
+   @override
+  void initState() {
+    super.initState();
+    fetchChatLog(); // Initial fetch
+    _startPolling(); // Start polling
+  }
 
-  //   // Mock user data
-  //   setState(() {
-  //     userid = 1;
-  //     messageUserId = 2;
-  //     username = 'JohnDoe';
-  //     latestMessage = 'johndoe@example.com';
-  //     img = 'https://img.freepik.com/free-photo/zen-balancing-pebbles-misty-lake_53876-138198.jpg';
+  @override
+  void dispose() {
+    _timer?.cancel(); // Cancel the timer when the widget is disposed
+    super.dispose();
+  }
 
-  //   });
-    
-  // }
-  Future<List<MessageLog>> fetchMessages() async {
-  // Mock data (using your provided structure)
-  final List<Map<String, dynamic>> mockData = [
-    // {
-    //   'userid': 1,
-    //   'messageUserId': 1,
-    //   'username': 'JohnDoe',
-    //   'latestMessage': 'I need the item now!',
-    //   'img': 'https://img.freepik.com/free-photo/zen-balancing-pebbles-misty-lake_53876-138198.jpg',
-    // },
-    {
-      'userid': 1,
-      'messageUserId': 2,
-      'username': 'Scuff',
-      'latestMessage': 'Deal!',
-      'img': 'https://i.ibb.co/3FDQHgV/362276652-1731342663961535-5299935558991469373-n.jpg', 
-    },
-    {
-      'userid': 1,
-      'messageUserId': 6,
-      'username': 'BunnyGirl',
-      'latestMessage': 'Meeting tomorrow?',
-      'img': 'https://i.ibb.co/qxYnyxS/55555754-p0-master1200.jpg',
-    },
-    {
-      'userid': 1,
-      'messageUserId': 6,
-      'username': 'BunnyGirl',
-      'latestMessage': 'Meeting tomorrow?',
-      'img': 'https://i.ibb.co/qxYnyxS/55555754-p0-master1200.jpg',
-    },
-    {
-      'userid': 1,
-      'messageUserId': 6,
-      'username': 'BunnyGirl',
-      'latestMessage': 'Meeting tomorrow?',
-      'img': 'https://i.ibb.co/qxYnyxS/55555754-p0-master1200.jpg',
-    },
-    {
-      'userid': 2,
-      'messageUserId': 6,
-      'username': 'BunnyGirl',
-      'latestMessage': 'Meeting tomorrow?',
-      'img': 'https://i.ibb.co/qxYnyxS/55555754-p0-master1200.jpg',
-    },
-    {
-      'userid': 3,
-      'messageUserId': 6,
-      'username': 'BunnyGirl',
-      'latestMessage': 'Meeting tomorrow?',
-      'img': 'https://i.ibb.co/qxYnyxS/55555754-p0-master1200.jpg',
-    },
-    {
-      'userid': 3,
-      'messageUserId': 6,
-      'username': 'BunnyGirl',
-      'latestMessage': 'Meeting tomorrow?',
-      'img': 'https://i.ibb.co/qxYnyxS/55555754-p0-master1200.jpg',
-    },
-    
-  ];
+    void _startPolling() {
+    _timer = Timer.periodic(const Duration(seconds: 10), (timer) async {
+      if (mounted) { 
+        // Ensure the widget is mounted before updating state
+        final newMessages = await fetchChatLog();
+        if (newMessages.length != messages.length ||
+            !_areListsEqual(newMessages, messages)) {
+          setState(() {
+            messages = newMessages;
+          });
+        }
+      } else {
+        _timer?.cancel(); // Cancel the timer if the widget is not mounted
+      }
+    });
+  }
 
-  // Simulate network delay (optional)
-  // await Future.delayed(Duration(seconds: 1)); 
+  // Helper function to compare message lists
+  bool _areListsEqual(List<MessageLog> a, List<MessageLog> b) {
+    if (a.length != b.length) return false;
+    for (var i = 0; i < a.length; i++) {
+      if (a[i] != b[i]) return false;
+    }
+    return true;
+  }
 
-  // Parse the mock data
-  List<MessageLog> messages = mockData.map((json) => MessageLog.fromJson(json)).toList();
+  void _refreshChatLog() { // Add _refreshChatLog to trigger refresh
+    fetchChatLog().then((newMessages) {
+      setState(() {
+        messages = newMessages;
+      });
+    });
+  }
 
-  // (If you're using a StatefulWidget, you might have setState here)
-  // setState(() { this.items = items; });
-
-  return messages;
-}
 
   @override
   Widget build(BuildContext context) {
@@ -132,18 +125,11 @@ class _ChatLogState extends State<ChatLog> {
       body: Column(
         children: [
           Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: 
-            TextForm(
-              label: 'Search',
-              filled: false,
-              maxLine: 1,
-              // controller: ,
-              ),
+          padding: const EdgeInsets.all(12.0),  
           ),
           Expanded(child: 
           FutureBuilder<List<MessageLog>>(
-            future: fetchMessages(),
+            future: fetchChatLog(),
             builder:(context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting){
                 return const Center(child: CircularProgressIndicator());
@@ -164,11 +150,13 @@ class _ChatLogState extends State<ChatLog> {
                           itemBuilder: (context, index) {
                             final messagesList = messages[index];
                             return messageCard(
-                              userId: messagesList.userid,
-                              messageUserId: messagesList.messageUserId, 
+                              userId: selfId?? 0,
+                              messageUserId: messagesList.userid, 
                               username: messagesList.username, 
-                              img: messagesList.img, 
-                              latestMessage: messagesList.latestMessage,);
+                              img: messagesList.user_pic, 
+                              latestMessage: messagesList.latestMessage,
+                              onRefresh: _refreshChatLog,
+                              );
                           },
                     ),
                   );

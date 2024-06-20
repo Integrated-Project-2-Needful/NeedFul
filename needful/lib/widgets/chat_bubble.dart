@@ -1,12 +1,19 @@
+import 'dart:async';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:needful/Components/integrate_model.dart';
 import 'package:needful/Utils/color_use.dart';
 import 'package:needful/Utils/text_use.dart';
+import 'package:needful/provider/token_provider.dart';
+import 'package:needful/widgets/card_widget.dart';
+import 'package:provider/provider.dart';
 
 class ChatBubble extends StatefulWidget {
   final int messageUserId;
   final int userId;
   final String messageUsername;
+  final VoidCallback? onMessageSent;
 
 
   const ChatBubble({
@@ -14,6 +21,7 @@ class ChatBubble extends StatefulWidget {
     required this.userId,
     required this.messageUserId,
     required this.messageUsername,
+    this.onMessageSent,
     });
 
   @override
@@ -21,232 +29,81 @@ class ChatBubble extends StatefulWidget {
 }
 
 class _ChatBubbleState extends State<ChatBubble> {
-  List<MessagePerUser> userMessage = [];
-
+  List<ChatMessages> userMessage = [];
+  Timer? _timer;
   final ScrollController _scrollController = ScrollController();
+
+
 
   @override
   void initState() {
     super.initState();
-    // Scroll to the bottom initially and after each build
-    fetchMessages().then((_) {
-      WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToBottom());
-    });
+    fetchChatMessages();
+    _startPolling(); // Start polling
   }
 
   @override
   void dispose() {
     _scrollController.dispose(); 
+    _timer?.cancel(); // Cancel the timer when the widget is disposed
     super.dispose();
   }
 
-  void _scrollToBottom() {
-    if (_scrollController.hasClients) {
-      _scrollController.jumpTo(
-        _scrollController.position.maxScrollExtent, // Use jumpTo instead of animateTo
-      );
-    }
+    void _startPolling() {
+    _timer = Timer.periodic(const Duration(seconds: 10), (timer) async {
+      if (mounted) { 
+        // Ensure the widget is mounted before updating state
+        final newMessages = await fetchChatMessages();
+        if (newMessages.length != userMessage.length ||
+            !_areListsEqual(newMessages, userMessage)) {
+          setState(() {
+            userMessage = newMessages;
+          });
+        }
+      } else {
+        _timer?.cancel(); // Cancel the timer if the widget is not mounted
+      }
+    });
   }
 
-  Future<List<MessagePerUser>> fetchMessages() async {
-  // Mock data (using your provided structure)
-  final List<Map<String, dynamic>> mockData = [
-    {
-      'messageid':1,
-      'userid': 1,
-      'username': 'JohnDoe',
-      'message': 'Hello, Girl!',
-      'img': 'https://img.freepik.com/free-photo/zen-balancing-pebbles-misty-lake_53876-138198.jpg', 
-    },
-    {
-      'messageid':2,
-      'userid': 1,
-      'username': 'JohnDoe',
-      'message': 'I need the item now!',
-      'img': 'https://img.freepik.com/free-photo/zen-balancing-pebbles-misty-lake_53876-138198.jpg',
-    },
-    {
-      'userid': 2,
-      'messageid': 3,
-      'username': 'Scuff',
-      'message': 'Meeting tomorrow?',
-      'img': 'https://i.ibb.co/qxYnyxS/55555754-p0-master1200.jpg',
-    },
-    {
-      'userid': 2,
-      'messageid': 4,
-      'username': 'Scuff',
-      'message': 'I\m available tomorrow, are you?',
-      'img': 'https://i.ibb.co/qxYnyxS/55555754-p0-master1200.jpg',
-    },
-    {
-      'userid': 1,
-      'messageid': 5,
-      'username': 'JohnDoe',
-      'message': 'Sure tomorrow what time?',
-      'img': 'https://img.freepik.com/free-photo/zen-balancing-pebbles-misty-lake_53876-138198.jpg',
-    },
-    {
-      'userid': 2,
-      'messageid': 6,
-      'username': 'Scuff',
-      'message': '12:00 AM at KMUTT',
-      'img': 'https://i.ibb.co/qxYnyxS/55555754-p0-master1200.jpg',
-    },
-    {
-      'userid': 1,
-      'messageid': 7,
-      'username': 'JohnDoe',
-      'message': 'Deal!',
-      'img': 'https://img.freepik.com/free-photo/zen-balancing-pebbles-misty-lake_53876-138198.jpg',
-    },
-    {
-      'userid': 1,
-      'messageid': 7,
-      'username': 'JohnDoe',
-      'message': 'Deal!',
-      'img': 'https://img.freepik.com/free-photo/zen-balancing-pebbles-misty-lake_53876-138198.jpg',
-    },
-    {
-      'userid': 1,
-      'messageid': 7,
-      'username': 'JohnDoe',
-      'message': 'Deal!',
-      'img': 'https://img.freepik.com/free-photo/zen-balancing-pebbles-misty-lake_53876-138198.jpg',
-    },
-    {
-      'userid': 1,
-      'messageid': 7,
-      'username': 'JohnDoe',
-      'message': 'Deal!',
-      'img': 'https://img.freepik.com/free-photo/zen-balancing-pebbles-misty-lake_53876-138198.jpg',
-    },
-    {
-      'userid': 1,
-      'messageid': 7,
-      'username': 'JohnDoe',
-      'message': 'Deal!',
-      'img': 'https://img.freepik.com/free-photo/zen-balancing-pebbles-misty-lake_53876-138198.jpg',
-    },
-    {
-      'userid': 1,
-      'messageid': 7,
-      'username': 'JohnDoe',
-      'message': 'Deal!',
-      'img': 'https://img.freepik.com/free-photo/zen-balancing-pebbles-misty-lake_53876-138198.jpg',
-    },
-    {
-      'userid': 1,
-      'messageid': 7,
-      'username': 'JohnDoe',
-      'message': 'Deal!',
-      'img': 'https://img.freepik.com/free-photo/zen-balancing-pebbles-misty-lake_53876-138198.jpg',
-    },
-    {
-      'userid': 1,
-      'messageid': 7,
-      'username': 'JohnDoe',
-      'message': 'Deal!',
-      'img': 'https://img.freepik.com/free-photo/zen-balancing-pebbles-misty-lake_53876-138198.jpg',
-    },
-    {
-      'userid': 1,
-      'messageid': 7,
-      'username': 'JohnDoe',
-      'message': 'Deal!',
-      'img': 'https://img.freepik.com/free-photo/zen-balancing-pebbles-misty-lake_53876-138198.jpg',
-    },
-    {
-      'userid': 1,
-      'messageid': 7,
-      'username': 'JohnDoe',
-      'message': 'Deal!',
-      'img': 'https://img.freepik.com/free-photo/zen-balancing-pebbles-misty-lake_53876-138198.jpg',
-    },
-    {
-      'userid': 1,
-      'messageid': 7,
-      'username': 'JohnDoe',
-      'message': 'Deal!',
-      'img': 'https://img.freepik.com/free-photo/zen-balancing-pebbles-misty-lake_53876-138198.jpg',
-    },
-    {
-      'userid': 1,
-      'messageid': 7,
-      'username': 'JohnDoe',
-      'message': 'Deal!',
-      'img': 'https://img.freepik.com/free-photo/zen-balancing-pebbles-misty-lake_53876-138198.jpg',
-    },
-    {
-      'userid': 1,
-      'messageid': 7,
-      'username': 'JohnDoe',
-      'message': 'Deal!',
-      'img': 'https://img.freepik.com/free-photo/zen-balancing-pebbles-misty-lake_53876-138198.jpg',
-    },
-    {
-      'userid': 1,
-      'messageid': 7,
-      'username': 'JohnDoe',
-      'message': 'Deal!',
-      'img': 'https://img.freepik.com/free-photo/zen-balancing-pebbles-misty-lake_53876-138198.jpg',
-    },
-    {
-      'userid': 1,
-      'messageid': 7,
-      'username': 'JohnDoe',
-      'message': 'Deal!',
-      'img': 'https://img.freepik.com/free-photo/zen-balancing-pebbles-misty-lake_53876-138198.jpg',
-    },
-    {
-      'userid': 1,
-      'messageid': 7,
-      'username': 'JohnDoe',
-      'message': 'Deal!',
-      'img': 'https://img.freepik.com/free-photo/zen-balancing-pebbles-misty-lake_53876-138198.jpg',
-    },
-    {
-      'userid': 1,
-      'messageid': 7,
-      'username': 'JohnDoe',
-      'message': 'Deal!',
-      'img': 'https://img.freepik.com/free-photo/zen-balancing-pebbles-misty-lake_53876-138198.jpg',
-    },
-    {
-      'userid': 1,
-      'messageid': 7,
-      'username': 'JohnDoe',
-      'message': 'Deal!',
-      'img': 'https://img.freepik.com/free-photo/zen-balancing-pebbles-misty-lake_53876-138198.jpg',
-    },
-    {
-      'userid': 1,
-      'messageid': 7,
-      'username': 'JohnDoe',
-      'message': 'Deal!',
-      'img': 'https://img.freepik.com/free-photo/zen-balancing-pebbles-misty-lake_53876-138198.jpg',
-    },
-    
-  ];
+  // Helper function to compare message lists
+  bool _areListsEqual(List<ChatMessages> a, List<ChatMessages> b) {
+    if (a.length != b.length) return false;
+    for (var i = 0; i < a.length; i++) {
+      if (a[i] != b[i]) return false;
+    }
+    return true;
+  }
 
-  // Simulate network delay (optional)
-  // await Future.delayed(Duration(seconds: 1)); 
 
-  // Parse the mock data
-  List<MessagePerUser> userMessage = mockData.map((json) => MessagePerUser.fromJson(json)).toList();
+      Future<List<ChatMessages>> fetchChatMessages() async {
+    final token = Provider.of<TokenProvider>(context, listen: false).token;
+    Dio dio = Dio();
+    final response = await dio.get(
+      'http://10.0.2.2:5428/GetConversationOfCurrentUserByOtherId/${widget.messageUserId}',
+      options: Options(
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json',
+        },
+      ),
+    );
 
-  // (If you're using a StatefulWidget, you might have setState here)
-  // setState(() { this.items = items; });
-
-  return userMessage;
-}
+    if (response.statusCode == 200) {
+      final parsedJson = response.data as List;
+      List<ChatMessages> messages = parsedJson.map((json) => ChatMessages.fromJson(json)).toList();
+      return messages;
+    } else {
+      throw Exception('Failed to load items');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Container(
       child: 
-        FutureBuilder<List<MessagePerUser>>(
-            future: fetchMessages(),
+        FutureBuilder<List<ChatMessages>>(
+            future: fetchChatMessages(),
             builder:(context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting){
                 return const Center(child: CircularProgressIndicator());
@@ -262,7 +119,7 @@ class _ChatBubbleState extends State<ChatBubble> {
                   return Container(
                     child: ListView.builder(
                           controller: _scrollController,
-                          // reverse: true,
+                          reverse: true,
                           shrinkWrap: true,
                           itemCount: userMessage.length,
                           itemBuilder: (context, index) {
@@ -281,7 +138,7 @@ class _ChatBubbleState extends State<ChatBubble> {
                                 // Reorder based on 'isMe'
                                 children: [
                                  if (!isMe && showAvatar)
-                                  CircleAvatar(backgroundImage: NetworkImage(message.img)),
+                                  CircleAvatar(backgroundImage: NetworkImage(message.user_pic)),
                                   const SizedBox(width: 8),
                                   Flexible(
                                     child: Container(
@@ -296,13 +153,13 @@ class _ChatBubbleState extends State<ChatBubble> {
                                           bottomLeft: isMe ? const Radius.circular(12) : (!showAvatar ? const Radius.circular(12) : Radius.zero),
                                         ),
                                       ),
-                                      child: RegularText(message.message),
+                                      child: RegularText(message.msgText),
                                     ),
                                   ),
                                   // RegularText(message.message),
                                   if (isMe && showAvatar) const SizedBox(width: 8), // Add space before avatar for my message
                                   if (isMe && showAvatar)
-                                    CircleAvatar(backgroundImage: NetworkImage(message.img)),
+                                    CircleAvatar(backgroundImage: NetworkImage(message.user_pic)),
                                 ],
                               ),
                             ),
