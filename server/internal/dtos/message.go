@@ -50,3 +50,9 @@ type ConversationOfCurrentUserByOtherIDResponse struct {
 	ReceiverUserID *uint   `json:"receiver_user_id" validate:"required"`
 	MsgText        *string `json:"msg_text" validate:"required"`
 }
+
+type MessageRequest struct {
+	SenderUserID   *uint   `json:"sender_user_id" validate:"required"`
+	ReceiverUserID *uint   `json:"receiver_user_id" validate:"required"`
+	MsgText        *string `json:"msg_text" validate:"required"`
+}

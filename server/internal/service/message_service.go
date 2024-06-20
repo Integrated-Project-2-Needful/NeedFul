@@ -3,8 +3,10 @@ package service
 import (
 	"github.com/gofiber/fiber/v2"
 	"log"
+	"needful/internal/dtos"
 	"needful/internal/entities"
 	"needful/internal/repository"
+	"needful/internal/utils/v"
 )
 
 type messageService struct {
@@ -129,4 +131,20 @@ func (s messageService) GetConversationOfCurrentUserByOtherID(userid int, otheri
 		messageResponses = append(messageResponses, messageResponse)
 	}
 	return messageResponses, nil
+}
+
+func (s messageService) PostMessage(userid int, receiverid int, req dtos.MessageRequest) (*entities.Message, error) {
+	item := &entities.Message{
+		SenderUserID:   v.UintPtr(userid),
+		ReceiverUserID: v.UintPtr(receiverid),
+		MsgText:        req.MsgText,
+	}
+
+	err := s.messageRepo.PostMessage(item)
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
+
+	return item, nil
 }

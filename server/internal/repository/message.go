@@ -11,4 +11,5 @@ type MessageRepository interface {
 
 	GetMessagePageOfCurrentUser(int) ([]entities.MessagePageOfCurrentUserResponse, error)
 	GetConversationOfCurrentUserByOtherID(int, int) ([]entities.ConversationOfCurrentUserByOtherIDResponse, error)
+	PostMessage(message *entities.Message) error
 }

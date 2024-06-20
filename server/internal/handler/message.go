@@ -158,3 +158,38 @@ func (h *messageHandler) GetConversationOfCurrentUserByOtherID(c *fiber.Ctx) err
 	}
 	return c.JSON(messagesResponse)
 }
+
+func (h *messageHandler) PostMessage(c *fiber.Ctx) error {
+	receiverIDReceive, err := strconv.Atoi(c.Params("ReceiverID"))
+	// Extract the token from the request headers
+	token := c.Get("Authorization")
+
+	// Check if the token is empty
+	if token == "" {
+		return errors.New("token is missing")
+	}
+
+	// Extract the user ID from the token
+	userIDExtract, err := utils.ExtractUserIDFromToken(strings.Replace(token, "Bearer ", "", 1), h.jwtSecret)
+	if err != nil {
+		return err
+	}
+
+	var request dtos.MessageRequest
+	if err := c.BodyParser(&request); err != nil {
+		return err
+	}
+
+	message, err := h.messageSer.PostMessage(userIDExtract, receiverIDReceive, request)
+	if err != nil {
+		return err
+	}
+
+	messageResponse := dtos.MessageRequest{
+		SenderUserID:   message.SenderUserID,
+		ReceiverUserID: message.ReceiverUserID,
+		MsgText:        message.MsgText,
+	}
+
+	return c.JSON(messageResponse)
+}

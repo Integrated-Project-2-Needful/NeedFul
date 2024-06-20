@@ -87,3 +87,11 @@ func (r messageRepositoryDB) GetConversationOfCurrentUserByOtherID(currentUserID
 	}
 	return conversations, nil
 }
+
+func (r messageRepositoryDB) PostMessage(message *entities.Message) error {
+	result := r.db.Create(message)
+	if result.Error != nil {
+		return result.Error
+	}
+	return nil
+}

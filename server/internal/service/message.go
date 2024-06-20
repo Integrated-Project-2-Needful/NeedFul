@@ -1,6 +1,7 @@
 package service
 
 import (
+	"needful/internal/dtos"
 	"needful/internal/entities"
 )
 
@@ -11,4 +12,5 @@ type MessageService interface {
 
 	GetMessagePageOfCurrentUser(int) ([]entities.MessagePageOfCurrentUserResponse, error)
 	GetConversationOfCurrentUserByOtherID(int, int) ([]entities.ConversationOfCurrentUserByOtherIDResponse, error)
+	PostMessage(int, int, dtos.MessageRequest) (*entities.Message, error)
 }
