@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:needful/Utils/color_use.dart';
 import 'package:needful/Utils/text_use.dart';
 import 'package:needful/widgets/title_bar.dart';
 
@@ -10,6 +11,7 @@ class Eula extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const CustomAppBarPop(
+        backgroundColor: colorUse.primaryColor,
         title: 'Privacy policy',
         centerTitle: true,
       ),

@@ -150,6 +150,7 @@ class _EditProfileState extends State<EditProfile> {
               ButtonAtBottom(
                 onPressed: updateUserProfile,
                 text: 'SAVE PROFILE',
+                color: colorUse.activeButton,
               ),
             ],
           ),

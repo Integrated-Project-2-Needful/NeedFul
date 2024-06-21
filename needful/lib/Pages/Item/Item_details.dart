@@ -147,40 +147,13 @@ class _ItemDetailsState extends State<ItemDetails> {
       throw Exception('Failed to deleteItem');
     }
   }
-  // Future<void> _launchUrl(String url) async {
-  //   // final Uri uri = Uri.parse(url);
-  //   // Simulate a delay for launching the URL
-  //   await Future.delayed(const Duration(seconds: 1));
 
-  //   showDialog(
-  //     context: context,
-  //     builder: (context) => PopUp(
-  //       title: 'Have you bought the wish?',
-  //       buttons: [
-  //         ButtonForPopUp(
-  //             onPressed: () async {
-  //               await _postGranter();
-  //               Navigator.of(context).pop();
-  //               if (widget.onUpdateBuy != null) { // Check if callback is provided
-  //                 widget.onUpdateBuy!();
-  //                 print(widget.onUpdateBuy);
-  //               }
-  //               Navigator.of(context).pop();
-  //             },
-  //             text: 'Yes'),
-  //         ButtonForPopUp(
-  //             onPressed: () {
-  //               Navigator.of(context).pop();
-  //               Navigator.of(context).pop();
-  //               if (widget.onUpdateBuy != null) { // Check if callback is provided
-  //                 widget.onUpdateBuy!(); // Call the callback
-  //               }
-  //             },
-  //             text: 'No'),
-  //       ],
-  //     ),
-  //   );
-  // }
+   @override
+  void dispose() {
+    // Consider canceling any ongoing Dio requests or other resources here
+    super.dispose();
+  }
+
 
 
 
@@ -301,7 +274,8 @@ class _ItemDetailsState extends State<ItemDetails> {
                         : askbyUserId == userIdFromToken && confirmFromAsker == null ? colorUse.activeButton
                         : colorUse.rejectButton,
                       ),
-                      if (alreadyGave == false && (confirmFromOwner == false || confirmFromAsker == false)
+                      if (alreadyGave == false && ((confirmFromAsker!=null && confirmFromOwner != null)
+                          && (confirmFromOwner == false || confirmFromAsker == false))
                           && (confirmFromOwner != null || confirmFromOwner != true) &&
                               (confirmFromAsker != null || confirmFromAsker != true))
                       ButtonAtBottom(
