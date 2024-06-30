@@ -366,10 +366,10 @@ func (s itemService) PutAskByItemIdAndPostAskMessage(itemID, askerUserID int) (*
 	var askMSGType string
 	if *item.OfferType == "Receive" {
 		askMSGType = "Donate"
-		preposition = "from"
+		preposition = "for"
 	} else if *item.OfferType == "Donate" {
 		askMSGType = "Receive"
-		preposition = "to"
+		preposition = "from"
 	} else {
 		preposition = "with"
 	}
